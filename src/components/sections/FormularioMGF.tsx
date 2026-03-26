@@ -377,27 +377,18 @@ export default function FormularioMGF() {
             ))}
           </div>
 
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, marginBottom: 28 }}>
+          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, marginBottom: 20 }}>
             Todo esto sin costo y sin compromiso. <strong style={{ color: "rgba(255,255,255,0.6)" }}>Solo cobramos si tu banco confirma el beneficio aplicado.</strong>
           </p>
 
-          <button
-            onClick={handleWhatsApp}
-            style={{
-              width: "100%", background: "#25D366", color: "#0d1117", fontWeight: 800,
-              fontSize: 18, padding: "18px 24px", borderRadius: 16, border: "none",
-              cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-              transition: "all 0.25s ease",
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#1EBE59"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "#25D366"; e.currentTarget.style.transform = "translateY(0)"; }}
-          >
-            Contactar por WhatsApp <Send size={20} />
-          </button>
-
-          <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 12, marginTop: 16 }}>
-            Se abrirá una conversación de WhatsApp con tu información.
-          </p>
+          <div style={{ background: "rgba(37, 211, 102, 0.1)", border: "1px solid rgba(37, 211, 102, 0.2)", borderRadius: 16, padding: "20px 24px", marginTop: 24 }}>
+            <p style={{ color: "#25D366", fontSize: 18, fontWeight: 800, marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+              ¡Felicitaciones! 🎉
+            </p>
+            <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 15, lineHeight: 1.6, margin: 0 }}>
+              Has dado el paso más importante: decidir actuar. Esta acción demuestra tu gran inteligencia financiera. Muy pronto te contactaremos para mostrarte el camino a tu libertad hipotecaria.
+            </p>
+          </div>
         </motion.div>
       </div>
     );
@@ -412,7 +403,7 @@ export default function FormularioMGF() {
     exit: (d: number) => ({ opacity: 0, y: d > 0 ? -40 : 40 }),
   };
 
-  const contactValid = contactData.nombre.trim().length > 1 && contactData.whatsapp.trim().length > 7;
+  const contactValid = contactData.nombre.trim().length > 0 && contactData.whatsapp.trim().length > 0;
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", display: "flex", flexDirection: "column", fontFamily: "var(--font-dm-sans), sans-serif" }}>
@@ -582,7 +573,7 @@ export default function FormularioMGF() {
                     {[
                       { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo" },
                       { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567" },
-                      { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com" },
+                      { label: "CORREO ELECTRÓNICO (OPCIONAL)", key: "email", type: "email", placeholder: "tu@correo.com" },
                     ].map((field) => (
                       <div key={field.key}>
                         <label style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", display: "block", marginBottom: 8 }}>
