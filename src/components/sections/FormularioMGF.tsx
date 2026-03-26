@@ -363,18 +363,16 @@ export default function FormularioMGF() {
           </h2>
 
           <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, marginBottom: 32, lineHeight: 1.6 }}>
-            Ya tenemos todo lo que necesitamos para preparar tu análisis personalizado.{" "}
-            <strong style={{ color: "rgba(255,255,255,0.85)" }}>En menos de 24 horas recibirás por WhatsApp:</strong>
+            Ya tenemos todo lo que necesitamos para preparar tu caso. Muy pronto uno de nuestros expertos se pondrá en contacto contigo.
           </p>
 
-          <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 20, padding: "24px 28px", marginBottom: 32, textAlign: "left" }}>
-            {[
-              "→ Una proyección exacta de cuánto puedes ahorrarte en intereses.",
-              "→ Cuántos años puedes reducir de tu crédito.",
-              "→ Un plan de reestructuración basado en la Ley 546 de 1999 adaptado a tu caso.",
-            ].map((item, i) => (
-              <p key={i} style={{ color: "rgba(255,255,255,0.75)", fontSize: 15, lineHeight: 1.6, marginBottom: i < 2 ? 12 : 0 }}>{item}</p>
-            ))}
+          <div style={{ background: "rgba(242,183,5,0.08)", border: "1px solid rgba(242,183,5,0.2)", borderRadius: 20, padding: "24px 28px", marginBottom: 32, textAlign: "left" }}>
+            <h3 style={{ color: "#F2B705", fontSize: 17, marginBottom: 12, fontWeight: 800, display: "flex", alignItems: "center", gap: 8 }}>
+              ⚠️ Siguiente paso importante
+            </h3>
+            <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 16, lineHeight: 1.6, margin: 0 }}>
+              Por favor <strong>descarga el último extracto de tu crédito hipotecario</strong> y tenlo listo en PDF para cuando te contactemos. Lo necesitaremos para realizar tu análisis personalizado.
+            </p>
           </div>
 
           <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, marginBottom: 20 }}>
@@ -390,8 +388,7 @@ export default function FormularioMGF() {
             </p>
             <div style={{ background: "rgba(0,0,0,0.2)", borderRadius: 12, padding: "16px", border: "1px solid rgba(255,255,255,0.05)" }}>
               <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.6, margin: 0 }}>
-                📱 Muy pronto te contactaremos por WhatsApp para solicitarte tu último extracto bancario. <br/><br/>
-                <strong style={{color:"#F2B705"}}>Importante:</strong> Para poder aplicar los beneficios de ley, es un requisito indispensable que tu crédito se encuentre al día.
+                <strong style={{color:"#F2B705"}}>Recuerda:</strong> Para poder aplicar los beneficios estipulados por la ley, es un requisito indispensable que tu crédito se encuentre al día.
               </p>
             </div>
           </div>
