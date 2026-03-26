@@ -381,13 +381,19 @@ export default function FormularioMGF() {
             Todo esto sin costo y sin compromiso. <strong style={{ color: "rgba(255,255,255,0.6)" }}>Solo cobramos si tu banco confirma el beneficio aplicado.</strong>
           </p>
 
-          <div style={{ background: "rgba(37, 211, 102, 0.1)", border: "1px solid rgba(37, 211, 102, 0.2)", borderRadius: 16, padding: "20px 24px", marginTop: 24 }}>
-            <p style={{ color: "#25D366", fontSize: 18, fontWeight: 800, marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+          <div style={{ background: "rgba(37, 211, 102, 0.1)", border: "1px solid rgba(37, 211, 102, 0.2)", borderRadius: 16, padding: "24px", marginTop: 24 }}>
+            <p style={{ color: "#25D366", fontSize: 18, fontWeight: 800, marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
               ¡Felicitaciones! 🎉
             </p>
-            <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 15, lineHeight: 1.6, margin: 0 }}>
-              Has dado el paso más importante: decidir actuar. Esta acción demuestra tu gran inteligencia financiera. Muy pronto te contactaremos para mostrarte el camino a tu libertad hipotecaria.
+            <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 15, lineHeight: 1.6, margin: "0 0 16px 0" }}>
+              Has dado el paso más importante: decidir actuar. Esta acción demuestra tu gran inteligencia financiera. 
             </p>
+            <div style={{ background: "rgba(0,0,0,0.2)", borderRadius: 12, padding: "16px", border: "1px solid rgba(255,255,255,0.05)" }}>
+              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.6, margin: 0 }}>
+                📱 Muy pronto te contactaremos por WhatsApp para solicitarte tu último extracto bancario. <br/><br/>
+                <strong style={{color:"#F2B705"}}>Importante:</strong> Para poder aplicar los beneficios de ley, es un requisito indispensable que tu crédito se encuentre al día.
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>
