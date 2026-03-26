@@ -275,6 +275,19 @@ export default function FormularioMGF() {
       const finalScore = calcScore(finalAnswers);
       setScore(finalScore);
       setIsCompleted(true);
+
+      // Payload para n8n
+      const payload = {
+        respuestas: finalAnswers,
+        score: finalScore,
+        temperatura: getTemperature(finalScore),
+        timestamp: new Date().toISOString()
+      };
+
+      // Enviar de forma segura (Server Action) para no exponer la URL en el navegador
+      import("@/app/actions").then(({ submitLeadToN8n }) => {
+        submitLeadToN8n(payload);
+      });
     }
   };
 
