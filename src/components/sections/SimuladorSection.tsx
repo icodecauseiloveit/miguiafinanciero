@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 import { FadeIn } from "../ui/FadeIn";
-import { Slider } from "@heroui/react";
+import { Slider, Button } from "@heroui/react";
 import { motion } from "framer-motion";
 
 export function SimuladorSection({ innerRef }: { innerRef?: React.RefObject<HTMLElement | null> }) {
@@ -220,16 +220,12 @@ function Simulador() {
         )}
       </div>
 
-      <button onClick={() => setMostrar(true)} style={{
-        width: "100%", padding: 18, border: "none", borderRadius: 16, cursor: "pointer",
-        background: `linear-gradient(135deg, var(--green), var(--green-dark))`,
-        color: "var(--white)", fontSize: 16, fontWeight: 800, letterSpacing: 0.5,
-        transition: "all 0.25s ease",
-        boxShadow: `0 6px 20px rgba(37,211,102,0.25), inset 0 1px 0 rgba(255,255,255,0.15)`,
-      }}
-        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 10px 30px rgba(37,211,102,0.3)"; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(37,211,102,0.25)"; }}
-      >CALCULAR MI AHORRO →</button>
+      <Button 
+        onPress={() => setMostrar(true)}
+        className="w-full h-16 text-lg font-black tracking-widest bg-gradient-to-r from-[var(--green)] to-[var(--green-dark)] shadow-xl text-white rounded-2xl transition-all hover:scale-[1.02] active:scale-95"
+      >
+        CALCULAR MI AHORRO EN PESOS →
+      </Button>
 
       {mostrar && (
         <div style={{ marginTop: 32, animation: "fadeUp 0.5s ease" }}>
