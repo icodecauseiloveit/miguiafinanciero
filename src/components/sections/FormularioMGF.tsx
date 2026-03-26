@@ -403,7 +403,8 @@ export default function FormularioMGF() {
     exit: (d: number) => ({ opacity: 0, y: d > 0 ? -40 : 40 }),
   };
 
-  const contactValid = contactData.nombre.trim().length > 0 && contactData.whatsapp.trim().length > 0;
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email.trim());
+  const contactValid = contactData.nombre.trim().length > 1 && contactData.whatsapp.trim().length > 7 && emailValid;
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", display: "flex", flexDirection: "column", fontFamily: "var(--font-dm-sans), sans-serif" }}>
@@ -573,7 +574,7 @@ export default function FormularioMGF() {
                     {[
                       { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo" },
                       { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567" },
-                      { label: "CORREO ELECTRÓNICO (OPCIONAL)", key: "email", type: "email", placeholder: "tu@correo.com" },
+                      { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com" },
                     ].map((field) => (
                       <div key={field.key}>
                         <label style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", display: "block", marginBottom: 8 }}>
