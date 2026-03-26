@@ -130,7 +130,7 @@ function Simulador() {
             </Slider.Output>
           </div>
           <Slider.Track className="bg-gray-100 h-2.5 rounded-full relative cursor-pointer">
-            <Slider.Fill className="bg-gradient-to-r from-[#1E3A5F] via-[#264B73] to-[#F2B705] h-full absolute rounded-full" />
+            <Slider.Fill className="bg-[#1E3A5F] h-full absolute rounded-full" />
             <Slider.Thumb className="w-8 h-8 bg-white border-[3px] border-[#1E3A5F] rounded-full shadow-xl z-20 -ml-4 flex items-center justify-center focus:outline-none hover:scale-110 transition-transform cursor-grab active:cursor-grabbing">
               <motion.div
                 animate={{ 
