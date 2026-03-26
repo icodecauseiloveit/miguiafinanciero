@@ -24,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className={`${merriweather.variable} ${dmSans.variable}`}>
+    <html lang="es" suppressHydrationWarning>
+      <body className={`${merriweather.variable} ${dmSans.variable}`} suppressHydrationWarning>
         {children}
       </body>
     </html>
