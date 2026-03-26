@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Flame, CheckCheck } from "lucide-react";
+import { Send, Smile, CheckCheck } from "lucide-react";
 import Image from "next/image";
 
 const LETTERS = ["A", "B", "C", "D", "E", "F"];
@@ -348,8 +348,8 @@ export default function FormularioMGF() {
         >
           <div style={{ marginBottom: 32, display: "flex", justifyContent: "center" }}>
             {temp === "CALIENTE" ? (
-              <div style={{ background: "rgba(249,115,22,0.15)", borderRadius: "50%", padding: 24 }}>
-                <Flame size={56} color="#f97316" />
+              <div style={{ background: "rgba(242, 183, 5, 0.15)", borderRadius: "50%", padding: 24 }}>
+                <Smile size={56} color="#F2B705" />
               </div>
             ) : (
               <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: "50%", padding: 24 }}>
