@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 import { FadeIn } from "../ui/FadeIn";
+import { Slider } from "@heroui/react";
 
 export function SimuladorSection({ innerRef }: { innerRef?: React.RefObject<HTMLElement | null> }) {
   return (
@@ -102,59 +103,36 @@ function Simulador() {
   const fmt = (x: number) => `$${(x / 1e6).toFixed(1)}M`;
   const fmtCuota = (x: number) => `$${(x / 1e6).toFixed(2)}M`;
 
-  const Slider = ({ label, value, set, min, max, step, format }: {
+  const CustomSlider = ({ label, value, set, min, max, step, format }: {
     label: string, value: number, set: (v: number) => void, min: number, max: number, step?: number, format: (v: number) => string
   }) => {
-    const trackRef = useRef<HTMLDivElement>(null);
-    const dragging = useRef(false);
-
-    const calcVal = (cx: number) => {
-      if (!trackRef.current) return value;
-      const r = trackRef.current.getBoundingClientRect();
-      const pct = Math.max(0, Math.min(1, (cx - r.left) / r.width));
-      const s = step || 1;
-      return Math.round((min + pct * (max - min)) / s) * s;
-    };
-
-    const onStart = (cx: number) => { dragging.current = true; set(calcVal(cx)); setMostrar(false); };
-    const onMove = (cx: number) => { if (dragging.current) { set(calcVal(cx)); setMostrar(false); } };
-    const onEnd = () => { dragging.current = false; };
-
-    useEffect(() => {
-      const mm = (e: MouseEvent | TouchEvent) => onMove('touches' in e ? e.touches[0].clientX : e.clientX);
-      const mu = () => onEnd();
-      window.addEventListener("mousemove", mm);
-      window.addEventListener("mouseup", mu);
-      window.addEventListener("touchmove", mm, { passive: false });
-      window.addEventListener("touchend", mu);
-      return () => {
-        window.removeEventListener("mousemove", mm);
-        window.removeEventListener("mouseup", mu);
-        window.removeEventListener("touchmove", mm);
-        window.removeEventListener("touchend", mu);
-      };
-    });
-
-    const pct = ((value - min) / (max - min)) * 100;
     return (
-      <div style={{ marginBottom: 26 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-          <span style={{ color: "var(--blue)", fontSize: 13, fontWeight: 500, letterSpacing: 0.2 }}>{label}</span>
-          <span style={{ color: "var(--blue)", fontWeight: 800, fontSize: 17, fontFamily: "var(--font-merriweather)" }}>{format(value)}</span>
-        </div>
-        <div ref={trackRef}
-          onMouseDown={e => { e.preventDefault(); onStart(e.clientX); }}
-          onTouchStart={e => onStart(e.touches[0].clientX)}
-          style={{ position: "relative", height: 36, cursor: "pointer", display: "flex", alignItems: "center", touchAction: "none", userSelect: "none" }}>
-          <div style={{ position: "absolute", left: 0, right: 0, height: 8, borderRadius: 4, background: "var(--gray-border)" }} />
-          <div style={{ position: "absolute", left: 0, height: 8, borderRadius: 4, width: `${pct}%`, background: `linear-gradient(90deg, var(--blue), var(--blue-mid), var(--yellow))` }} />
-          <div style={{
-            position: "absolute", left: `${pct}%`, transform: "translateX(-50%)",
-            width: 26, height: 26, borderRadius: "50%", background: "var(--white)",
-            border: `3px solid var(--blue)`, boxShadow: `0 2px 12px rgba(30,58,95,0.2), 0 0 0 4px var(--blue-light)`,
-            zIndex: 2,
-          }} />
-        </div>
+      <div style={{ marginBottom: 30 }}>
+        <Slider
+          minValue={min}
+          maxValue={max}
+          step={step || 1}
+          value={value}
+          onChange={(v: number | number[]) => { 
+            const val = Array.isArray(v) ? v[0] : v;
+            set(val); 
+            setMostrar(false); 
+          }}
+          className="max-w-full"
+        >
+          <div className="flex justify-between items-center mb-2">
+            <span style={{ color: "var(--blue)", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              {label}
+            </span>
+            <Slider.Output style={{ color: "var(--blue)", fontWeight: 900, fontSize: 20, fontFamily: "var(--font-merriweather)" }}>
+              {format(value)}
+            </Slider.Output>
+          </div>
+          <Slider.Track className="bg-gray-100 h-2.5 rounded-full relative cursor-pointer">
+            <Slider.Fill className="bg-gradient-to-r from-[#1E3A5F] via-[#264B73] to-[#F2B705] h-full absolute rounded-full" />
+            <Slider.Thumb className="w-7 h-7 bg-white border-[3px] border-[#1E3A5F] rounded-full shadow-lg z-10 -ml-3.5 focus:outline-none hover:scale-110 transition-transform cursor-grab active:cursor-grabbing" />
+          </Slider.Track>
+        </Slider>
       </div>
     );
   };
@@ -197,15 +175,15 @@ function Simulador() {
       </div>
 
       {/* ── Sliders ── */}
-      <Slider label="Monto del crédito" value={monto} set={setMonto} min={50} max={500} format={v => `$${v} millones`} />
+      <CustomSlider label="Monto del crédito" value={monto} set={setMonto} min={50} max={500} format={(v: number) => `$${v} millones`} />
 
       {modo === "UVR" ? (
-        <Slider label="Spread UVR (tasa del banco)" value={spreadUVR} set={setSpreadUVR} min={3} max={12} step={0.1} format={v => `${v}% EA`} />
+        <CustomSlider label="Spread UVR (tasa del banco)" value={spreadUVR} set={setSpreadUVR} min={3} max={12} step={0.1} format={(v: number) => `${v}% EA`} />
       ) : (
-        <Slider label="Tasa fija en pesos" value={tasaPesos} set={setTasaPesos} min={8} max={20} step={0.1} format={v => `${v}% EA`} />
+        <CustomSlider label="Tasa fija en pesos" value={tasaPesos} set={setTasaPesos} min={8} max={20} step={0.1} format={(v: number) => `${v}% EA`} />
       )}
 
-      <Slider label="Plazo del crédito" value={plazo} set={setPlazo} min={5} max={30} format={v => `${v} años`} />
+      <CustomSlider label="Plazo del crédito" value={plazo} set={setPlazo} min={5} max={30} format={(v: number) => `${v} años`} />
 
       {/* ── Info tasa efectiva ── */}
       <div style={{
