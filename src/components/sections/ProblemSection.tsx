@@ -2,7 +2,7 @@
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 
-export function ProblemSection() {
+export function ProblemSection({ id }: { id?: string }) {
   const problems = [
     { icon: "📈", title: "Tu deuda CRECE", desc: "En UVR, el saldo se ajusta por inflación. Aunque pagues, la deuda puede ser MAYOR que el día que firmaste." },
     { icon: "💸", title: "Pagas el TRIPLE", desc: "Un crédito de $170M a 30 años puede costar más de $500M. La diferencia son intereses para el banco." },
@@ -10,7 +10,7 @@ export function ProblemSection() {
   ];
 
   return (
-    <Section bg="var(--white)">
+    <Section id={id} bg="var(--white)">
       <FadeIn>
         <SectionLabel text="El problema que nadie te explica" color="var(--red)" />
         <SectionHeading>

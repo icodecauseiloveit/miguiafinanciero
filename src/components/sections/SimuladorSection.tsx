@@ -5,9 +5,9 @@ import { FadeIn } from "../ui/FadeIn";
 import { Slider, Button } from "@heroui/react";
 import { motion } from "framer-motion";
 
-export function SimuladorSection({ innerRef }: { innerRef?: React.RefObject<HTMLElement | null> }) {
+export function SimuladorSection({ innerRef, id }: { innerRef?: React.RefObject<HTMLElement | null>, id?: string }) {
   return (
-    <Section innerRef={innerRef} bg="var(--off-white)">
+    <Section innerRef={innerRef} id={id} bg="var(--off-white)">
       <FadeIn>
         <SectionLabel text="Haz las cuentas tú mismo" />
         <SectionHeading>¿Cuánto puedes <span style={{ color: "var(--green)" }}>ahorrarte</span>?</SectionHeading>

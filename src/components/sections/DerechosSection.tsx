@@ -2,7 +2,7 @@
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel, Highlight } from "../ui/Section";
 
-export function DerechosSection() {
+export function DerechosSection({ id }: { id?: string }) {
   const derechos = [
     { icon: "🔓", title: "Prepago sin penalidad", desc: "Abona a capital cuando quieras, sin cobros extra.", art: "Art. 17 №8" },
     { icon: "🎯", title: "Tú eliges: cuota o plazo", desc: "Decides si tu abonó reduce la cuota o el plazo.", art: "Art. 17 №8" },
@@ -13,7 +13,7 @@ export function DerechosSection() {
   ];
 
   return (
-    <Section bg="var(--white)">
+    <Section id={id} bg="var(--white)">
       <FadeIn>
         <SectionLabel text="⚖️  Conocimiento es poder" />
         <SectionHeading>Tus derechos según la <Highlight>Ley 546</Highlight></SectionHeading>

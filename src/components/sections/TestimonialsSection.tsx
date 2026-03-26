@@ -2,7 +2,7 @@
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 
-export function TestimonialsSection() {
+export function TestimonialsSection({ id }: { id?: string }) {
   const testimonios = [
     { nombre: "Carolina M.", ciudad: "Bogotá", ahorro: "$92M", plazo: "18 años menos", texto: "Tenía un crédito de $210M en UVR y sentía que nunca iba a terminar. Mi Guía Financiero me ayudó a reestructurar y ahora termino en 12 años, no en 30." },
     { nombre: "Andrés P.", ciudad: "Medellín", ahorro: "$67M", plazo: "14 años menos", texto: "El banco me decía que no se podía. Mi Guía Financiero me mostró el Artículo 17 de la Ley 546 y ahora mis abonos van directo a capital." },
@@ -10,7 +10,7 @@ export function TestimonialsSection() {
   ];
 
   return (
-    <Section bg="linear-gradient(180deg, var(--cream), var(--cream-deep), var(--cream))">
+    <Section id={id} bg="linear-gradient(180deg, var(--cream), var(--cream-deep), var(--cream))">
       <FadeIn>
         <SectionLabel text="Historias reales" color="var(--green)" />
         <SectionHeading>Ellos ya <span style={{ color: "var(--green)" }}>dejaron de regalarle</span> al banco</SectionHeading>

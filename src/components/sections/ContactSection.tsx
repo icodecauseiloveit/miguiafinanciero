@@ -3,9 +3,9 @@ import Link from "next/link";
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 
-export function ContactSection({ innerRef }: { innerRef?: React.RefObject<HTMLElement | null> }) {
+export function ContactSection({ innerRef, id }: { innerRef?: React.RefObject<HTMLElement | null>, id?: string }) {
   return (
-    <Section innerRef={innerRef} bg="linear-gradient(180deg, var(--white), var(--cream))">
+    <Section innerRef={innerRef} id={id} bg="linear-gradient(180deg, var(--white), var(--cream))">
       <FadeIn>
         <SectionLabel text="Da el primer paso" color="var(--green)" />
         <SectionHeading>Análisis de tu crédito <span style={{ color: "var(--green)" }}>100% gratis</span></SectionHeading>

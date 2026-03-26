@@ -2,7 +2,7 @@
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel, Highlight } from "../ui/Section";
 
-export function GuaranteeSection() {
+export function GuaranteeSection({ id }: { id?: string }) {
   const guaranteeItems = [
     { icon: "✅", title: "Sin anticipos", desc: "Cero pesos hasta ver resultados." },
     { icon: "📄", title: "Confirmación del banco", desc: "Solo cobramos con documento escrito." },
@@ -10,7 +10,7 @@ export function GuaranteeSection() {
   ];
 
   return (
-    <Section bg="var(--white)">
+    <Section id={id} bg="var(--white)">
       <FadeIn>
         <div style={{
           borderRadius: 30, padding: "56px 44px", textAlign: "center",

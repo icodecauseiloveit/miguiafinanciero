@@ -2,7 +2,7 @@
 import { FadeIn } from "../ui/FadeIn";
 import { AnimatedNumber } from "../ui/AnimatedNumber";
 
-export function StatsSection() {
+export function StatsSection({ id }: { id?: string }) {
   const stats = [
     { value: 320, suffix: "+", label: "Familias ayudadas" },
     { value: 47, prefix: "$", suffix: "M", label: "Ahorro promedio" },
@@ -11,7 +11,7 @@ export function StatsSection() {
   ];
 
   return (
-    <section style={{
+    <section id={id} style={{
       padding: "80px 28px", position: "relative", overflow: "hidden",
       background: `linear-gradient(135deg, var(--blue), var(--blue-dark))`,
     }}>

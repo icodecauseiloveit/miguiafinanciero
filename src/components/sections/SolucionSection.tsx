@@ -2,7 +2,7 @@
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel, Highlight } from "../ui/Section";
 
-export function SolucionSection() {
+export function SolucionSection({ id }: { id?: string }) {
   const steps = [
     { s: "1", t: "Análisis gratis", d: "Estudiamos tu crédito y calculamos cuánto puedes ahorrarte. Sin costo." },
     { s: "2", t: "Plan de acción", d: "Diseñamos la reestructuración óptima basada en la Ley 546." },
@@ -11,7 +11,7 @@ export function SolucionSection() {
   ];
 
   return (
-    <Section bg="linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 50%, var(--cream) 100%)">
+    <Section id={id} bg="linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 50%, var(--cream) 100%)">
       <FadeIn>
         <SectionLabel text="La solución existe — y es tu derecho" color="var(--green)" />
         <SectionHeading>

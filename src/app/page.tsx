@@ -32,23 +32,23 @@ export default function Home() {
       
       <Ticker />
       
-      <ProblemSection />
+      <ProblemSection id="problema" />
       
-      <SolucionSection />
+      <SolucionSection id="solucion" />
       
-      <StatsSection />
+      <StatsSection id="estadisticas" />
       
-      <SimuladorSection innerRef={simRef} />
+      <SimuladorSection innerRef={simRef} id="simulador" />
       
-      <DerechosSection />
+      <DerechosSection id="derechos" />
       
-      <TestimonialsSection />
+      <TestimonialsSection id="testimonios" />
       
-      <GuaranteeSection />
+      <GuaranteeSection id="garantia" />
       
-      <FAQSection />
+      <FAQSection id="faq" />
       
-      <ContactSection innerRef={contactRef} />
+      <ContactSection innerRef={contactRef} id="contacto" />
     </main>
   );
 }

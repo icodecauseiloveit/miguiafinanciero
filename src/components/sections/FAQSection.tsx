@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 
-export function FAQSection() {
+export function FAQSection({ id }: { id?: string }) {
   const faqs = [
     { q: "¿Cómo funciona exactamente el servicio?", a: "Te representamos ante tu entidad financiera para hacer valer los beneficios de la Ley 546 de 1999. Analizamos tu crédito, calculamos la reestructuración óptima, y gestionamos todo el proceso con el banco. Tú solo necesitas hacer un aumento desde el 50% de tu cuota actual, que se destina íntegramente a reducir el capital." },
     { q: "¿Esto es legal? ¿El banco puede negarse?", a: "Es 100% legal. La Ley 546 de 1999 (Artículo 17, numeral 8) establece que todo crédito de vivienda permite prepago total o parcial sin penalidad alguna, y el deudor elige si reduce cuota o plazo. El Artículo 20 da derecho a reestructuración. El banco está obligado por ley." },
@@ -15,7 +15,7 @@ export function FAQSection() {
   ];
 
   return (
-    <Section bg="var(--off-white)">
+    <Section id={id} bg="var(--off-white)">
       <FadeIn>
         <SectionLabel text="Preguntas frecuentes" color="var(--gray)" />
         <SectionHeading>Todo lo que necesitas saber</SectionHeading>
