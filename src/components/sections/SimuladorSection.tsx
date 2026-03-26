@@ -131,14 +131,14 @@ function Simulador() {
           </div>
           <Slider.Track className="bg-gray-100 h-2.5 rounded-full relative cursor-pointer">
             <Slider.Fill className="bg-[#1E3A5F] h-full absolute rounded-full" />
-            <Slider.Thumb className="w-8 h-8 bg-white border-[3px] border-[#1E3A5F] rounded-full shadow-xl z-20 -ml-4 flex items-center justify-center focus:outline-none hover:scale-110 transition-transform cursor-grab active:cursor-grabbing">
+            <Slider.Thumb className="w-6 h-6 bg-white border-[2.5px] border-[#1E3A5F] rounded-full shadow-lg z-20 -ml-3 flex items-center justify-center focus:outline-none hover:scale-110 transition-transform cursor-grab active:cursor-grabbing">
               <motion.div
                 animate={{ 
-                  scale: [0.7, 0.9, 0.7],
-                  opacity: [0.4, 0.8, 0.4]
+                  scale: [0.6, 0.9, 0.6],
+                  opacity: [0.5, 0.9, 0.5]
                 }}
                 transition={{ 
-                  duration: 2.5, 
+                  duration: 2, 
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
@@ -146,7 +146,7 @@ function Simulador() {
                   width: '100%',
                   height: '100%',
                   borderRadius: '50%',
-                  background: 'var(--blue)',
+                  background: 'var(--yellow)',
                 }}
               />
             </Slider.Thumb>
