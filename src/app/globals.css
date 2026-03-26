@@ -1,0 +1,64 @@
+:root {
+  --white: #FFFFFF;
+  --off-white: #FAFBFC;
+  --cream: #FBF7EE;
+  --cream-deep: #F5EDDB;
+  --blue: #1E3A5F;
+  --blue-dark: #132A45;
+  --blue-mid: #264B73;
+  --blue-light: rgba(30, 58, 95, 0.06);
+  --blue-soft: rgba(30, 58, 95, 0.03);
+  --yellow: #F2B705;
+  --yellow-soft: rgba(242, 183, 5, 0.10);
+  --yellow-glow: rgba(242, 183, 5, 0.18);
+  --yellow-muted: #D9A504;
+  --gray: #6B7280;
+  --gray-light: #9CA3AF;
+  --gray-border: #E8EAED;
+  --green: #25D366;
+  --green-dark: #1EBE59;
+  --green-soft: rgba(37, 211, 102, 0.07);
+  --red: #D64045;
+  --red-soft: rgba(214, 64, 69, 0.06);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .4; }
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+::selection {
+  background: var(--yellow);
+  color: var(--blue);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  background: var(--white);
+  color: var(--blue);
+}
