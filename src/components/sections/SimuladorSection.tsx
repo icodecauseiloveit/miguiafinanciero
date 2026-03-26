@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 import { FadeIn } from "../ui/FadeIn";
 import { Slider } from "@heroui/react";
+import { motion } from "framer-motion";
 
 export function SimuladorSection({ innerRef }: { innerRef?: React.RefObject<HTMLElement | null> }) {
   return (
@@ -130,7 +131,25 @@ function Simulador() {
           </div>
           <Slider.Track className="bg-gray-100 h-2.5 rounded-full relative cursor-pointer">
             <Slider.Fill className="bg-gradient-to-r from-[#1E3A5F] via-[#264B73] to-[#F2B705] h-full absolute rounded-full" />
-            <Slider.Thumb className="w-7 h-7 bg-white border-[3px] border-[#1E3A5F] rounded-full shadow-lg z-10 -ml-3.5 focus:outline-none hover:scale-110 transition-transform cursor-grab active:cursor-grabbing" />
+            <Slider.Thumb className="w-8 h-8 bg-white border-[3px] border-[#1E3A5F] rounded-full shadow-xl z-20 -ml-4 flex items-center justify-center focus:outline-none hover:scale-110 transition-transform cursor-grab active:cursor-grabbing">
+              <motion.div
+                animate={{ 
+                  scale: [0.7, 0.9, 0.7],
+                  opacity: [0.4, 0.8, 0.4]
+                }}
+                transition={{ 
+                  duration: 2.5, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  background: 'var(--blue)',
+                }}
+              />
+            </Slider.Thumb>
           </Slider.Track>
         </Slider>
       </div>
