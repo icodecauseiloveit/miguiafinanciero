@@ -284,13 +284,6 @@ export default function FormularioMGF() {
         timestamp: new Date().toISOString()
       };
 
-      // Disparar evento de conversión en Google Ads
-      if (typeof window !== "undefined" && (window as any).gtag) {
-        (window as any).gtag("event", "conversion", {
-          "send_to": "AW-11227942442"
-        });
-      }
-
       // Enviar de forma segura (Server Action) para no exponer la URL en el navegador
       import("@/app/actions").then(({ submitLeadToN8n }) => {
         submitLeadToN8n(payload);
