@@ -28,6 +28,11 @@ const SCORES: Record<string, Record<string, number>> = {
     "No estoy seguro": 2,
     "Aún no tengo crédito, estoy por tomarlo": 0,
   },
+  al_dia_pagos: {
+    "Sí, estoy completamente al día": 5,
+    "Tengo atrasada la cuota de este mes": 2,
+    "Tengo más de una cuota atrasada": 0,
+  },
   dolor_extracto: {
     "Sí, y me genera mucha frustración": 5,
     "Sí, lo he notado pero no le he puesto mucha atención": 3,
@@ -112,6 +117,19 @@ const steps: Step[] = [
       "Crédito en pesos (tasa fija)",
       "No estoy seguro",
       "Aún no tengo crédito, estoy por tomarlo",
+    ],
+  },
+  {
+    id: 12,
+    type: "radio",
+    section: "Situación de pagos",
+    key: "al_dia_pagos",
+    question: "¿Estás al día con los pagos de tu crédito hipotecario?",
+    description: "Para aplicar a los beneficios de reducción de la Ley 546, es necesario conocer el estado actual de tus aportes.",
+    options: [
+      "Sí, estoy completamente al día",
+      "Tengo atrasada la cuota de este mes",
+      "Tengo más de una cuota atrasada",
     ],
   },
   {
@@ -293,7 +311,8 @@ export default function FormularioMGF() {
     msg += `📧 Email: ${contactData.email || "—"}\n\n`;
     msg += `🏦 *Mi crédito:*\n`;
     msg += `Banco: ${answers["banco"] || "—"}\n`;
-    msg += `Tipo: ${answers["tipo_credito"] || "—"}\n\n`;
+    msg += `Tipo: ${answers["tipo_credito"] || "—"}\n`;
+    msg += `Al día: ${answers["al_dia_pagos"] || "—"}\n\n`;
     msg += `💬 *Mi situación:*\n`;
     msg += `Extracto: ${answers["dolor_extracto"] || "—"}\n`;
     msg += `Ley 546: ${answers["conoce_ley546"] || "—"}\n`;
