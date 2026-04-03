@@ -5,10 +5,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, Smile, CheckCheck } from "lucide-react";
 import Image from "next/image";
 
-const LETTERS = ["A", "B", "C", "D", "E", "F"];
+const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"];
 
 // ─── Scoring map ────────────────────────────────────────────────────────────
 const SCORES: Record<string, Record<string, number>> = {
+  banco: {
+    "FONDO NACIONAL DEL AHORRO": 5,
+    "BANCO POPULAR": 5,
+    "BANCO LA HIPOTECARIA": 5,
+    "BANCO DE OCCIDENTE": 5,
+    "BANCO DE BOGOTA": 5,
+    "BANCO DAVIVIENDA": 5,
+    "BANCO COLPATRIA": 5,
+    "BANCO CAJA SOCIAL": 5,
+    "BANCO BANCOOMEVA": 5,
+    "BANCO BANCOLOMBIA": 5,
+    "Otro": 0,
+  },
   tipo_credito: {
     "Crédito en UVR": 4,
     "Crédito en pesos (tasa fija)": 3,
@@ -88,6 +101,26 @@ type Step = {
 };
 
 const steps: Step[] = [
+  {
+    id: 0,
+    type: "radio",
+    section: "Háblanos de tu crédito",
+    key: "banco",
+    question: "¿Con qué banco tienes tu crédito?",
+    options: [
+      "Fondo Nacional del Ahorro",
+      "Banco Popular",
+      "Banco La Hipotecaria",
+      "Banco de Occidente",
+      "Banco de Bogotá",
+      "Banco Davivienda",
+      "Banco Colpatria",
+      "Banco Caja Social",
+      "Banco Bancoomeva",
+      "Banco Bancolombia",
+      "Otro",
+    ],
+  },
   {
     id: 1,
     type: "radio",
@@ -318,6 +351,7 @@ export default function FormularioMGF() {
     msg += `📱 WhatsApp: ${contactData.whatsapp || "—"}\n`;
     msg += `📧 Email: ${contactData.email || "—"}\n\n`;
     msg += `🏦 *Mi crédito:*\n`;
+    msg += `Banco: ${answers["banco"] || "—"}\n`;
     msg += `Tipo: ${answers["tipo_credito"] || "—"}\n`;
     msg += `Monto: ${answers["monto_credito"] || "—"}\n`;
     msg += `Plazo: ${answers["plazo_credito"] || "—"}\n`;
