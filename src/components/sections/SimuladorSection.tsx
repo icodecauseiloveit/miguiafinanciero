@@ -129,9 +129,9 @@ function Simulador() {
                {format(value)}
             </Slider.Output>
           </div>
-          <Slider.Track className="relative h-5 w-full rounded-full bg-gray-200 cursor-pointer">
+          <Slider.Track className="relative h-6 w-full rounded-full bg-gray-200 cursor-pointer">
             <Slider.Fill className="absolute h-full rounded-full bg-[#1E3A5F]" />
-            <Slider.Thumb className="w-5 h-5 rounded-full bg-white shadow-sm cursor-grab active:cursor-grabbing" />
+            <Slider.Thumb className="w-4 h-4 rounded-full bg-white shadow-md cursor-grab active:cursor-grabbing border-none" />
           </Slider.Track>
         </Slider>
       </div>
