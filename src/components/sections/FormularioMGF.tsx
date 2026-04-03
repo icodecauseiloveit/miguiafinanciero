@@ -18,8 +18,8 @@ const SCORES: Record<string, Record<string, number>> = {
     "BANCO DAVIVIENDA": 5,
     "BANCO COLPATRIA": 5,
     "BANCO CAJA SOCIAL": 5,
-    "BANCO BANCOOMEVA": 5,
-    "BANCO BANCOLOMBIA": 5,
+    "BANCOOMEVA": 5,
+    "BANCOLOMBIA": 5,
     "Otro": 0,
   },
   tipo_credito: {
@@ -27,26 +27,6 @@ const SCORES: Record<string, Record<string, number>> = {
     "Crédito en pesos (tasa fija)": 3,
     "No estoy seguro": 2,
     "Aún no tengo crédito, estoy por tomarlo": 0,
-  },
-  monto_credito: {
-    "Menos de $100 millones": 1,
-    "Entre $100 y $200 millones": 3,
-    "Entre $200 y $350 millones": 4,
-    "Más de $350 millones": 5,
-    "No recuerdo el monto exacto": 2,
-  },
-  plazo_credito: {
-    "Entre 5 y 15 años": 2,
-    "Entre 15 y 20 años": 3,
-    "Entre 20 y 30 años": 5,
-    "No estoy seguro": 2,
-  },
-  cuota_mensual: {
-    "Menos de $800.000": 1,
-    "Entre $800.000 y $1.500.000": 3,
-    "Entre $1.500.000 y $2.500.000": 4,
-    "Más de $2.500.000": 5,
-    "No recuerdo con exactitud": 2,
   },
   dolor_extracto: {
     "Sí, y me genera mucha frustración": 5,
@@ -132,47 +112,6 @@ const steps: Step[] = [
       "Crédito en pesos (tasa fija)",
       "No estoy seguro",
       "Aún no tengo crédito, estoy por tomarlo",
-    ],
-  },
-  {
-    id: 2,
-    type: "radio",
-    section: "Háblanos de tu crédito",
-    key: "monto_credito",
-    question: "¿Aproximadamente cuánto fue el monto de tu crédito cuando lo tomaste?",
-    options: [
-      "Menos de $100 millones",
-      "Entre $100 y $200 millones",
-      "Entre $200 y $350 millones",
-      "Más de $350 millones",
-      "No recuerdo el monto exacto",
-    ],
-  },
-  {
-    id: 3,
-    type: "radio",
-    section: "Háblanos de tu crédito",
-    key: "plazo_credito",
-    question: "¿Cuántos años de plazo tiene tu crédito?",
-    options: [
-      "Entre 5 y 15 años",
-      "Entre 15 y 20 años",
-      "Entre 20 y 30 años",
-      "No estoy seguro",
-    ],
-  },
-  {
-    id: 4,
-    type: "radio",
-    section: "Háblanos de tu crédito",
-    key: "cuota_mensual",
-    question: "¿Cuánto pagas de cuota mensual actualmente?",
-    options: [
-      "Menos de $800.000",
-      "Entre $800.000 y $1.500.000",
-      "Entre $1.500.000 y $2.500.000",
-      "Más de $2.500.000",
-      "No recuerdo con exactitud",
     ],
   },
   {
@@ -285,8 +224,8 @@ function calcScore(answers: Record<string, string | string[]>): number {
 }
 
 function getTemperature(score: number): "CALIENTE" | "TIBIO" | "FRIO" {
-  if (score >= 28) return "CALIENTE";
-  if (score >= 16) return "TIBIO";
+  if (score >= 18) return "CALIENTE";
+  if (score >= 10) return "TIBIO";
   return "FRIO";
 }
 
@@ -295,7 +234,7 @@ export default function FormularioMGF() {
   const [direction, setDirection] = useState(1);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
-  const [contactData, setContactData] = useState({ nombre: "", whatsapp: "", email: "" });
+  const [contactData, setContactData] = useState({ nombre: "", whatsapp: "", ciudad: "", email: "" });
   const [isCompleted, setIsCompleted] = useState(false);
   const [score, setScore] = useState(0);
 
@@ -346,16 +285,15 @@ export default function FormularioMGF() {
     const phone = "573025261619";
     const temp = getTemperature(score);
     const nombre = contactData.nombre || "Prospecto";
+    const ciudad = contactData.ciudad || "—";
     let msg = `Hola MiGuíaFinanciero, soy *${nombre}*. Completé el formulario de análisis hipotecario.\n\n`;
     msg += `📋 *Mis datos:*\n`;
     msg += `📱 WhatsApp: ${contactData.whatsapp || "—"}\n`;
+    msg += `🏙️ Ciudad: ${ciudad}\n`;
     msg += `📧 Email: ${contactData.email || "—"}\n\n`;
     msg += `🏦 *Mi crédito:*\n`;
     msg += `Banco: ${answers["banco"] || "—"}\n`;
-    msg += `Tipo: ${answers["tipo_credito"] || "—"}\n`;
-    msg += `Monto: ${answers["monto_credito"] || "—"}\n`;
-    msg += `Plazo: ${answers["plazo_credito"] || "—"}\n`;
-    msg += `Cuota: ${answers["cuota_mensual"] || "—"}\n\n`;
+    msg += `Tipo: ${answers["tipo_credito"] || "—"}\n\n`;
     msg += `💬 *Mi situación:*\n`;
     msg += `Extracto: ${answers["dolor_extracto"] || "—"}\n`;
     msg += `Ley 546: ${answers["conoce_ley546"] || "—"}\n`;
@@ -439,7 +377,7 @@ export default function FormularioMGF() {
   };
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email.trim());
-  const contactValid = contactData.nombre.trim().length > 1 && contactData.whatsapp.trim().length > 7 && emailValid;
+  const contactValid = contactData.nombre.trim().length > 1 && contactData.whatsapp.trim().length > 7 && contactData.ciudad.trim().length > 2 && emailValid;
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", display: "flex", flexDirection: "column", fontFamily: "var(--font-dm-sans), sans-serif" }}>
@@ -609,6 +547,7 @@ export default function FormularioMGF() {
                     {[
                       { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo" },
                       { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567" },
+                      { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Medellín..." },
                       { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com" },
                     ].map((field) => (
                       <div key={field.key}>
