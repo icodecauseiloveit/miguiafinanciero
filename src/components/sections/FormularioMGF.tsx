@@ -455,7 +455,7 @@ export default function FormularioMGF() {
       {/* Logo Header */}
       <div style={{ position: "fixed", top: 6, left: 0, width: "100%", zIndex: 50, padding: "8px 24px", display: "flex", justifyContent: "center" }}>
         <a href="/">
-          <Image src="/logo-mgf-dark.png" alt="Mi Guía Financiero" width={200} height={64} style={{ objectFit: "contain" }} />
+          <Image src="/logo-mgf-dark.png" alt="Mi Guía Financiero" width={260} height={84} style={{ objectFit: "contain" }} />
         </a>
       </div>
 
