@@ -120,7 +120,6 @@ function Simulador() {
             setMostrar(false); 
           }}
           className="max-w-full"
-          size="md"
         >
           <div className="flex justify-between items-center w-full mb-2">
             <Label style={{ color: "var(--blue)", fontSize: 15, fontWeight: 500 }}>
