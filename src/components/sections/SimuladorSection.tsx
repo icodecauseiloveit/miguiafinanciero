@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 import { FadeIn } from "../ui/FadeIn";
-import { Slider, Button } from "@heroui/react";
+import { Slider, Button, Label } from "@heroui/react";
 import { motion } from "framer-motion";
 
 export function SimuladorSection({ innerRef, id }: { innerRef?: React.RefObject<HTMLElement | null>, id?: string }) {
@@ -121,17 +121,17 @@ function Simulador() {
           }}
           className="max-w-full"
         >
-          <div className="flex justify-between items-center mb-2">
-            <span style={{ color: "var(--blue)", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          <div className="flex justify-between items-center w-full mb-2">
+            <Label style={{ color: "var(--blue)", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.05em" }}>
               {label}
-            </span>
+            </Label>
             <Slider.Output style={{ color: "var(--blue)", fontWeight: 900, fontSize: 20, fontFamily: "var(--font-merriweather)" }}>
-              {format(value)}
+               {format(value)}
             </Slider.Output>
           </div>
           <Slider.Track className="bg-gray-100 h-2.5 rounded-full relative cursor-pointer">
             <Slider.Fill className="bg-[#1E3A5F] h-full absolute rounded-full" />
-            <Slider.Thumb className="w-6 h-6 bg-white border-[2.5px] border-[#1E3A5F] rounded-full shadow-lg z-20 -ml-3 flex items-center justify-center focus:outline-none hover:scale-110 transition-transform cursor-grab active:cursor-grabbing">
+            <Slider.Thumb className="w-6 h-6 bg-white border-[2.5px] border-[#1E3A5F] rounded-full shadow-lg z-20 flex items-center justify-center focus:outline-none hover:scale-110 transition-transform cursor-grab active:cursor-grabbing">
               <motion.div
                 animate={{ 
                   scale: [0.6, 0.9, 0.6],
