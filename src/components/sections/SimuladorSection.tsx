@@ -120,36 +120,19 @@ function Simulador() {
             setMostrar(false); 
           }}
           className="max-w-full"
+          size="md"
         >
           <div className="flex justify-between items-center w-full mb-2">
-            <Label style={{ color: "var(--blue)", fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            <Label style={{ color: "var(--blue)", fontSize: 15, fontWeight: 500 }}>
               {label}
             </Label>
-            <Slider.Output style={{ color: "var(--blue)", fontWeight: 900, fontSize: 20, fontFamily: "var(--font-merriweather)" }}>
+            <Slider.Output style={{ color: "var(--blue)", fontSize: 15, fontWeight: 500 }}>
                {format(value)}
             </Slider.Output>
           </div>
-          <Slider.Track className="bg-gray-100 h-2.5 rounded-full relative cursor-pointer">
-            <Slider.Fill className="bg-[#1E3A5F] h-full absolute rounded-full" />
-            <Slider.Thumb className="w-6 h-6 bg-white border-[2.5px] border-[#1E3A5F] rounded-full shadow-lg z-20 flex items-center justify-center focus:outline-none hover:scale-110 transition-transform cursor-grab active:cursor-grabbing">
-              <motion.div
-                animate={{ 
-                  scale: [0.6, 0.9, 0.6],
-                  opacity: [0.5, 0.9, 0.5]
-                }}
-                transition={{ 
-                  duration: 2, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '50%',
-                  background: 'var(--yellow)',
-                }}
-              />
-            </Slider.Thumb>
+          <Slider.Track>
+            <Slider.Fill className="bg-[#1E3A5F]" />
+            <Slider.Thumb className="bg-white border-2 border-[#1E3A5F]" />
           </Slider.Track>
         </Slider>
       </div>
