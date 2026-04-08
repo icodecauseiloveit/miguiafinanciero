@@ -253,8 +253,25 @@ export default function FormularioMGF() {
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
   const [contactData, setContactData] = useState({ nombre: "", whatsapp: "", ciudad: "", email: "" });
+  const [fileData, setFileData] = useState<{ name: string; base64: string } | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [score, setScore] = useState(0);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFileData({
+          name: file.name,
+          base64: reader.result as string,
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFileData(null);
+    }
+  };
 
   const goNext = () => {
     if (currentStep < TOTAL - 1) {
@@ -271,7 +288,8 @@ export default function FormularioMGF() {
         respuestas: finalAnswers,
         score: finalScore,
         temperatura: getTemperature(finalScore),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        documento: fileData ? fileData : undefined
       };
 
       // Enviar de forma segura (Server Action) para no exponer la URL en el navegador
@@ -589,6 +607,54 @@ export default function FormularioMGF() {
                         />
                       </div>
                     ))}
+                  </div>
+
+                  <div style={{ marginBottom: 32 }}>
+                    <label style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", display: "block", marginBottom: 8 }}>
+                      ADJUNTA TU ÚLTIMO EXTRACTO (OPCIONAL)
+                    </label>
+                    <div style={{ position: "relative" }}>
+                      <input
+                        type="file"
+                        accept=".pdf,image/*"
+                        onChange={handleFileChange}
+                        id="extractoFile"
+                        style={{ display: "none" }}
+                      />
+                      <label
+                        htmlFor="extractoFile"
+                        style={{
+                          display: "flex", alignItems: "center", gap: 10,
+                          padding: "16px 20px", borderRadius: 14,
+                          background: fileData ? "rgba(37,211,102,0.1)" : "rgba(255,255,255,0.05)",
+                          border: fileData ? "1px solid rgba(37,211,102,0.3)" : "1px dashed rgba(255,255,255,0.2)",
+                          color: fileData ? "#25D366" : "rgba(255,255,255,0.6)",
+                          cursor: "pointer", fontSize: 15, transition: "all 0.2s"
+                        }}
+                      >
+                        <span style={{ fontSize: 20 }}>{fileData ? "📄" : "📎"}</span>
+                        <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          {fileData ? fileData.name : "Toca aquí para subir tu extracto en PDF o Imagen (Opcional)"}
+                        </span>
+                      </label>
+                      {fileData && (
+                        <button
+                          onClick={() => {
+                            setFileData(null);
+                            const fileInput = document.getElementById("extractoFile") as HTMLInputElement;
+                            if (fileInput) fileInput.value = "";
+                          }}
+                          style={{
+                            position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)",
+                            background: "none", border: "none", color: "rgba(255,255,255,0.6)", cursor: "pointer",
+                            fontSize: 14, textDecoration: "underline", padding: "4px 8px"
+                          }}
+                        >
+                          Quitar
+                        </button>
+                      )}
+                    </div>
+                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, marginTop: 8 }}>Aceptamos PDF o Imágenes. Nos ahorra pedirte este documento más tarde.</p>
                   </div>
 
                   <button
