@@ -83,7 +83,7 @@ type Step = {
   question: string;
   description?: string;
   options?: string[];
-  fields?: { label: string; key: string; type: string; placeholder: string }[];
+  fields?: { label: string; key: string; type: string; placeholder: string; autoComplete?: string }[];
 };
 
 const steps: Step[] = [
@@ -223,10 +223,10 @@ const steps: Step[] = [
     question: "Identificación básica",
     description: "Estos datos son necesarios para validar tu identidad ante el banco.",
     fields: [
-      { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo" },
-      { label: "NÚMERO DE CÉDULA", key: "cedula", type: "text", placeholder: "Ej: 12345678" },
-      { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567" },
-      { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com" },
+      { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo", autoComplete: "name" },
+      { label: "NÚMERO DE CÉDULA", key: "cedula", type: "text", placeholder: "Ej: 12345678", autoComplete: "off" },
+      { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567", autoComplete: "tel" },
+      { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com", autoComplete: "email" },
     ]
   },
   {
@@ -237,9 +237,9 @@ const steps: Step[] = [
     question: "Cuéntanos de tu perfil financiero",
     description: "Esta información nos ayuda a evaluar tu capacidad real de ahorro.",
     fields: [
-      { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Medellín..." },
-      { label: "INGRESOS MENSUALES TOTALES", key: "ingresos", type: "text", placeholder: "Suma de todos tus ingresos" },
-      { label: "¿CUÁNTO PODRÍAS AUMENTAR TU CUOTA?", key: "aumento_cuota", type: "text", placeholder: "Ej: 300.000 o 500.000..." },
+      { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Medellín...", autoComplete: "address-level2" },
+      { label: "INGRESOS MENSUALES TOTALES", key: "ingresos", type: "text", placeholder: "Suma de todos tus ingresos", autoComplete: "off" },
+      { label: "¿CUÁNTO PODRÍAS AUMENTAR TU CUOTA?", key: "aumento_cuota", type: "text", placeholder: "Ej: 300.000 o 500.000...", autoComplete: "off" },
     ]
   },
   {
@@ -680,6 +680,9 @@ export default function FormularioMGF() {
                         </label>
                         <input
                           type={field.type}
+                          name={field.key}
+                          id={field.key}
+                          autoComplete={field.autoComplete}
                           placeholder={field.placeholder}
                           value={contactData[field.key as keyof typeof contactData]}
                           onChange={(e) => setContactData((prev) => ({ ...prev, [field.key]: e.target.value }))}
