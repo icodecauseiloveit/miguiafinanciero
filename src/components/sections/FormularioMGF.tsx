@@ -445,6 +445,10 @@ export default function FormularioMGF() {
           transition={{ duration: 0.5 }}
           style={{ maxWidth: 560, width: "100%", textAlign: "center" }}
         >
+          <div style={{ marginBottom: 40 }}>
+            <img src="/logo-mgf-dark.png" alt="MiGuíaFinanciero Logo" style={{ height: 48, margin: "0 auto" }} />
+          </div>
+
           <div style={{ marginBottom: 32, display: "flex", justifyContent: "center" }}>
             {temp === "CALIENTE" ? (
               <div style={{ background: "rgba(242, 183, 5, 0.15)", borderRadius: "50%", padding: 24 }}>
