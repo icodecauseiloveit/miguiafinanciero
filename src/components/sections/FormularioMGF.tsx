@@ -77,7 +77,7 @@ const OBJECION_SCORES: Record<string, number> = {
 
 type Step = {
   id: number;
-  type: "radio" | "multiselect" | "contact";
+  type: "radio" | "multiselect" | "contact" | "extract";
   section: string;
   key: string;
   question: string;
@@ -222,6 +222,14 @@ const steps: Step[] = [
     question: "Déjanos tus datos para enviarte el análisis personalizado",
     description: "En menos de 24 horas recibirás tu proyección de ahorro por WhatsApp.",
   },
+  {
+    id: 13,
+    type: "extract",
+    section: "Documentación",
+    key: "extracto",
+    question: "Sube tu extracto para iniciar",
+    description: "Para iniciar el estudio de tus alternativas de ahorro necesitamos el último extracto de tu crédito hipotecario. Súbelo aquí ahora.",
+  },
 ];
 
 const TOTAL = steps.length;
@@ -252,10 +260,41 @@ export default function FormularioMGF() {
   const [direction, setDirection] = useState(1);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
-  const [contactData, setContactData] = useState({ nombre: "", whatsapp: "", ciudad: "", email: "" });
+  const [contactData, setContactData] = useState({ nombre: "", cedula: "", whatsapp: "", ciudad: "", email: "" });
   const [fileData, setFileData] = useState<{ name: string; base64: string } | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+  // Timer logic
+  useEffect(() => {
+    const timerDuration = 60 * 60 * 1000; // 60 minutes
+    const savedEndTime = localStorage.getItem("mgf_timer_end");
+    let endTime: number;
+
+    if (savedEndTime) {
+      endTime = parseInt(savedEndTime, 10);
+    } else {
+      endTime = Date.now() + timerDuration;
+      localStorage.setItem("mgf_timer_end", endTime.toString());
+    }
+
+    const updateTimer = () => {
+      const now = Date.now();
+      const remaining = Math.max(0, endTime - now);
+      setTimeLeft(Math.floor(remaining / 1000));
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -321,9 +360,11 @@ export default function FormularioMGF() {
     const phone = "573025261619";
     const temp = getTemperature(score);
     const nombre = contactData.nombre || "Prospecto";
+    const cedula = contactData.cedula || "—";
     const ciudad = contactData.ciudad || "—";
     let msg = `Hola MiGuíaFinanciero, soy *${nombre}*. Completé el formulario de análisis hipotecario.\n\n`;
     msg += `📋 *Mis datos:*\n`;
+    msg += `🆔 Cédula: ${cedula}\n`;
     msg += `📱 WhatsApp: ${contactData.whatsapp || "—"}\n`;
     msg += `🏙️ Ciudad: ${ciudad}\n`;
     msg += `📧 Email: ${contactData.email || "—"}\n\n`;
@@ -414,7 +455,12 @@ export default function FormularioMGF() {
   };
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email.trim());
-  const contactValid = contactData.nombre.trim().length > 1 && contactData.whatsapp.trim().length > 7 && contactData.ciudad.trim().length > 2 && emailValid;
+  const contactValid = 
+    contactData.nombre.trim().length > 1 && 
+    contactData.cedula.trim().length > 5 && 
+    contactData.whatsapp.trim().length > 7 && 
+    contactData.ciudad.trim().length > 2 && 
+    emailValid;
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", display: "flex", flexDirection: "column", fontFamily: "var(--font-dm-sans), sans-serif" }}>
@@ -583,6 +629,7 @@ export default function FormularioMGF() {
                   <div style={{ display: "flex", flexDirection: "column", gap: 24, marginBottom: 32 }}>
                     {[
                       { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo" },
+                      { label: "NÚMERO DE CÉDULA", key: "cedula", type: "text", placeholder: "Ej: 12345678" },
                       { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567" },
                       { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Medellín..." },
                       { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com" },
@@ -609,9 +656,59 @@ export default function FormularioMGF() {
                     ))}
                   </div>
 
-                  <div style={{ marginBottom: 32 }}>
-                    <label style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", display: "block", marginBottom: 8 }}>
-                      ADJUNTA TU ÚLTIMO EXTRACTO (OPCIONAL)
+                  <button
+                    onClick={goNext}
+                    disabled={!contactValid}
+                    style={{
+                      background: contactValid ? "#F2B705" : "rgba(255,255,255,0.1)",
+                      color: contactValid ? "#0d1117" : "rgba(255,255,255,0.3)",
+                      border: "none", borderRadius: 14, padding: "18px 40px",
+                      fontSize: 17, fontWeight: 800, cursor: contactValid ? "pointer" : "not-allowed",
+                      transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
+                    }}
+                  >
+                    Siguiente paso <Send size={18} />
+                  </button>
+                </div>
+              )}
+
+              {/* ── EXTRACT STEP ── */}
+              {step.type === "extract" && (
+                <div>
+                  <div style={{ marginBottom: 28 }}>
+                    <div style={{ display: "inline-block", background: "rgba(242,183,5,0.12)", border: "1px solid rgba(242,183,5,0.2)", borderRadius: 8, padding: "4px 12px", marginBottom: 16 }}>
+                      <span style={{ color: "#F2B705", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>Carga tu documento</span>
+                    </div>
+                    <h2 style={{ color: "white", fontSize: "clamp(24px, 3.5vw, 38px)", fontWeight: 900, lineHeight: 1.25, marginBottom: 12 }}>
+                      {step.question}
+                    </h2>
+                    <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 17, lineHeight: 1.5, maxWidth: 580 }}>
+                      {step.description}
+                    </p>
+                  </div>
+
+                  <div style={{ 
+                    background: "rgba(242, 183, 5, 0.05)", 
+                    border: "1px solid rgba(242, 183, 5, 0.2)", 
+                    borderRadius: 20, 
+                    padding: "24px", 
+                    marginBottom: 32,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 16
+                  }}>
+                    <div style={{ color: "#F2B705", fontSize: 32 }}>⏱️</div>
+                    <div>
+                      <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: 700, letterSpacing: 1, margin: 0 }}>TIEMPO RESTANTE PARA TU ESTUDIO</p>
+                      <p style={{ color: "#F2B705", fontSize: 32, fontWeight: 900, margin: "4px 0 0 0", fontFamily: "monospace" }}>
+                        {timeLeft !== null ? formatTime(timeLeft) : "60:00"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: 40 }}>
+                    <label style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", display: "block", marginBottom: 12 }}>
+                      PDF O IMAGEN DEL EXTRACTO
                     </label>
                     <div style={{ position: "relative" }}>
                       <input
@@ -624,17 +721,17 @@ export default function FormularioMGF() {
                       <label
                         htmlFor="extractoFile"
                         style={{
-                          display: "flex", alignItems: "center", gap: 10,
-                          padding: "16px 20px", borderRadius: 14,
-                          background: fileData ? "rgba(37,211,102,0.1)" : "rgba(255,255,255,0.05)",
-                          border: fileData ? "1px solid rgba(37,211,102,0.3)" : "1px dashed rgba(255,255,255,0.2)",
+                          display: "flex", alignItems: "center", gap: 12,
+                          padding: "24px", borderRadius: 16,
+                          background: fileData ? "rgba(37,211,102,0.1)" : "rgba(255,255,255,0.03)",
+                          border: fileData ? "2px solid rgba(37,211,102,0.4)" : "2px dashed rgba(255,255,255,0.15)",
                           color: fileData ? "#25D366" : "rgba(255,255,255,0.6)",
-                          cursor: "pointer", fontSize: 15, transition: "all 0.2s"
+                          cursor: "pointer", fontSize: 16, transition: "all 0.2s"
                         }}
                       >
-                        <span style={{ fontSize: 20 }}>{fileData ? "📄" : "📎"}</span>
-                        <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                          {fileData ? fileData.name : "Toca aquí para subir tu extracto en PDF o Imagen (Opcional)"}
+                        <span style={{ fontSize: 24 }}>{fileData ? "📄" : "📎"}</span>
+                        <span style={{ flex: 1, fontWeight: 600 }}>
+                          {fileData ? fileData.name : "Toca para seleccionar tu archivo"}
                         </span>
                       </label>
                       {fileData && (
@@ -646,29 +743,25 @@ export default function FormularioMGF() {
                           }}
                           style={{
                             position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)",
-                            background: "none", border: "none", color: "rgba(255,255,255,0.6)", cursor: "pointer",
-                            fontSize: 14, textDecoration: "underline", padding: "4px 8px"
+                            background: "rgba(255,255,255,0.1)", border: "none", color: "white", cursor: "pointer",
+                            fontSize: 12, padding: "8px 12px", borderRadius: 8
                           }}
                         >
-                          Quitar
+                          Cambiar
                         </button>
                       )}
                     </div>
-                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, marginTop: 8 }}>Aceptamos PDF o Imágenes. Nos ahorra pedirte este documento más tarde.</p>
                   </div>
 
                   <button
                     onClick={goNext}
-                    disabled={!contactValid}
                     style={{
-                      background: contactValid ? "#F2B705" : "rgba(255,255,255,0.1)",
-                      color: contactValid ? "#0d1117" : "rgba(255,255,255,0.3)",
-                      border: "none", borderRadius: 14, padding: "18px 40px",
-                      fontSize: 17, fontWeight: 800, cursor: contactValid ? "pointer" : "not-allowed",
-                      transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
+                      background: "#F2B705", color: "#0d1117", border: "none",
+                      borderRadius: 14, padding: "20px 48px", fontSize: 18, fontWeight: 900,
+                      cursor: "pointer", transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
                     }}
                   >
-                    Enviar y recibir mi análisis <Send size={18} />
+                    Finalizar análisis <Send size={20} />
                   </button>
                 </div>
               )}
