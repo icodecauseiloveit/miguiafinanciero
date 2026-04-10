@@ -465,17 +465,7 @@ export default function FormularioMGF() {
             Ya tenemos todo lo que necesitamos para preparar tu caso. Muy pronto uno de nuestros expertos se pondrá en contacto contigo.
           </p>
 
-          <div style={{ background: "rgba(242,183,5,0.08)", border: "1px solid rgba(242,183,5,0.2)", borderRadius: 20, padding: "24px 28px", marginBottom: 32, textAlign: "left" }}>
-            <h3 style={{ color: "#F2B705", fontSize: 17, marginBottom: 12, fontWeight: 800, display: "flex", alignItems: "center", gap: 8 }}>
-              ⚠️ Siguiente paso importante
-            </h3>
-            <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 16, lineHeight: 1.6, margin: "0 0 12px 0" }}>
-              Por favor <strong>descarga el último extracto de tu crédito hipotecario</strong> y tenlo listo en PDF para cuando te contactemos.
-            </p>
-            <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 16, lineHeight: 1.6, margin: 0 }}>
-              <strong style={{ color: "#F2B705" }}>Importante:</strong> Es indispensable que el crédito se encuentre al día.
-            </p>
-          </div>
+
 
           <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, marginBottom: 20 }}>
             Todo esto sin costo y sin compromiso. <strong style={{ color: "rgba(255,255,255,0.6)" }}>Solo cobramos si tu banco confirma el beneficio aplicado.</strong>
