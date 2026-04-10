@@ -27,6 +27,7 @@ export async function submitLeadToN8n(payload: any) {
 }
 export async function submitExtractToN8n(payload: any) {
   const url = process.env.N8N_EXTRACT_WEBHOOK_URL;
+  console.log("Submitting extract to:", url ? url.substring(0, 30) + "..." : "undefined");
   
   if (!url) {
     console.error("No N8N_EXTRACT_WEBHOOK_URL configured in .env");
@@ -41,9 +42,11 @@ export async function submitExtractToN8n(payload: any) {
     });
 
     if (!res.ok) {
+      console.error("Webhook (Extract) Error:", res.status, await res.text());
       throw new Error(`Webhook (Extract) responded with status: ${res.status}`);
     }
 
+    console.log("Extract submitted successfully to n8n");
     return { success: true };
   } catch (error) {
     console.error("Failed to submit extract to webhook:", error);

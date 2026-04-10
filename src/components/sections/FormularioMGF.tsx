@@ -83,6 +83,7 @@ type Step = {
   question: string;
   description?: string;
   options?: string[];
+  fields?: { label: string; key: string; type: string; placeholder: string }[];
 };
 
 const steps: Step[] = [
@@ -217,10 +218,29 @@ const steps: Step[] = [
   {
     id: 11,
     type: "contact",
-    section: "Cuéntanos quién eres",
-    key: "contacto",
-    question: "Déjanos tus datos para enviarte el análisis personalizado",
-    description: "En menos de 24 horas recibirás tu proyección de ahorro por WhatsApp.",
+    section: "Identificación",
+    key: "contacto_1",
+    question: "Identificación básica",
+    description: "Estos datos son necesarios para validar tu identidad ante el banco.",
+    fields: [
+      { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo" },
+      { label: "NÚMERO DE CÉDULA", key: "cedula", type: "text", placeholder: "Ej: 12345678" },
+      { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567" },
+      { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com" },
+    ]
+  },
+  {
+    id: 12,
+    type: "contact",
+    section: "Perfil Financiero",
+    key: "contacto_2",
+    question: "Cuéntanos de tu perfil financiero",
+    description: "Esta información nos ayuda a evaluar tu capacidad real de ahorro.",
+    fields: [
+      { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Medellín..." },
+      { label: "INGRESOS MENSUALES TOTALES", key: "ingresos", type: "text", placeholder: "Suma de todos tus ingresos" },
+      { label: "¿CUÁNTO PODRÍAS AUMENTAR TU CUOTA?", key: "aumento_cuota", type: "text", placeholder: "Ej: 300.000 o 500.000..." },
+    ]
   },
   {
     id: 13,
@@ -260,7 +280,15 @@ export default function FormularioMGF() {
   const [direction, setDirection] = useState(1);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
-  const [contactData, setContactData] = useState({ nombre: "", cedula: "", whatsapp: "", ciudad: "", email: "" });
+  const [contactData, setContactData] = useState({ 
+    nombre: "", 
+    cedula: "", 
+    whatsapp: "", 
+    ciudad: "", 
+    email: "",
+    ingresos: "",
+    aumento_cuota: "" 
+  });
   const [fileData, setFileData] = useState<{ name: string; base64: string } | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [score, setScore] = useState(0);
@@ -316,8 +344,8 @@ export default function FormularioMGF() {
     const isLastStep = currentStep === TOTAL - 1;
     const currentStepObj = steps[currentStep];
 
-    // ── Submit Lead data after contact step ──
-    if (currentStepObj.type === "contact") {
+    // ── Submit Lead data after the SECOND financial contact step ──
+    if (currentStepObj.key === "contacto_2") {
       const finalAnswers = { ...answers, objeciones: multiSelected, ...contactData };
       const finalScore = calcScore(finalAnswers);
       setScore(finalScore);
@@ -386,7 +414,9 @@ export default function FormularioMGF() {
     msg += `🆔 Cédula: ${cedula}\n`;
     msg += `📱 WhatsApp: ${contactData.whatsapp || "—"}\n`;
     msg += `🏙️ Ciudad: ${ciudad}\n`;
-    msg += `📧 Email: ${contactData.email || "—"}\n\n`;
+    msg += `📧 Email: ${contactData.email || "—"}\n`;
+    msg += `💰 Ingresos: ${contactData.ingresos || "—"}\n`;
+    msg += `📈 Aumento cuota: ${contactData.aumento_cuota || "—"}\n\n`;
     msg += `🏦 *Mi crédito:*\n`;
     msg += `Banco: ${answers["banco"] || "—"}\n`;
     msg += `Tipo: ${answers["tipo_credito"] || "—"}\n`;
@@ -474,12 +504,19 @@ export default function FormularioMGF() {
   };
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email.trim());
-  const contactValid = 
+  
+  const step1Valid = 
     contactData.nombre.trim().length > 1 && 
     contactData.cedula.trim().length > 5 && 
     contactData.whatsapp.trim().length > 7 && 
-    contactData.ciudad.trim().length > 2 && 
     emailValid;
+
+  const step2Valid = 
+    contactData.ciudad.trim().length > 2 &&
+    contactData.ingresos.trim().length > 0 &&
+    contactData.aumento_cuota.trim().length > 0;
+
+  const contactValid = step.key === "contacto_1" ? step1Valid : step2Valid;
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", display: "flex", flexDirection: "column", fontFamily: "var(--font-dm-sans), sans-serif" }}>
@@ -646,13 +683,7 @@ export default function FormularioMGF() {
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: 24, marginBottom: 32 }}>
-                    {[
-                      { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo" },
-                      { label: "NÚMERO DE CÉDULA", key: "cedula", type: "text", placeholder: "Ej: 12345678" },
-                      { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567" },
-                      { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Medellín..." },
-                      { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com" },
-                    ].map((field) => (
+                    {step.fields?.map((field) => (
                       <div key={field.key}>
                         <label style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", display: "block", marginBottom: 8 }}>
                           {field.label}
