@@ -313,28 +313,47 @@ export default function FormularioMGF() {
   };
 
   const goNext = () => {
-    if (currentStep < TOTAL - 1) {
-      setDirection(1);
-      setCurrentStep((s) => s + 1);
-    } else {
+    const isLastStep = currentStep === TOTAL - 1;
+    const currentStepObj = steps[currentStep];
+
+    // ── Submit Lead data after contact step ──
+    if (currentStepObj.type === "contact") {
       const finalAnswers = { ...answers, objeciones: multiSelected, ...contactData };
       const finalScore = calcScore(finalAnswers);
       setScore(finalScore);
-      setIsCompleted(true);
 
-      // Payload para n8n
-      const payload = {
+      const leadPayload = {
         respuestas: finalAnswers,
         score: finalScore,
         temperatura: getTemperature(finalScore),
-        timestamp: new Date().toISOString(),
-        documento: fileData ? fileData : undefined
+        timestamp: new Date().toISOString()
       };
 
-      // Enviar de forma segura (Server Action) para no exponer la URL en el navegador
       import("@/app/actions").then(({ submitLeadToN8n }) => {
-        submitLeadToN8n(payload);
+        submitLeadToN8n(leadPayload);
       });
+    }
+
+    if (!isLastStep) {
+      setDirection(1);
+      setCurrentStep((s) => s + 1);
+    } else {
+      // ── Submit Extract data after extract step ──
+      if (currentStepObj.type === "extract") {
+        const extractPayload = {
+          email: contactData.email,
+          cedula: contactData.cedula,
+          nombre: contactData.nombre,
+          whatsapp: contactData.whatsapp,
+          documento: fileData ? fileData : undefined,
+          timestamp: new Date().toISOString()
+        };
+
+        import("@/app/actions").then(({ submitExtractToN8n }) => {
+          submitExtractToN8n(extractPayload);
+        });
+      }
+      setIsCompleted(true);
     }
   };
 
