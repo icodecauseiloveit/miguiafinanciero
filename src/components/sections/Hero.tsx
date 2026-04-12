@@ -10,7 +10,7 @@ export function Hero({ onContactClick, onSimClick }: HeroProps) {
     <section style={{
       minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center",
       padding: "130px 28px 90px", position: "relative", overflow: "hidden",
-      backgroundImage: `linear-gradient(rgba(17, 33, 102, 0.80), rgba(17, 33, 102, 0.80)), url('https://picsum.photos/1920/1080')`,
+      backgroundImage: `linear-gradient(rgba(17, 33, 102, 1.0), rgba(17, 33, 102, 1.0)), url('https://picsum.photos/1920/1080')`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundAttachment: "fixed",
