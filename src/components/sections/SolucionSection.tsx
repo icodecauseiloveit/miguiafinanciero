@@ -5,7 +5,7 @@ import { Section, SectionHeading, SectionLabel, Highlight } from "../ui/Section"
 export function SolucionSection({ id }: { id?: string }) {
   const steps = [
     { s: "1", t: "Análisis gratis", d: "Estudiamos tu crédito y calculamos cuánto puedes ahorrarte. Sin costo." },
-    { s: "2", t: "Plan de acción", d: "Diseñamos la reestructuración óptima basada en la Ley 546." },
+    { s: "2", t: "Plan de acción", d: "Diseñamos tres propuestas de ahorro y tu elijes la que más se adapta a tu realidad financiera." },
     { s: "3", t: "Gestión con el banco", d: "Nos encargamos del trámite. Hablamos el idioma técnico por ti." },
     { s: "4", t: "Resultados reales", d: "Ves cada mes en tu extracto cómo baja el saldo y se acorta el plazo." },
   ];
