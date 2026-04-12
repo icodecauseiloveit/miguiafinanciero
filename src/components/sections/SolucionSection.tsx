@@ -18,7 +18,7 @@ export function SolucionSection({ id }: { id?: string }) {
           La <Highlight>Ley 546</Highlight> está de tu lado.<br />Nosotros también.
         </SectionHeading>
         <p style={{ color: "var(--gray)", fontSize: 16, textAlign: "center", maxWidth: 580, margin: "0 auto 56px", lineHeight: 1.75 }}>
-          Te representamos ante tu banco para reestructurar tu crédito. Con un aumento controlado de tu cuota, dirigimos cada peso a capital. Menos años, menos intereses, más libertad.
+          Te representamos ante tu banco para optimizar tu crédito, así con un incremento inteligente de tu cuota, dirigimos cada peso de este a capital. Menos años, menos intereses, más libertad.
         </p>
       </FadeIn>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
