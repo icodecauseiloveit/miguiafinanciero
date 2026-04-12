@@ -668,7 +668,7 @@ export default function FormularioMGF() {
                 <div>
                   <div style={{ marginBottom: 28 }}>
                     <div style={{ display: "inline-block", background: "rgba(242,183,5,0.12)", border: "1px solid rgba(242,183,5,0.2)", borderRadius: 8, padding: "4px 12px", marginBottom: 16 }}>
-                      <span style={{ color: "#F2B705", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>ÚLTIMO PASO</span>
+                      <span style={{ color: "#F2B705", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>PASO {currentStep + 1} DE {TOTAL}</span>
                     </div>
                     <h2 style={{ color: "white", fontSize: "clamp(24px, 3.5vw, 38px)", fontWeight: 900, lineHeight: 1.25, marginBottom: 12 }}>
                       {step.question}
@@ -724,7 +724,7 @@ export default function FormularioMGF() {
                 <div>
                   <div style={{ marginBottom: 28 }}>
                     <div style={{ display: "inline-block", background: "rgba(242,183,5,0.12)", border: "1px solid rgba(242,183,5,0.2)", borderRadius: 8, padding: "4px 12px", marginBottom: 16 }}>
-                      <span style={{ color: "#F2B705", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>Carga tu documento</span>
+                      <span style={{ color: "#F2B705", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>PASO {currentStep + 1} DE {TOTAL}</span>
                     </div>
                     <h2 style={{ color: "white", fontSize: "clamp(24px, 3.5vw, 38px)", fontWeight: 900, lineHeight: 1.25, marginBottom: 12 }}>
                       {step.question}
