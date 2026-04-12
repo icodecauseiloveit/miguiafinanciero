@@ -139,11 +139,14 @@ function Simulador() {
   };
 
   return (
-    <div style={{
-      background: "var(--white)", borderRadius: 28, padding: "44px 40px",
-      border: `1px solid var(--gray-border)`, maxWidth: 640, margin: "0 auto",
-      boxShadow: `0 20px 60px rgba(30,58,95,0.07), 0 1px 3px rgba(30,58,95,0.04)`,
-    }}>
+    <div 
+      className="p-6 md:p-11"
+      style={{
+        background: "var(--white)", borderRadius: 28,
+        border: `1px solid var(--gray-border)`, maxWidth: 640, margin: "0 auto",
+        boxShadow: `0 20px 60px rgba(30,58,95,0.07), 0 1px 3px rgba(30,58,95,0.04)`,
+      }}
+    >
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
         <div style={{
           width: 48, height: 48, borderRadius: 14, background: `linear-gradient(135deg, var(--yellow), var(--yellow-muted))`,
@@ -157,7 +160,7 @@ function Simulador() {
       </div>
 
       {/* ── Selector UVR / PESOS ── */}
-      <div style={{ display: "flex", gap: 10, marginBottom: 28 }}>
+      <div className="flex flex-col sm:flex-row gap-2.5 mb-7">
         {([
           { key: "UVR" as const, label: "Crédito en UVR", icon: "📈", desc: "Cuota variable con inflación" },
           { key: "PESOS" as const, label: "Crédito en Pesos", icon: "💵", desc: "Cuota fija, tasa fija" },
@@ -193,7 +196,7 @@ function Simulador() {
         border: `1px solid ${modo === "UVR" ? "rgba(214,64,69,0.1)" : "rgba(30,58,95,0.08)"}`,
       }}>
         <p style={{ color: modo === "UVR" ? "var(--red)" : "var(--blue-mid)", fontSize: 12, margin: 0, fontWeight: 600 }}>
-          {modo === "UVR" ? "⚠️" : "ℹ️"} Tasa efectiva: {R.tasaLabel}
+          {modo === "UVR" ? "⚠️" : "ℹ️"} {R.tasaLabel}
         </p>
         {modo === "UVR" && (
           <p style={{ color: "var(--gray)", fontSize: 11, margin: "4px 0 0", lineHeight: 1.5 }}>
@@ -229,12 +232,12 @@ function Simulador() {
             background: "var(--blue-light)", border: `1px solid rgba(30,58,95,0.06)`,
             display: "flex", justifyContent: "space-between", alignItems: "center",
           }}>
-            <span style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600 }}>Tu cuota mensual actual estimada</span>
+            <span style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600 }}>Cuota mensual estimada</span>
             <span style={{ color: "var(--blue)", fontSize: 18, fontWeight: 900, fontFamily: "var(--font-merriweather)" }}>{fmtCuota(R.cuota)}</span>
           </div>
 
           {/* Comparativa */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { label: "Sin reestructurar", val: fmt(R.total), sub: `en ${plazo} años`, sub2: `Intereses: ${fmt(R.intereses)}`, color: "var(--red)", bg: "var(--red-soft)", border: "rgba(214,64,69,0.12)" },
               { label: "Con reestructuración", val: fmt(R.totalNew), sub: `en ~${R.plazoNew} años`, sub2: `Cuota nueva: ${fmtCuota(R.cuotaNew)}/mes`, color: "var(--green-dark)", bg: "var(--green-soft)", border: "rgba(37,211,102,0.15)" },
@@ -244,7 +247,7 @@ function Simulador() {
                 border: `1.5px solid ${c.border}`,
               }}>
                 <p style={{ color: c.color, fontSize: 10, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 2.5, fontWeight: 800 }}>{c.label}</p>
-                <p style={{ color: c.color, fontSize: 30, fontWeight: 900, margin: "0 0 4px", fontFamily: "var(--font-merriweather)" }}>{c.val}</p>
+                <p style={{ color: c.color, fontSize: "clamp(24px, 4vw, 30px)", fontWeight: 900, margin: "0 0 4px", fontFamily: "var(--font-merriweather)" }}>{c.val}</p>
                 <p style={{ color: "var(--gray)", fontSize: 12, margin: "0 0 4px" }}>{c.sub}</p>
                 <p style={{ color: "var(--gray-light)", fontSize: 11, margin: 0 }}>{c.sub2}</p>
               </div>
