@@ -6,7 +6,7 @@ export function ProblemSection({ id }: { id?: string }) {
   const problems = [
     { icon: "📈", title: "Has pagado millones", desc: "Solo en intereses has entregado fortunas al banco y tu deuda no baja." },
     { icon: "💸", title: "Te mienten con el FRECH", desc: "Los bancos te mienten cuando dicen que perderás el subsidio FRECH si pagas de manera anticipada. Es tu derecho y puedes mantenerlo." },
-    { icon: "🔒", title: "No sabes que hay SALIDA", desc: "La Ley 546 te da 10+ derechos que la mayoría desconoce. El banco no tiene obligación de explicártelos." },
+    { icon: "🛑", title: "Abonos mal aplicados", desc: "Si pagas adelantado, el banco suele abonar a cuotas futuras pero NO impacta el capital. Sigues pagando los mismos intereses por años." },
   ];
 
   return (
