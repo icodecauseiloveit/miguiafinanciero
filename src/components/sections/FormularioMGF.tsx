@@ -224,7 +224,6 @@ const steps: Step[] = [
     description: "Estos datos son necesarios para validar tu identidad ante el banco.",
     fields: [
       { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo", autoComplete: "name" },
-      { label: "NÚMERO DE CÉDULA", key: "cedula", type: "text", placeholder: "Ej: 12345678", autoComplete: "off" },
       { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567", autoComplete: "tel" },
       { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com", autoComplete: "email" },
     ]
@@ -237,6 +236,7 @@ const steps: Step[] = [
     question: "Cuéntanos de tu perfil financiero",
     description: "Esta información nos ayuda a evaluar tu capacidad real de ahorro.",
     fields: [
+      { label: "NÚMERO DE CÉDULA", key: "cedula", type: "text", placeholder: "Ej: 12345678", autoComplete: "off" },
       { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Medellín...", autoComplete: "address-level2" },
       { label: "INGRESOS MENSUALES TOTALES", key: "ingresos", type: "text", placeholder: "Suma de todos tus ingresos", autoComplete: "off" },
       { label: "¿CUÁNTO PODRÍAS AUMENTAR TU CUOTA?", key: "aumento_cuota", type: "text", placeholder: "Ej: 300.000 o 500.000...", autoComplete: "off" },
@@ -501,11 +501,11 @@ export default function FormularioMGF() {
   
   const step1Valid = 
     contactData.nombre.trim().length > 1 && 
-    contactData.cedula.trim().length > 5 && 
     contactData.whatsapp.trim().length > 7 && 
     emailValid;
 
   const step2Valid = 
+    contactData.cedula.trim().length > 5 &&
     contactData.ciudad.trim().length > 2 &&
     contactData.ingresos.trim().length > 0 &&
     contactData.aumento_cuota.trim().length > 0;
