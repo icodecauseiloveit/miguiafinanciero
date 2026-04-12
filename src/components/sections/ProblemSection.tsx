@@ -23,7 +23,7 @@ export function ProblemSection({ id }: { id?: string }) {
           <FadeIn key={i} delay={i * 0.1}>
             <div style={{
               background: "var(--white)", borderRadius: 22, padding: 32,
-              border: `1.5px solid var(--gray-border)`, height: "100%",
+              border: `1.5px solid var(--red)`, height: "100%",
               boxShadow: "0 4px 20px rgba(30,58,95,0.04)",
               transition: "all 0.35s cubic-bezier(.22,1,.36,1)",
               cursor: "default",
