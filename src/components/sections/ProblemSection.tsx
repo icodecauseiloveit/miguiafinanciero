@@ -4,7 +4,7 @@ import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 
 export function ProblemSection({ id }: { id?: string }) {
   const problems = [
-    { icon: "📈", title: "Tu deuda CRECE", desc: "En UVR, el saldo se ajusta por inflación. Aunque pagues, la deuda puede ser MAYOR que el día que firmaste." },
+    { icon: "📈", title: "Has pagado millones", desc: "Solo en intereses has entregado fortunas al banco y tu deuda no baja." },
     { icon: "💸", title: "Pagas el TRIPLE", desc: "Un crédito de $170M a 30 años puede costar más de $500M. La diferencia son intereses para el banco." },
     { icon: "🔒", title: "No sabes que hay SALIDA", desc: "La Ley 546 te da 10+ derechos que la mayoría desconoce. El banco no tiene obligación de explicártelos." },
   ];
