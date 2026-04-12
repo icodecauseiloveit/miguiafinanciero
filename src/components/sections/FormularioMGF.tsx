@@ -533,12 +533,7 @@ export default function FormularioMGF() {
         </a>
       </div>
 
-      {/* Section Label */}
-      <div style={{ position: "fixed", top: 14, right: 24, zIndex: 50 }}>
-        <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}>
-          {step.section}
-        </span>
-      </div>
+
 
       {/* Main Content */}
       <div style={{ flexGrow: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px 40px" }}>
