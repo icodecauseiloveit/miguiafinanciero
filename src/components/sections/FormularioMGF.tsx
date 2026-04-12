@@ -344,8 +344,8 @@ export default function FormularioMGF() {
     const isLastStep = currentStep === TOTAL - 1;
     const currentStepObj = steps[currentStep];
 
-    // ── Submit Lead data after the SECOND financial contact step ──
-    if (currentStepObj.key === "contacto_2") {
+    // ── Submit Lead data after the FIRST basic identification step ──
+    if (currentStepObj.key === "contacto_1") {
       const finalAnswers = { ...answers, objeciones: multiSelected, ...contactData };
       const finalScore = calcScore(finalAnswers);
       setScore(finalScore);
@@ -373,6 +373,9 @@ export default function FormularioMGF() {
           cedula: contactData.cedula,
           nombre: contactData.nombre,
           whatsapp: contactData.whatsapp,
+          ciudad: contactData.ciudad,
+          ingresos: contactData.ingresos,
+          aumento_cuota: contactData.aumento_cuota,
           documento: fileData ? fileData : undefined,
           timestamp: new Date().toISOString()
         };
