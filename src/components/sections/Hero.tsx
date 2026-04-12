@@ -51,7 +51,7 @@ export function Hero({ onContactClick, onSimClick }: HeroProps) {
           textShadow: "0 1px 4px rgba(0,0,0,0.2)",
         }}>
           Te representamos ante tu entidad financiera para hacer valer{" "}
-          <strong style={{ color: "var(--yellow)", fontWeight: 800 }}>la Ley 546 de 1999</strong> y reestructurar tu crédito hipotecario.
+          <strong style={{ color: "var(--yellow)", fontWeight: 800 }}>la Ley 546 de 1999</strong> y poder hacer pagos anticipados sin penalidad. 
           Paga tu casa en años, no en décadas.
         </p>
 
