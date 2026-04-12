@@ -33,19 +33,19 @@ export function Hero({ onContactClick, onSimClick }: HeroProps) {
 
         <h1 style={{
           fontFamily: "var(--font-merriweather)",
-          fontSize: "clamp(36px, 5.8vw, 66px)", fontWeight: 900,
-          lineHeight: 1.08, margin: "0 0 28px", color: "var(--white)",
+          fontSize: "clamp(32px, 5.2vw, 60px)", fontWeight: 900,
+          lineHeight: 1.15, margin: "0 0 28px", color: "var(--white)",
           animation: "fadeUp 0.6s ease",
           textShadow: "0 2px 10px rgba(0,0,0,0.3)",
         }}>
-          Deja de{" "}
+          La mayoría paga el{" "}
           <span style={{ position: "relative", display: "inline-block" }}>
-            <span style={{ color: "var(--yellow)" }}>regalarle</span>
+            <span style={{ color: "var(--yellow)" }}>doble</span>
             <svg style={{ position: "absolute", bottom: -5, left: -2, width: "104%", height: 12 }} viewBox="0 0 200 12" preserveAspectRatio="none">
               <path d="M2 8 Q50 2 100 7 Q150 12 198 5" fill="none" stroke="var(--white)" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
             </svg>
           </span>{" "}
-          millones<br />al banco
+          en su crédito de vivienda…<br />tú puedes evitarlo
         </h1>
 
         <p style={{
