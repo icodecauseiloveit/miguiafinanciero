@@ -16,6 +16,11 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: "Mi Guía Financiero | Paga tu casa en años, no en décadas",
   description: "Te representamos ante tu entidad financiera para hacer valer la Ley 546 de 1999 y reestructurar tu crédito hipotecario.",
+  verification: {
+    other: {
+      "facebook-domain-verification": ["oaxfamhe1k4kci3donh4smxief0u5b"],
+    },
+  },
 };
 
 import { Providers } from "./providers";
