@@ -454,20 +454,20 @@ export default function FormularioMGF() {
             </h2>
 
             <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 18, marginBottom: 32, lineHeight: 1.6 }}>
-              Lo más pronto posible un asesor se comunicará con usted para presentarle una propuesta personalizada.
+              Lo más pronto posible un asesor se comunicará con usted para <strong style={{ color: "white" }}>validar su información</strong>.
             </p>
 
             <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(242,183,5,0.3), transparent)", margin: "0 auto 32px", width: "80%" }} />
 
             <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
-              Debe preparar su <span style={{ color: "#F2B705" }}>último extracto</span> para que se lo facilite al consultor e iniciar su camino hacia pagar su casa{" "}
+              El consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera. Para eso, tenga listo su <span style={{ color: "#F2B705" }}>último extracto</span> para que lo comparta durante la llamada y así iniciar su camino hacia pagar su casa{" "}
               <span style={{ background: "linear-gradient(120deg, #F2B705, #D9A504)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.1em" }}>
                 más rápido y ahorrando millones en intereses.
               </span>
             </p>
 
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, fontWeight: 800, margin: 0 }}>
-              ¡Hasta entonces!
+              ¡No pierda un día más! Hasta entonces.
             </p>
           </div>
 
