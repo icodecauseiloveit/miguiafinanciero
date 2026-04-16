@@ -444,43 +444,36 @@ export default function FormularioMGF() {
           transition={{ duration: 0.5 }}
           style={{ maxWidth: 560, width: "100%", textAlign: "center" }}
         >
-          <div style={{ marginBottom: 40 }}>
-            <img src="/logo-mgf-dark.png" alt="MiGuíaFinanciero Logo" style={{ height: 48, margin: "0 auto" }} />
+          <div style={{ marginBottom: 48 }}>
+            <img src="/logo-mgf-dark.png" alt="MiGuíaFinanciero Logo" style={{ height: 60, margin: "0 auto" }} />
           </div>
 
-          <div style={{ marginBottom: 32, display: "flex", justifyContent: "center" }}>
-            {temp === "CALIENTE" ? (
-              <div style={{ background: "rgba(242, 183, 5, 0.15)", borderRadius: "50%", padding: 24 }}>
-                <Smile size={56} color="#F2B705" />
-              </div>
-            ) : (
-              <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: "50%", padding: 24 }}>
-                <CheckCheck size={56} color="white" />
-              </div>
-            )}
+          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, padding: "40px 32px", textAlign: "center", boxShadow: "0 20px 40px rgba(0,0,0,0.2)" }}>
+            <h2 style={{ color: "white", fontSize: "clamp(24px, 4vw, 32px)", fontWeight: 900, marginBottom: 20, lineHeight: 1.2 }}>
+              ¡Gracias {nombre}!
+            </h2>
+
+            <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 18, marginBottom: 32, lineHeight: 1.6 }}>
+              Lo más pronto posible un asesor se comunicará con usted para presentarle una propuesta personalizada.
+            </p>
+
+            <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(242,183,5,0.3), transparent)", margin: "0 auto 32px", width: "80%" }} />
+
+            <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
+              Debe preparar su <span style={{ color: "#F2B705" }}>último extracto</span> para que se lo facilite al consultor e iniciar su camino hacia pagar su casa{" "}
+              <span style={{ background: "linear-gradient(120deg, #F2B705, #D9A504)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.1em" }}>
+                más rápido y ahorrando millones en intereses.
+              </span>
+            </p>
+
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, fontWeight: 800, margin: 0 }}>
+              ¡Hasta entonces!
+            </p>
           </div>
 
-          <h2 style={{ color: "white", fontSize: "clamp(26px, 4vw, 36px)", fontWeight: 900, marginBottom: 16, lineHeight: 1.2 }}>
-            {nombre ? `¡Gracias, ${nombre}!` : "¡Gracias por completar el formulario!"}
-          </h2>
-
-          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, marginBottom: 32, lineHeight: 1.6 }}>
-            Ya tenemos todo lo que necesitamos para preparar tu caso. Muy pronto uno de nuestros expertos se pondrá en contacto contigo.
-          </p>
-
-
-
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, marginBottom: 20 }}>
-            Todo esto sin costo y sin compromiso. <strong style={{ color: "rgba(255,255,255,0.6)" }}>Solo cobramos si tu banco confirma el beneficio aplicado.</strong>
-          </p>
-
-          <div style={{ background: "rgba(37, 211, 102, 0.1)", border: "1px solid rgba(37, 211, 102, 0.2)", borderRadius: 16, padding: "24px", marginTop: 24 }}>
-            <p style={{ color: "#25D366", fontSize: 18, fontWeight: 800, marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-              ¡Felicitaciones! 🎉
-            </p>
-            <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 15, lineHeight: 1.6, margin: 0 }}>
-              Has dado el paso más importante: decidir actuar. Esta acción demuestra tu gran inteligencia financiera. 
-            </p>
+          <div style={{ marginTop: 40, display: "flex", justifyContent: "center", gap: 8, alignItems: "center", color: "rgba(255,255,255,0.4)", fontSize: 14 }}>
+            <CheckCheck size={18} color="#25D366" />
+            <span>Perfil financiero validado con éxito</span>
           </div>
         </motion.div>
       </div>
@@ -709,7 +702,7 @@ export default function FormularioMGF() {
                         transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
                       }}
                     >
-                      {currentStep === TOTAL - 1 ? "Finalizar análisis" : "Siguiente paso"} <Send size={18} />
+                      Siguiente paso <Send size={18} />
                     </button>
                 </div>
               )}
