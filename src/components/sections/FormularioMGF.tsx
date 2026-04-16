@@ -226,7 +226,7 @@ const steps: Step[] = [
       { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Tu nombre completo", autoComplete: "name" },
       { label: "NÚMERO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567", autoComplete: "tel" },
       { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "tu@correo.com", autoComplete: "email" },
-      { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Medellín...", autoComplete: "address-level2" },
+      { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Cartagena...", autoComplete: "address-level2" },
     ]
   },
   {
@@ -344,8 +344,8 @@ export default function FormularioMGF() {
     const isLastStep = currentStep === TOTAL - 1;
     const currentStepObj = steps[currentStep];
 
-    // ── Submit Lead data after the FIRST basic identification step ──
-    if (currentStepObj.key === "contacto_1") {
+    // ── Submit Lead data after the SECOND financial profile step (Paso 11) ──
+    if (currentStepObj.key === "contacto_2") {
       const finalAnswers = { ...answers, objeciones: multiSelected, ...contactData };
       const finalScore = calcScore(finalAnswers);
       setScore(finalScore);
@@ -366,17 +366,11 @@ export default function FormularioMGF() {
       setDirection(1);
       setCurrentStep((s) => s + 1);
     } else {
-      // ── Submit Extract data after extract step ──
+      // ── Submit Extract data after extract step (Paso 12) ──
       if (currentStepObj.type === "extract") {
         const extractPayload = {
-          email: contactData.email,
-          cedula: contactData.cedula,
-          nombre: contactData.nombre,
           whatsapp: contactData.whatsapp,
-          ciudad: contactData.ciudad,
-          ingresos: contactData.ingresos,
-          aumento_cuota: contactData.aumento_cuota,
-          documento: fileData ? fileData : undefined,
+          extracto_base64: fileData?.base64,
           timestamp: new Date().toISOString()
         };
 
@@ -800,10 +794,14 @@ export default function FormularioMGF() {
 
                   <button
                     onClick={goNext}
+                    disabled={!fileData}
                     style={{
-                      background: "#F2B705", color: "#0d1117", border: "none",
+                      background: fileData ? "#F2B705" : "rgba(255,255,255,0.1)",
+                      color: fileData ? "#0d1117" : "rgba(255,255,255,0.3)",
+                      border: "none",
                       borderRadius: 14, padding: "20px 48px", fontSize: 18, fontWeight: 900,
-                      cursor: "pointer", transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
+                      cursor: fileData ? "pointer" : "not-allowed",
+                      transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
                     }}
                   >
                     Finalizar análisis <Send size={20} />
