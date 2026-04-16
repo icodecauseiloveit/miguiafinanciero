@@ -238,6 +238,7 @@ const steps: Step[] = [
     description: "Esta información nos ayuda a evaluar tu capacidad real de ahorro.",
     fields: [
       { label: "NÚMERO DE CÉDULA", key: "cedula", type: "text", placeholder: "Ej: 12345678", autoComplete: "off" },
+      { label: "OCUPACIÓN (EMPLEADO O INDEPENDIENTE)", key: "ocupacion", type: "text", placeholder: "Ej: Empleado", autoComplete: "off" },
       { label: "INGRESOS MENSUALES TOTALES", key: "ingresos", type: "text", placeholder: "Suma de todos tus ingresos", autoComplete: "off" },
       { label: "¿CUÁNTO PODRÍAS AUMENTAR TU CUOTA?", key: "aumento_cuota", type: "text", placeholder: "Ej: 300.000 o 500.000...", autoComplete: "off" },
     ]
@@ -287,6 +288,7 @@ export default function FormularioMGF() {
     ciudad: "", 
     email: "",
     ingresos: "",
+    ocupacion: "",
     aumento_cuota: "" 
   });
   const [fileData, setFileData] = useState<{ name: string; base64: string } | null>(null);
@@ -504,6 +506,7 @@ export default function FormularioMGF() {
 
   const step2Valid = 
     contactData.cedula.trim().length > 5 &&
+    contactData.ocupacion.trim().length > 0 &&
     contactData.ingresos.trim().length > 0 &&
     contactData.aumento_cuota.trim().length > 0;
 
@@ -721,9 +724,11 @@ export default function FormularioMGF() {
                     <h2 style={{ color: "white", fontSize: "clamp(24px, 3.5vw, 38px)", fontWeight: 900, lineHeight: 1.25, marginBottom: 12 }}>
                       {step.question}
                     </h2>
-                    <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 17, lineHeight: 1.5, maxWidth: 580 }}>
-                      {step.description}
-                    </p>
+                    <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 16, padding: 20, marginBottom: 24, border: "1px solid rgba(255,255,255,0.1)" }}>
+                      <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 15, lineHeight: 1.6, margin: 0 }}>
+                        <span style={{ color: "#F2B705", fontWeight: 800 }}>Nota:</span> Para hacer el estudio de su caso particular necesitamos tener los datos de su obligación para lo cual le invitamos a que nos comparta el último extracto de su crédito hipotecario con <strong style={{ color: "white" }}>{answers["banco"] || "su banco"}</strong>.
+                      </p>
+                    </div>
                   </div>
 
                   <div style={{ 
