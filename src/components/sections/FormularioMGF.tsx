@@ -243,14 +243,14 @@ const steps: Step[] = [
       { label: "¿CUÁNTO PODRÍAS AUMENTAR TU CUOTA?", key: "aumento_cuota", type: "text", placeholder: "Ej: 300.000 o 500.000...", autoComplete: "off" },
     ]
   },
-  {
+  /* {
     id: 13,
     type: "extract",
     section: "Documentación",
     key: "extracto",
     question: "Sube tu extracto para iniciar",
     description: "Para iniciar el estudio de tus alternativas de ahorro necesitamos el último extracto de tu crédito hipotecario. Súbelo aquí ahora.",
-  },
+  }, */
 ];
 
 const TOTAL = steps.length;
@@ -698,19 +698,19 @@ export default function FormularioMGF() {
                     ))}
                   </div>
 
-                  <button
-                    onClick={goNext}
-                    disabled={!contactValid}
-                    style={{
-                      background: contactValid ? "#F2B705" : "rgba(255,255,255,0.1)",
-                      color: contactValid ? "#0d1117" : "rgba(255,255,255,0.3)",
-                      border: "none", borderRadius: 14, padding: "18px 40px",
-                      fontSize: 17, fontWeight: 800, cursor: contactValid ? "pointer" : "not-allowed",
-                      transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
-                    }}
-                  >
-                    Siguiente paso <Send size={18} />
-                  </button>
+                    <button
+                      onClick={goNext}
+                      disabled={!contactValid}
+                      style={{
+                        background: contactValid ? "#F2B705" : "rgba(255,255,255,0.1)",
+                        color: contactValid ? "#0d1117" : "rgba(255,255,255,0.3)",
+                        border: "none", borderRadius: 14, padding: "18px 40px",
+                        fontSize: 17, fontWeight: 800, cursor: contactValid ? "pointer" : "not-allowed",
+                        transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
+                      }}
+                    >
+                      {currentStep === TOTAL - 1 ? "Finalizar análisis" : "Siguiente paso"} <Send size={18} />
+                    </button>
                 </div>
               )}
 
