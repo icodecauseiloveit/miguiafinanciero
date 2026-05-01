@@ -108,21 +108,32 @@ const steps: Step[] = [
   {
     id: 10,
     type: "contact",
-    section: "Validación de Perfil",
-    key: "contacto",
-    question: "Identificación y Validación Financiera",
-    description: "Por favor diligencie los siguientes datos para preparar su estudio. Garantizamos estricta confidencialidad.",
+    section: "Identificación y Ubicación",
+    key: "contacto_personal",
+    question: "Sus Datos Personales",
+    description: "Para brindarle una atención exclusiva, necesitamos sus datos de contacto. Aseguramos absoluta reserva.",
     fields: [
-      { label: "SUMA DE INGRESOS MENSUALES", key: "ingresos", type: "text", placeholder: "Ej: 15.000.000", autoComplete: "off" },
-      { label: "¿CUÁNTO DISPONE PARA AUMENTAR SU CUOTA A CAPITAL? (A mayor incremento, mayor ahorro. Recomendamos mínimo 30% de su cuota actual)", key: "aumento_cuota", type: "text", placeholder: "Ej: 400.000 o 600.000", autoComplete: "off" },
       { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Ingrese su nombre y apellido completos", autoComplete: "name" },
+      { label: "CÉDULA", key: "cedula", type: "text", placeholder: "Número de identificación", autoComplete: "off" },
+      { label: "CIUDAD DE RESIDENCIA", key: "ciudad", type: "text", placeholder: "Ej: Bogotá, Medellín...", autoComplete: "address-level2" },
       { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "su.correo@ejemplo.com", autoComplete: "email" },
       { label: "TELÉFONO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567", autoComplete: "tel" },
-      { label: "CÉDULA", key: "cedula", type: "text", placeholder: "Número de identificación", autoComplete: "off" },
     ]
   },
   {
     id: 11,
+    type: "contact",
+    section: "Validación Financiera",
+    key: "contacto_financiero",
+    question: "Hablemos de cifras",
+    description: "Esta información es indispensable para estructurar la planeación del ahorro con la entidad bancaria.",
+    fields: [
+      { label: "SUMA DE INGRESOS MENSUALES", key: "ingresos", type: "text", placeholder: "Ej: 15.000.000", autoComplete: "off" },
+      { label: "¿CUÁNTO DISPONE PARA AUMENTAR SU CUOTA A CAPITAL? (A mayor incremento, mayor ahorro. Recomendamos mínimo 30% de su cuota actual)", key: "aumento_cuota", type: "text", placeholder: "Ej: 400.000 o 600.000", autoComplete: "off" },
+    ]
+  },
+  {
+    id: 12,
     type: "radio",
     section: "Documentación Requerida",
     key: "adjuntar_extracto",
@@ -134,7 +145,7 @@ const steps: Step[] = [
     options: ["Sí, puedo adjuntarlo a continuación", "No lo tengo a la mano, lo enviaré luego"],
   },
   {
-    id: 12,
+    id: 13,
     type: "extract",
     section: "Carga de Documento",
     key: "extracto_archivo",
@@ -151,6 +162,7 @@ export default function FormularioPremium() {
   const [contactData, setContactData] = useState({ 
     nombre: "", 
     cedula: "", 
+    ciudad: "",
     whatsapp: "", 
     email: "",
     ingresos: "",
@@ -192,7 +204,7 @@ export default function FormularioPremium() {
       if (isNoCredito && [
         "banco", "tipo_credito", "al_dia", "desea_ahorrar", 
         "importancia_accion", "beneficios", "disposicion_aumento", 
-        "adjuntar_extracto", "extracto_archivo"
+        "contacto_financiero", "adjuntar_extracto", "extracto_archivo"
       ].includes(step.key)) {
         return false;
       }
@@ -217,9 +229,14 @@ export default function FormularioPremium() {
       return;
     }
 
-    if (currentStepObj.key === "contacto") {
+    const isNoCredito = latestAnswers["tiene_credito"] === "No, aún no cuento con crédito hipotecario";
+    const shouldSendLeadPayload = 
+      currentStepObj.key === "contacto_financiero" || 
+      (currentStepObj.key === "contacto_personal" && isNoCredito);
+
+    if (shouldSendLeadPayload) {
       const leadPayload = {
-        respuestas: { ...answers, objeciones: multiSelected, ...contactData },
+        respuestas: { ...latestAnswers, objeciones: multiSelected, ...contactData },
         tipo: "Premium",
         fuente: getSourceName(sourceCode),
         fuente_codigo: sourceCode,
@@ -368,14 +385,21 @@ export default function FormularioPremium() {
   };
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email.trim());
-  const contactValid = step.key === "contacto" ? (
-    contactData.nombre.trim().length > 1 && 
-    contactData.whatsapp.trim().length > 7 && 
-    contactData.cedula.trim().length > 5 &&
-    contactData.ingresos.trim().length > 0 &&
-    contactData.aumento_cuota.trim().length > 0 &&
-    emailValid
-  ) : true;
+  let contactValid = true;
+  if (step.key === "contacto_personal") {
+    contactValid = (
+      contactData.nombre.trim().length > 1 && 
+      contactData.whatsapp.trim().length > 7 && 
+      contactData.cedula.trim().length > 5 &&
+      contactData.ciudad.trim().length > 2 &&
+      emailValid
+    );
+  } else if (step.key === "contacto_financiero") {
+    contactValid = (
+      contactData.ingresos.trim().length > 0 &&
+      contactData.aumento_cuota.trim().length > 0
+    );
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", display: "flex", flexDirection: "column", fontFamily: "var(--font-dm-sans), sans-serif" }}>
