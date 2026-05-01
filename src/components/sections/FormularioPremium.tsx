@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, CheckCheck, XCircle } from "lucide-react";
 import Image from "next/image";
+import { getSourceName } from "@/utils/sources";
 
 const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"];
 
@@ -151,6 +152,15 @@ export default function FormularioPremium() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [isDisqualified, setIsDisqualified] = useState(false);
   const [disqualificationReason, setDisqualificationReason] = useState("");
+  const [sourceCode, setSourceCode] = useState<string>("direct");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get("ref") || params.get("source");
+      if (ref) setSourceCode(ref);
+    }
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -188,6 +198,8 @@ export default function FormularioPremium() {
       const leadPayload = {
         respuestas: { ...answers, objeciones: multiSelected, ...contactData },
         tipo: "Premium",
+        fuente: getSourceName(sourceCode),
+        fuente_codigo: sourceCode,
         timestamp: new Date().toISOString()
       };
       import("@/app/actions").then(({ submitLeadToN8n }) => {
@@ -210,6 +222,7 @@ export default function FormularioPremium() {
         const extractPayload = {
           whatsapp: contactData.whatsapp,
           extracto_base64: fileData?.base64,
+          fuente: getSourceName(sourceCode),
           timestamp: new Date().toISOString()
         };
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Smile, CheckCheck } from "lucide-react";
 import Image from "next/image";
+import { getSourceName } from "@/utils/sources";
 
 const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"];
 
@@ -295,6 +296,15 @@ export default function FormularioMGF() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [sourceCode, setSourceCode] = useState<string>("direct");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get("ref") || params.get("source");
+      if (ref) setSourceCode(ref);
+    }
+  }, []);
 
   // Timer logic
   useEffect(() => {
@@ -356,6 +366,8 @@ export default function FormularioMGF() {
         respuestas: finalAnswers,
         score: finalScore,
         temperatura: getTemperature(finalScore),
+        fuente: getSourceName(sourceCode),
+        fuente_codigo: sourceCode,
         timestamp: new Date().toISOString()
       };
 
@@ -373,6 +385,7 @@ export default function FormularioMGF() {
         const extractPayload = {
           whatsapp: contactData.whatsapp,
           extracto_base64: fileData?.base64,
+          fuente: getSourceName(sourceCode),
           timestamp: new Date().toISOString()
         };
 
