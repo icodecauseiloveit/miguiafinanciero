@@ -110,6 +110,7 @@ const steps: Step[] = [
     description: "Por favor diligencie los siguientes datos para preparar su estudio. Garantizamos estricta confidencialidad.",
     fields: [
       { label: "SUMA DE INGRESOS MENSUALES", key: "ingresos", type: "text", placeholder: "Ej: 15.000.000", autoComplete: "off" },
+      { label: "¿CUÁNTO DISPONE PARA AUMENTAR SU CUOTA A CAPITAL? (A mayor incremento, mayor ahorro. Recomendamos mínimo 30% de su cuota actual)", key: "aumento_cuota", type: "text", placeholder: "Ej: 400.000 o 600.000", autoComplete: "off" },
       { label: "NOMBRE COMPLETO", key: "nombre", type: "text", placeholder: "Ingrese su nombre y apellido completos", autoComplete: "name" },
       { label: "CORREO ELECTRÓNICO", key: "email", type: "email", placeholder: "su.correo@ejemplo.com", autoComplete: "email" },
       { label: "TELÉFONO DE WHATSAPP", key: "whatsapp", type: "tel", placeholder: "Ej: 3001234567", autoComplete: "tel" },
@@ -145,6 +146,7 @@ export default function FormularioPremium() {
     whatsapp: "", 
     email: "",
     ingresos: "",
+    aumento_cuota: "",
   });
   const [fileData, setFileData] = useState<{ name: string; base64: string } | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -318,12 +320,21 @@ export default function FormularioPremium() {
 
             <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(242,183,5,0.3), transparent)", margin: "0 auto 32px", width: "80%" }} />
 
-            <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
-              El consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera. Para eso, tenga listo un <span style={{ color: "#F2B705" }}>extracto de su obligación</span> para que se lo comparta durante la llamada y así iniciar su camino hacia pagar su casa{" "}
-              <span style={{ background: "linear-gradient(120deg, #F2B705, #D9A504)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.1em" }}>
-                más rápido y ahorrando millones en intereses.
-              </span>
-            </p>
+            {fileData ? (
+              <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
+                A partir del extracto que nos ha compartido, el consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera para iniciar su camino hacia pagar su casa{" "}
+                <span style={{ background: "linear-gradient(120deg, #F2B705, #D9A504)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.1em" }}>
+                  más rápido y ahorrando millones en intereses.
+                </span>
+              </p>
+            ) : (
+              <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
+                El consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera. Para eso, tenga listo un <span style={{ color: "#F2B705" }}>extracto de su obligación</span> para que se lo comparta durante la llamada y así iniciar su camino hacia pagar su casa{" "}
+                <span style={{ background: "linear-gradient(120deg, #F2B705, #D9A504)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.1em" }}>
+                  más rápido y ahorrando millones en intereses.
+                </span>
+              </p>
+            )}
 
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, fontWeight: 800, margin: 0 }}>
               ¡Hasta entonces!
@@ -354,6 +365,7 @@ export default function FormularioPremium() {
     contactData.whatsapp.trim().length > 7 && 
     contactData.cedula.trim().length > 5 &&
     contactData.ingresos.trim().length > 0 &&
+    contactData.aumento_cuota.trim().length > 0 &&
     emailValid
   ) : true;
 
