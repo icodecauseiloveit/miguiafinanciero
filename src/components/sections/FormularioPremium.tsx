@@ -134,8 +134,6 @@ const steps: Step[] = [
   }
 ];
 
-const TOTAL = steps.length;
-
 export default function FormularioPremium() {
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -178,17 +176,32 @@ export default function FormularioPremium() {
     }
   };
 
-  const goNext = () => {
-    const currentStepObj = steps[currentStep];
+  const getVisibleSteps = (currentAnswers: Record<string, string | string[]>) => {
+    return steps.filter((step) => {
+      const isNoCredito = currentAnswers["tiene_credito"] === "No, aún no cuento con crédito hipotecario";
+      if (isNoCredito && [
+        "banco", "tipo_credito", "al_dia", "desea_ahorrar", 
+        "importancia_accion", "beneficios", "disposicion_aumento", 
+        "adjuntar_extracto", "extracto_archivo"
+      ].includes(step.key)) {
+        return false;
+      }
+      if (step.key === "extracto_archivo" && currentAnswers["adjuntar_extracto"] === "No lo tengo a la mano, lo enviaré luego") {
+        return false;
+      }
+      return true;
+    });
+  };
+
+  const visibleSteps = getVisibleSteps(answers);
+  const TOTAL = visibleSteps.length;
+
+  const performGoNext = (latestAnswers = answers, currentIndex = currentStep) => {
+    const currentVisibleSteps = getVisibleSteps(latestAnswers);
+    const currentStepObj = currentVisibleSteps[currentIndex];
 
     // Disqualification Checks
-    if (currentStepObj.key === "tiene_credito" && answers["tiene_credito"] === "No, aún no cuento con crédito hipotecario") {
-      setDisqualificationReason("Agradecemos su interés en nuestros servicios corporativos. En este momento, nuestra firma se especializa exclusivamente en la optimización de créditos hipotecarios vigentes. Para terminar el proceso, por ahora no le podemos ayudar, pero le deseamos éxito en la consecución de su futuro crédito.");
-      setIsDisqualified(true);
-      return;
-    }
-
-    if (currentStepObj.key === "disposicion_aumento" && answers["disposicion_aumento"] === "No me es posible en este momento") {
+    if (currentStepObj.key === "disposicion_aumento" && latestAnswers["disposicion_aumento"] === "No me es posible en este momento") {
       setDisqualificationReason("Agradecemos sinceramente el tiempo dedicado. Sin embargo, para estructurar los beneficios de la Ley de Vivienda de forma que logre terminar su deuda en tiempo récord y ahorrando millones en intereses, es imperativo contar con esa capacidad de aporte. Sin dicha disposición, no nos es posible ayudarle a culminar exitosamente este proceso.");
       setIsDisqualified(true);
       return;
@@ -207,16 +220,11 @@ export default function FormularioPremium() {
       });
     }
 
-    if (currentStepObj.key === "adjuntar_extracto" && answers["adjuntar_extracto"] === "No lo tengo a la mano, lo enviaré luego") {
-      setIsCompleted(true);
-      return;
-    }
-
-    const isLastStep = currentStep === TOTAL - 1;
+    const isLastStep = currentIndex === currentVisibleSteps.length - 1;
 
     if (!isLastStep) {
       setDirection(1);
-      setCurrentStep((s) => s + 1);
+      setCurrentStep(currentIndex + 1);
     } else {
       if (currentStepObj.type === "extract") {
         const extractPayload = {
@@ -234,6 +242,8 @@ export default function FormularioPremium() {
     }
   };
 
+  const goNext = () => performGoNext(answers, currentStep);
+
   const goPrev = () => {
     if (currentStep > 0) {
       setDirection(-1);
@@ -242,8 +252,9 @@ export default function FormularioPremium() {
   };
 
   const handleRadio = (option: string, key: string) => {
-    setAnswers((prev) => ({ ...prev, [key]: option }));
-    setTimeout(goNext, 320);
+    const newAnswers = { ...answers, [key]: option };
+    setAnswers(newAnswers);
+    setTimeout(() => performGoNext(newAnswers, currentStep), 320);
   };
 
   const toggleMulti = (option: string) => {
@@ -328,7 +339,7 @@ export default function FormularioPremium() {
     );
   }
 
-  const step = steps[currentStep];
+  const step = visibleSteps[currentStep];
   const progress = ((currentStep + 1) / TOTAL) * 100;
 
   const variants = {
