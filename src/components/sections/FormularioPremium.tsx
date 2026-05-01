@@ -13,7 +13,7 @@ type Step = {
   type: "radio" | "multiselect" | "contact" | "extract";
   section: string;
   key: string;
-  question: string;
+  question: string | React.ReactNode;
   description?: string;
   options?: string[];
   fields?: { label: string; key: string; type: string; placeholder: string; autoComplete?: string }[];
@@ -90,7 +90,11 @@ const steps: Step[] = [
     type: "radio",
     section: "Requisito Fundamental",
     key: "disposicion_aumento",
-    question: "Para acceder a estos beneficios, debe realizar un aumento en su cuota mensual, el cual protegeremos respaldados en la Ley de Vivienda para que abone exclusivamente a capital. ¿Está dispuesto(a) a realizar un aumento de aproximadamente el 30% respecto al valor actual de su cuota?",
+    question: (
+      <>
+        Para acceder a estos beneficios, debe realizar un <span style={{ color: "#F2B705" }}>aumento en su cuota mensual</span>, el cual protegeremos respaldados en la Ley de Vivienda para que abone exclusivamente a capital. <span style={{ color: "#F2B705" }}>¿Está dispuesto(a) a realizar un aumento de aproximadamente el 30% respecto al valor actual de su cuota?</span>
+      </>
+    ),
     options: ["Sí, estoy dispuesto(a)", "No me es posible en este momento"],
   },
   {
