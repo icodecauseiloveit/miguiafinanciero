@@ -126,7 +126,11 @@ const steps: Step[] = [
     type: "radio",
     section: "Documentación Requerida",
     key: "adjuntar_extracto",
-    question: "Para iniciar su análisis completamente gratis, debemos tener los detalles de su crédito; esto lo veremos en su último extracto. ¿Puede adjuntarlo ahora?",
+    question: (
+      <>
+        Para iniciar su análisis completamente gratis, debemos tener los detalles de su crédito; esto lo veremos en su último extracto. <span style={{ color: "#F2B705" }}>¿Puede adjuntarlo ahora mismo?</span>
+      </>
+    ),
     options: ["Sí, puedo adjuntarlo a continuación", "No lo tengo a la mano, lo enviaré luego"],
   },
   {
