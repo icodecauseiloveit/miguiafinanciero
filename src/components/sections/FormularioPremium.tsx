@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, CheckCheck, XCircle } from "lucide-react";
+import { Send, CheckCheck, XCircle, Calendar } from "lucide-react";
 import Image from "next/image";
 import { getSourceName } from "@/utils/sources";
 
@@ -346,12 +346,39 @@ export default function FormularioPremium() {
             <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(242,183,5,0.3), transparent)", margin: "0 auto 32px", width: "80%" }} />
 
             {fileData ? (
-              <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
-                A partir del extracto que nos ha compartido, el consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera para iniciar su camino hacia pagar su casa{" "}
-                <span style={{ background: "linear-gradient(120deg, #F2B705, #D9A504)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.1em" }}>
-                  más rápido y ahorrando millones en intereses.
-                </span>
-              </p>
+              <>
+                <a 
+                  href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3OYoAnm02W7k6vuN9mb-Dt7RBuF5KoJoGSKzxz10IN7thZU1Cqs04Ifl4Mb5wmXZI2yZsGDD0i" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 12,
+                    background: "linear-gradient(135deg, #F2B705 0%, #D9A504 100%)",
+                    color: "#0d1117",
+                    fontWeight: 900,
+                    fontSize: 17,
+                    padding: "18px 36px",
+                    borderRadius: 16,
+                    textDecoration: "none",
+                    marginBottom: 36,
+                    boxShadow: "0 8px 24px rgba(242,183,5,0.25)",
+                    transition: "transform 0.2s, box-shadow 0.2s"
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(242,183,5,0.35)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(242,183,5,0.25)"; }}
+                >
+                  <Calendar size={22} /> Agende su cita con el consultor
+                </a>
+                <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
+                  A partir del extracto que nos ha compartido, el consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera para iniciar su camino hacia pagar su casa{" "}
+                  <span style={{ background: "linear-gradient(120deg, #F2B705, #D9A504)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.1em" }}>
+                    más rápido y ahorrando millones en intereses.
+                  </span>
+                </p>
+              </>
             ) : (
               <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
                 El consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera. Para eso, tenga listo un <span style={{ color: "#F2B705" }}>extracto de su obligación</span> para que se lo comparta durante la llamada y así iniciar su camino hacia pagar su casa{" "}
