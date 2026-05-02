@@ -236,7 +236,7 @@ export default function FormularioPremium() {
 
     if (shouldSendLeadPayload) {
       const leadPayload = {
-        respuestas: { ...latestAnswers, objeciones: multiSelected, ...contactData },
+        respuestas: { ...latestAnswers, beneficios: multiSelected, ...contactData },
         tipo: "Premium",
         fuente: getSourceName(sourceCode),
         fuente_codigo: sourceCode,
