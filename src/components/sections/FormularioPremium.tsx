@@ -89,7 +89,7 @@ const steps: Step[] = [
     id: 8,
     type: "radio",
     section: "Requisito Fundamental",
-    key: "disposicion_aumento",
+    key: "tomar_accion",
     question: (
       <>
         Para acceder a estos beneficios, debe realizar un <span style={{ color: "#F2B705" }}>aumento en su cuota mensual</span>, el cual protegeremos respaldados en la Ley de Vivienda para que abone exclusivamente a capital. <span style={{ color: "#F2B705" }}>¿Está dispuesto(a) a realizar un aumento de aproximadamente el 30% respecto al valor actual de su cuota?</span>
@@ -203,7 +203,7 @@ export default function FormularioPremium() {
       const isNoCredito = currentAnswers["tiene_credito"] === "No, aún no cuento con crédito hipotecario";
       if (isNoCredito && [
         "banco", "tipo_credito", "al_dia", "desea_ahorrar", 
-        "importancia_accion", "beneficios", "disposicion_aumento", 
+        "importancia_accion", "beneficios", "tomar_accion", 
         "contacto_financiero", "adjuntar_extracto", "extracto_archivo"
       ].includes(step.key)) {
         return false;
@@ -223,7 +223,7 @@ export default function FormularioPremium() {
     const currentStepObj = currentVisibleSteps[currentIndex];
 
     // Disqualification Checks
-    if (currentStepObj.key === "disposicion_aumento" && latestAnswers["disposicion_aumento"] === "No me es posible en este momento") {
+    if (currentStepObj.key === "tomar_accion" && latestAnswers["tomar_accion"] === "No me es posible en este momento") {
       setDisqualificationReason("Agradecemos sinceramente el tiempo dedicado. Sin embargo, para estructurar los beneficios de la Ley de Vivienda de forma que logre terminar su deuda en tiempo récord y ahorrando millones en intereses, es imperativo contar con esa capacidad de aporte. Sin dicha disposición, no nos es posible ayudarle a culminar exitosamente este proceso.");
       setIsDisqualified(true);
       return;
