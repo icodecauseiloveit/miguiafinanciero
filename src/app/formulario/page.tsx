@@ -1,11 +1,15 @@
-import type { Metadata } from "next";
-import FormularioMGF from "@/components/sections/FormularioMGF";
+import FormularioPremium from "@/components/sections/FormularioPremium";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Análisis Gratuito de tu Crédito Hipotecario | Mi Guía Financiero",
-  description: "Responde 10 preguntas y en menos de 24 horas recibirás un análisis personalizado de cuánto puedes ahorrarte en tu crédito hipotecario.",
+  title: "Análisis Hipotecario Premium | Mi Guía Financiero",
+  description: "Descubra cuánto dinero y años puede ahorrar en su crédito hipotecario aplicando la Ley de Vivienda.",
 };
 
-export default function FormularioPage() {
-  return <FormularioMGF />;
+export default function FormPage() {
+  return (
+    <main style={{ minHeight: "100vh", backgroundColor: "#0d1117" }}>
+      <FormularioPremium />
+    </main>
+  );
 }
