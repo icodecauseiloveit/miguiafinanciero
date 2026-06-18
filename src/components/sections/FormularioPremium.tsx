@@ -90,11 +90,7 @@ const steps: Step[] = [
     type: "radio",
     section: "Requisito Fundamental",
     key: "tomar_accion",
-    question: (
-      <>
-        Para acceder a estos beneficios, debe realizar un <span style={{ color: "#F2B705" }}>aumento en su cuota mensual</span>, el cual protegeremos respaldados en la Ley de Vivienda para que abone exclusivamente a capital. <span style={{ color: "#F2B705" }}>¿Está dispuesto(a) a realizar un aumento de aproximadamente el 30% respecto al valor actual de su cuota?</span>
-      </>
-    ),
+    question: "¿Está dispuesto(a) a realizar un pequeño incremento en su cuota para acceder a ahorros en tiempo y dinero?",
     options: ["Sí, estoy dispuesto(a)", "No me es posible en este momento"],
   },
   {
@@ -131,26 +127,6 @@ const steps: Step[] = [
       { label: "SUMA DE INGRESOS MENSUALES", key: "ingresos", type: "text", placeholder: "Ej: 15.000.000", autoComplete: "off" },
       { label: "¿CUÁNTO DISPONE PARA AUMENTAR SU CUOTA A CAPITAL? (A mayor incremento, mayor ahorro. Recomendamos mínimo 30% de su cuota actual)", key: "aumento_cuota", type: "text", placeholder: "Ej: 400.000 o 600.000", autoComplete: "off" },
     ]
-  },
-  {
-    id: 12,
-    type: "radio",
-    section: "Documentación Requerida",
-    key: "adjuntar_extracto",
-    question: (
-      <>
-        Para iniciar su análisis completamente gratis, debemos tener los detalles de su crédito; esto lo veremos en su último extracto. <span style={{ color: "#F2B705" }}>¿Puede adjuntarlo ahora mismo?</span>
-      </>
-    ),
-    options: ["Sí, puedo adjuntarlo a continuación", "No lo tengo a la mano, lo enviaré luego"],
-  },
-  {
-    id: 13,
-    type: "extract",
-    section: "Carga de Documento",
-    key: "extracto_archivo",
-    question: "Adjunte el extracto",
-    description: "Por favor, cargue el PDF o imagen legible de su último extracto hipotecario. Nuestro equipo preparará su análisis.",
   }
 ];
 
@@ -168,7 +144,6 @@ export default function FormularioPremium() {
     ingresos: "",
     aumento_cuota: "",
   });
-  const [fileData, setFileData] = useState<{ name: string; base64: string } | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isDisqualified, setIsDisqualified] = useState(false);
   const [disqualificationReason, setDisqualificationReason] = useState("");
@@ -182,21 +157,15 @@ export default function FormularioPremium() {
     }
   }, []);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFileData({
-          name: file.name,
-          base64: reader.result as string,
-        });
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setFileData(null);
+  useEffect(() => {
+    if (isCompleted) {
+      setTimeout(() => {
+        window.location.href = "https://wa.me/573021034288?text=Hola,%20ya%20diligenci%C3%A9%20el%20formulario%20y%20quiero%20continuar%20con%20el%20an%C3%A1lisis%20para%20identificar%20oportunidades%20de%20ahorro%20en%20mi%20cr%C3%A9dito%20hipotecario.";
+      }, 2000);
     }
-  };
+  }, [isCompleted]);
+
+
 
   const getVisibleSteps = (currentAnswers: Record<string, string | string[]>) => {
     return steps.filter((step) => {
@@ -204,11 +173,8 @@ export default function FormularioPremium() {
       if (isNoCredito && [
         "banco", "tipo_credito", "al_dia", "desea_ahorrar", 
         "importancia_accion", "beneficios", "tomar_accion", 
-        "contacto_financiero", "adjuntar_extracto", "extracto_archivo"
+        "contacto_financiero"
       ].includes(step.key)) {
-        return false;
-      }
-      if (step.key === "extracto_archivo" && currentAnswers["adjuntar_extracto"] === "No lo tengo a la mano, lo enviaré luego") {
         return false;
       }
       return true;
@@ -253,18 +219,6 @@ export default function FormularioPremium() {
       setDirection(1);
       setCurrentStep(currentIndex + 1);
     } else {
-      if (currentStepObj.type === "extract") {
-        const extractPayload = {
-          whatsapp: contactData.whatsapp,
-          extracto_base64: fileData?.base64,
-          fuente: getSourceName(sourceCode),
-          timestamp: new Date().toISOString()
-        };
-
-        import("@/app/actions").then(({ submitExtractToN8n }) => {
-          submitExtractToN8n(extractPayload);
-        });
-      }
       setIsCompleted(true);
     }
   };
@@ -345,10 +299,9 @@ export default function FormularioPremium() {
 
             <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(242,183,5,0.3), transparent)", margin: "0 auto 32px", width: "80%" }} />
 
-            {fileData ? (
               <>
                 <a 
-                  href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3OYoAnm02W7k6vuN9mb-Dt7RBuF5KoJoGSKzxz10IN7thZU1Cqs04Ifl4Mb5wmXZI2yZsGDD0i" 
+                  href="https://wa.me/573021034288?text=Hola,%20ya%20diligenci%C3%A9%20el%20formulario%20y%20quiero%20continuar%20con%20el%20an%C3%A1lisis%20para%20identificar%20oportunidades%20de%20ahorro%20en%20mi%20cr%C3%A9dito%20hipotecario." 
                   target="_blank" 
                   rel="noopener noreferrer"
                   style={{
@@ -370,23 +323,15 @@ export default function FormularioPremium() {
                   onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 28px rgba(242,183,5,0.35)"; }}
                   onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(242,183,5,0.25)"; }}
                 >
-                  <Calendar size={22} /> Agende su cita con el consultor
+                  <Send size={22} /> Continuar en WhatsApp
                 </a>
                 <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
-                  A partir del extracto que nos ha compartido, el consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera para iniciar su camino hacia pagar su casa{" "}
+                  El consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera. Para eso, tenga listo un <span style={{ color: "#F2B705" }}>extracto de su obligación</span> para que se lo comparta durante la llamada y así iniciar su camino hacia pagar su casa{" "}
                   <span style={{ background: "linear-gradient(120deg, #F2B705, #D9A504)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.1em" }}>
                     más rápido y ahorrando millones en intereses.
                   </span>
                 </p>
               </>
-            ) : (
-              <p style={{ color: "white", fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, lineHeight: 1.5, marginBottom: 24 }}>
-                El consultor le diseñará un conjunto de opciones que se adapten a su realidad financiera. Para eso, tenga listo un <span style={{ color: "#F2B705" }}>extracto de su obligación</span> para que se lo comparta durante la llamada y así iniciar su camino hacia pagar su casa{" "}
-                <span style={{ background: "linear-gradient(120deg, #F2B705, #D9A504)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.1em" }}>
-                  más rápido y ahorrando millones en intereses.
-                </span>
-              </p>
-            )}
 
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, fontWeight: 800, margin: 0 }}>
               ¡Hasta entonces!
@@ -628,86 +573,7 @@ export default function FormularioPremium() {
                 </div>
               )}
 
-              {/* ── EXTRACT STEP ── */}
-              {step.type === "extract" && (
-                <div>
-                  <div style={{ marginBottom: 28 }}>
-                    <div style={{ display: "inline-block", background: "rgba(242,183,5,0.12)", border: "1px solid rgba(242,183,5,0.2)", borderRadius: 8, padding: "4px 12px", marginBottom: 16 }}>
-                      <span style={{ color: "#F2B705", fontSize: 12, fontWeight: 700, letterSpacing: 1 }}>PASO {currentStep + 1} DE {TOTAL}</span>
-                    </div>
-                    <h2 style={{ color: "white", fontSize: "clamp(24px, 3.5vw, 38px)", fontWeight: 900, lineHeight: 1.25, marginBottom: 12 }}>
-                      {step.question}
-                    </h2>
-                    <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 16, padding: 20, marginBottom: 24, border: "1px solid rgba(255,255,255,0.1)" }}>
-                      <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 15, lineHeight: 1.6, margin: 0 }}>
-                        <span style={{ color: "#F2B705", fontWeight: 800 }}>Nota:</span> Para hacer el estudio de su caso particular necesitamos tener los datos de su obligación para lo cual le invitamos a que nos comparta el último extracto de su crédito hipotecario con <strong style={{ color: "white" }}>{answers["banco"] || "su banco"}</strong>.
-                      </p>
-                    </div>
-                  </div>
 
-                  <div style={{ marginBottom: 40 }}>
-                    <label style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", display: "block", marginBottom: 12 }}>
-                      PDF O IMAGEN DEL EXTRACTO
-                    </label>
-                    <div style={{ position: "relative" }}>
-                      <input
-                        type="file"
-                        accept=".pdf,image/*"
-                        onChange={handleFileChange}
-                        id="extractoFile"
-                        style={{ display: "none" }}
-                      />
-                      <label
-                        htmlFor="extractoFile"
-                        style={{
-                          display: "flex", alignItems: "center", gap: 12,
-                          padding: "24px", borderRadius: 16,
-                          background: fileData ? "rgba(37,211,102,0.1)" : "rgba(255,255,255,0.03)",
-                          border: fileData ? "2px solid rgba(37,211,102,0.4)" : "2px dashed rgba(255,255,255,0.15)",
-                          color: fileData ? "#25D366" : "rgba(255,255,255,0.6)",
-                          cursor: "pointer", fontSize: 16, transition: "all 0.2s"
-                        }}
-                      >
-                        <span style={{ fontSize: 24 }}>{fileData ? "📄" : "📎"}</span>
-                        <span style={{ flex: 1, fontWeight: 600 }}>
-                          {fileData ? fileData.name : "Toque para seleccionar su documento"}
-                        </span>
-                      </label>
-                      {fileData && (
-                        <button
-                          onClick={() => {
-                            setFileData(null);
-                            const fileInput = document.getElementById("extractoFile") as HTMLInputElement;
-                            if (fileInput) fileInput.value = "";
-                          }}
-                          style={{
-                            position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)",
-                            background: "rgba(255,255,255,0.1)", border: "none", color: "white", cursor: "pointer",
-                            fontSize: 12, padding: "8px 12px", borderRadius: 8
-                          }}
-                        >
-                          Cambiar
-                        </button>
-                      )}
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={goNext}
-                    disabled={!fileData}
-                    style={{
-                      background: fileData ? "#F2B705" : "rgba(255,255,255,0.1)",
-                      color: fileData ? "#0d1117" : "rgba(255,255,255,0.3)",
-                      border: "none",
-                      borderRadius: 14, padding: "20px 48px", fontSize: 18, fontWeight: 900,
-                      cursor: fileData ? "pointer" : "not-allowed",
-                      transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
-                    }}
-                  >
-                    Finalizar análisis <Send size={20} />
-                  </button>
-                </div>
-              )}
             </motion.div>
           </AnimatePresence>
         </div>
