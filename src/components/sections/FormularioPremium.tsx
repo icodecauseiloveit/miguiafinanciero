@@ -160,7 +160,9 @@ export default function FormularioPremium() {
   useEffect(() => {
     if (isCompleted) {
       setTimeout(() => {
-        window.location.href = "https://wa.me/573021034288?text=Hola,%20ya%20diligenci%C3%A9%20el%20formulario%20y%20quiero%20continuar%20con%20el%20an%C3%A1lisis%20para%20identificar%20oportunidades%20de%20ahorro%20en%20mi%20cr%C3%A9dito%20hipotecario.";
+        if (process.env.NEXT_PUBLIC_WHATSAPP_LINK) {
+          window.location.href = process.env.NEXT_PUBLIC_WHATSAPP_LINK;
+        }
       }, 2000);
     }
   }, [isCompleted]);
@@ -301,7 +303,7 @@ export default function FormularioPremium() {
 
               <>
                 <a 
-                  href="https://wa.me/573021034288?text=Hola,%20ya%20diligenci%C3%A9%20el%20formulario%20y%20quiero%20continuar%20con%20el%20an%C3%A1lisis%20para%20identificar%20oportunidades%20de%20ahorro%20en%20mi%20cr%C3%A9dito%20hipotecario." 
+                  href={process.env.NEXT_PUBLIC_WHATSAPP_LINK || "#"} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   style={{
