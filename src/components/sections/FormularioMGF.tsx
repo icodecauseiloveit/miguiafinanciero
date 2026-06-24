@@ -417,6 +417,53 @@ export default function FormularioMGF() {
     );
   };
 
+  const step = steps[currentStep];
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email.trim());
+  
+  const step1Valid = 
+    contactData.nombre.trim().length > 1 && 
+    contactData.whatsapp.trim().length > 7 && 
+    contactData.ciudad.trim().length > 2 &&
+    emailValid;
+
+  const step2Valid = 
+    contactData.cedula.trim().length > 5 &&
+    contactData.ocupacion.trim().length > 0 &&
+    contactData.ingresos.trim().length > 0 &&
+    contactData.aumento_cuota.trim().length > 0;
+
+  const contactValid = step?.key === "contacto_1" ? step1Valid : step2Valid;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isCompleted) return;
+      if (document.activeElement?.tagName === "INPUT" || document.activeElement?.tagName === "TEXTAREA") return;
+      
+      if (e.key === "Enter") {
+        if (step?.type === "multiselect") {
+          goNext();
+        } else if (step?.type === "contact" && contactValid) {
+          goNext();
+        }
+        return;
+      }
+
+      const key = e.key.toUpperCase();
+      const index = LETTERS.indexOf(key);
+      
+      if (index !== -1 && step?.options && index < step.options.length) {
+        if (step.type === "radio") {
+          handleRadio(step.options[index], step.key);
+        } else if (step.type === "multiselect") {
+          toggleMulti(step.options[index]);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isCompleted, step, contactValid, answers, multiSelected]);
+
   const handleWhatsApp = () => {
     const phone = "573025261619";
     const temp = getTemperature(score);
@@ -495,7 +542,6 @@ export default function FormularioMGF() {
     );
   }
 
-  const step = steps[currentStep];
   const progress = ((currentStep + 1) / TOTAL) * 100;
 
   const variants = {
@@ -503,22 +549,6 @@ export default function FormularioMGF() {
     center: { opacity: 1, y: 0 },
     exit: (d: number) => ({ opacity: 0, y: d > 0 ? -40 : 40 }),
   };
-
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email.trim());
-  
-  const step1Valid = 
-    contactData.nombre.trim().length > 1 && 
-    contactData.whatsapp.trim().length > 7 && 
-    contactData.ciudad.trim().length > 2 &&
-    emailValid;
-
-  const step2Valid = 
-    contactData.cedula.trim().length > 5 &&
-    contactData.ocupacion.trim().length > 0 &&
-    contactData.ingresos.trim().length > 0 &&
-    contactData.aumento_cuota.trim().length > 0;
-
-  const contactValid = step.key === "contacto_1" ? step1Valid : step2Valid;
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", display: "flex", flexDirection: "column", fontFamily: "var(--font-dm-sans), sans-serif" }}>
