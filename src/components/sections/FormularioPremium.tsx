@@ -34,7 +34,7 @@ const steps: Step[] = [
     section: "Detalles del Crédito",
     key: "banco",
     question: "¿Con qué banco tiene su crédito hipotecario?",
-    options: ["Fondo Nacional del Ahorro", "Banco Popular", "Banco La Hipotecaria", "Banco de Occidente", "Banco de Bogotá", "Banco Davivienda", "Banco Colpatria", "Banco Caja Social", "Bancoomeva", "Bancolombia", "Otra entidad"],
+    options: ["Fondo Nacional del Ahorro", "Banco Popular", "Banco La Hipotecaria", "Banco de Occidente", "Banco de Bogotá", "Banco Davivienda", "Banco Colpatria", "Banco Caja Social", "Banco AV Villas", "Bancoomeva", "Bancolombia", "Otra entidad"],
   },
   {
     id: 2,
