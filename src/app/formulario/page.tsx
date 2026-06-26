@@ -1,4 +1,4 @@
-import FormularioPremium from "@/components/sections/FormularioPremium";
+import Formulario from "@/components/sections/Formulario";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function FormPage() {
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#0d1117" }}>
-      <FormularioPremium />
+      <Formulario />
     </main>
   );
 }
