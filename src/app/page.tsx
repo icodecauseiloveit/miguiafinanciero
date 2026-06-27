@@ -1,17 +1,17 @@
 "use client";
 import { useRef } from "react";
 import { Navbar } from "@/components/layout/Navbar";
-import { Hero } from "@/components/sections/Hero";
-import { Ticker } from "@/components/sections/Ticker";
-import { ProblemSection } from "@/components/sections/ProblemSection";
-import { SolucionSection } from "@/components/sections/SolucionSection";
-import { StatsSection } from "@/components/sections/StatsSection";
-import { SimuladorSection } from "@/components/sections/SimuladorSection";
-import { DerechosSection } from "@/components/sections/DerechosSection";
-import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
-import { GuaranteeSection } from "@/components/sections/GuaranteeSection";
-import { FAQSection } from "@/components/sections/FAQSection";
-import { ContactSection } from "@/components/sections/ContactSection";
+import { Hero } from "@/components/landing/Hero";
+import { Ticker } from "@/components/landing/Ticker";
+import { ProblemSection } from "@/components/landing/ProblemSection";
+import { SolucionSection } from "@/components/landing/SolucionSection";
+import { StatsSection } from "@/components/landing/StatsSection";
+import { SimuladorSection } from "@/components/landing/SimuladorSection";
+import { DerechosSection } from "@/components/landing/DerechosSection";
+import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
+import { GuaranteeSection } from "@/components/landing/GuaranteeSection";
+import { FAQSection } from "@/components/landing/FAQSection";
+import { ContactSection } from "@/components/landing/ContactSection";
 
 export default function Home() {
   const simRef = useRef<HTMLElement>(null);

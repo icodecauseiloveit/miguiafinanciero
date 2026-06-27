@@ -1,4 +1,4 @@
-import Formulario from "@/components/sections/Formulario";
+import Formulario from "@/components/formulario/Formulario";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
