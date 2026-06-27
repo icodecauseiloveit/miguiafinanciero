@@ -11,7 +11,7 @@ export function ProblemSection({ id }: { id?: string }) {
   ];
 
   return (
-    <Section id={id} bg="var(--white)">
+    <Section id={id} className="mesh-bg">
       <FadeIn>
         <SectionLabel text="Desafíos comunes en créditos de vivienda" color="var(--red)" />
         <SectionHeading>
@@ -22,20 +22,30 @@ export function ProblemSection({ id }: { id?: string }) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
         {problems.map((item, i) => (
           <FadeIn key={i} delay={i * 0.1}>
-            <div style={{
-              background: "var(--white)", borderRadius: 22, padding: 32,
-              border: `1.5px solid var(--red)`, height: "100%",
-              boxShadow: "0 4px 20px rgba(30,58,95,0.04)",
-              transition: "all 0.35s cubic-bezier(.22,1,.36,1)",
-              cursor: "default",
-            }}>
+            <div 
+              className="glass-card"
+              style={{
+                borderRadius: 22, padding: 32,
+                border: `1.5px solid rgba(214, 64, 69, 0.3)`, height: "100%",
+                transition: "all 0.35s cubic-bezier(.22,1,.36,1)",
+                cursor: "pointer",
+                position: "relative",
+                overflow: "hidden"
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 15px 40px rgba(214, 64, 69, 0.15)"; e.currentTarget.style.borderColor = "var(--red)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(30, 58, 95, 0.05)"; e.currentTarget.style.borderColor = "rgba(214, 64, 69, 0.3)"; }}
+            >
+              {/* Decorative gradient blob inside card */}
+              <div style={{ position: "absolute", top: -30, right: -30, width: 100, height: 100, background: "var(--red)", opacity: 0.05, borderRadius: "50%", filter: "blur(20px)" }} />
+              
               <div style={{
-                width: 52, height: 52, borderRadius: 14, marginBottom: 18,
-                background: "var(--red-soft)", display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 26,
+                width: 56, height: 56, borderRadius: 18, marginBottom: 20,
+                background: "var(--white)", display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 26, boxShadow: "0 6px 16px rgba(214, 64, 69, 0.12)",
+                border: "1px solid rgba(214, 64, 69, 0.1)"
               }}>{item.icon}</div>
-              <h3 style={{ color: "var(--red)", fontSize: 18, fontWeight: 800, marginBottom: 10, fontFamily: "var(--font-merriweather)" }}>{item.title}</h3>
-              <p style={{ color: "var(--gray)", fontSize: 14, lineHeight: 1.75, margin: 0 }}>{item.desc}</p>
+              <h3 style={{ color: "var(--red)", fontSize: 19, fontWeight: 800, marginBottom: 12, fontFamily: "var(--font-merriweather)", letterSpacing: "-0.5px" }}>{item.title}</h3>
+              <p style={{ color: "var(--gray)", fontSize: 15, lineHeight: 1.6, margin: 0, fontWeight: 500 }}>{item.desc}</p>
             </div>
           </FadeIn>
         ))}

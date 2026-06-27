@@ -14,55 +14,68 @@ export function GuaranteeSection({ id }: { id?: string }) {
     <Section id={id} bg="var(--white)">
       <FadeIn>
         <div style={{
-          borderRadius: 30, padding: "56px 44px", textAlign: "center",
+          borderRadius: 32, padding: "64px 44px", textAlign: "center",
           position: "relative", overflow: "hidden",
-          background: `linear-gradient(160deg, var(--cream), var(--white), var(--cream))`,
+          background: `var(--blue-dark)`,
           border: `2px solid var(--yellow)`,
-          boxShadow: `0 20px 60px var(--yellow-soft)`,
+          boxShadow: `0 24px 70px rgba(19, 42, 69, 0.4), inset 0 0 100px rgba(0,0,0,0.5)`,
         }}>
-          {/* Corner decoration */}
-          <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: "50%", background: "var(--yellow-glow)", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", bottom: -20, left: -20, width: 80, height: 80, borderRadius: "50%", background: "var(--yellow-soft)", pointerEvents: "none" }} />
+          {/* Certificate decorative borders */}
+          <div style={{ position: "absolute", top: 12, left: 12, right: 12, bottom: 12, border: "1px solid rgba(242, 183, 5, 0.2)", borderRadius: 20, pointerEvents: "none" }} />
+          
+          {/* Glowing blobs */}
+          <div style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "var(--yellow)", opacity: 0.05, filter: "blur(40px)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: -50, left: -50, width: 150, height: 150, borderRadius: "50%", background: "var(--blue-mid)", opacity: 0.3, filter: "blur(40px)", pointerEvents: "none" }} />
 
           <div style={{
-            width: 76, height: 76, borderRadius: "50%", margin: "0 auto 24px",
-            background: `linear-gradient(135deg, var(--yellow), var(--yellow-muted))`,
+            width: 88, height: 88, borderRadius: "50%", margin: "0 auto 28px",
+            background: `linear-gradient(135deg, var(--yellow), #FFA000)`,
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 36, boxShadow: `0 6px 20px var(--yellow-soft)`,
+            fontSize: 40, boxShadow: `0 0 0 8px rgba(242, 183, 5, 0.1), 0 10px 30px rgba(242, 183, 5, 0.3)`,
+            position: "relative", zIndex: 2
           }}>🛡️</div>
 
-          <SectionLabel text="Nuestro sello de confianza" />
+          <p style={{
+            color: "var(--yellow)", fontSize: 13, fontWeight: 800,
+            textTransform: "uppercase", letterSpacing: 5, marginBottom: 16,
+            textAlign: "center", fontFamily: "var(--font-dm-sans)",
+          }}>Nuestro Compromiso de Servicio</p>
+          
           <h2 style={{
-            fontFamily: "var(--font-merriweather)", fontSize: "clamp(22px, 3.5vw, 34px)",
-            fontWeight: 900, lineHeight: 1.25, marginBottom: 22, color: "var(--blue)",
+            fontFamily: "var(--font-merriweather)", fontSize: "clamp(26px, 4vw, 40px)",
+            fontWeight: 900, lineHeight: 1.25, marginBottom: 24, color: "var(--white)",
+            textShadow: "0 2px 10px rgba(0,0,0,0.5)"
           }}>
-            Solo pagas cuando tu banco confirme<br /><Highlight>el beneficio aplicado</Highlight>
+            Nuestros honorarios se facturan al<br /><span style={{ color: "var(--yellow)" }}>confirmar el beneficio</span>
           </h2>
-          <p style={{ color: "var(--gray)", fontSize: 15, lineHeight: 1.8, maxWidth: 560, margin: "0 auto 36px" }}>
-            No cobramos anticipos, consultas ni gestión. Solo pagas un porcentaje del ahorro cuando recibas la confirmación oficial y escrita de tu entidad financiera.
+          
+          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 16, lineHeight: 1.8, maxWidth: 620, margin: "0 auto 48px", fontWeight: 400 }}>
+            No cobramos anticipos ni cargos por el estudio inicial. Solo facturamos nuestros honorarios <strong style={{ color: "var(--white)" }}>después</strong> de que recibas la confirmación oficial y escrita por parte de tu entidad financiera de que el beneficio ha sido aplicado, sujeto a las políticas de tu banco.
           </p>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14, maxWidth: 620, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, maxWidth: 680, margin: "0 auto", position: "relative", zIndex: 2 }}>
             {guaranteeItems.map((item, i) => (
               <div key={i} style={{
-                padding: 22, borderRadius: 18, background: "var(--white)",
-                border: `1px solid var(--gray-border)`, textAlign: "center",
-                boxShadow: "0 2px 10px rgba(30,58,95,0.03)",
+                padding: "24px 20px", borderRadius: 20, background: "rgba(38, 75, 115, 0.3)",
+                border: `1px solid rgba(255,255,255,0.1)`, textAlign: "center",
+                backdropFilter: "blur(10px)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
               }}>
-                <span style={{ fontSize: 26, display: "block", marginBottom: 10 }}>{item.icon}</span>
-                <h4 style={{ fontSize: 13, fontWeight: 700, margin: "0 0 6px", color: "var(--blue)" }}>{item.title}</h4>
-                <p style={{ color: "var(--gray)", fontSize: 12, lineHeight: 1.55, margin: 0 }}>{item.desc}</p>
+                <span style={{ fontSize: 28, display: "block", marginBottom: 12 }}>{item.icon}</span>
+                <h4 style={{ fontSize: 14, fontWeight: 700, margin: "0 0 8px", color: "var(--white)" }}>{item.title}</h4>
+                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
               </div>
             ))}
           </div>
 
-          <p style={{
-            marginTop: 32, marginBottom: 0,
-            color: "var(--blue)", fontSize: 16, fontWeight: 800,
-            fontFamily: "var(--font-merriweather)", fontStyle: "italic",
-          }}>
-            "Si tú no ganas, nosotros tampoco."
-          </p>
+          <div style={{ marginTop: 40, paddingTop: 30, borderTop: "1px solid rgba(255,255,255,0.1)", maxWidth: 400, margin: "40px auto 0" }}>
+            <p style={{
+              margin: 0, color: "var(--yellow)", fontSize: 18, fontWeight: 800,
+              fontFamily: "var(--font-merriweather)", fontStyle: "italic",
+            }}>
+              "Estamos comprometidos con tus objetivos financieros."
+            </p>
+          </div>
         </div>
       </FadeIn>
       <CTAButton />

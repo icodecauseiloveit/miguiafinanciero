@@ -17,31 +17,59 @@ export function TestimonialsSection({ id }: { id?: string }) {
         <SectionHeading>Casos de estudio y <span style={{ color: "var(--green)" }}>experiencias</span></SectionHeading>
         <div style={{ height: 20 }} />
       </FadeIn>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
         {testimonios.map((t, i) => (
           <FadeIn key={i} delay={i * 0.1}>
-            <div style={{
-              padding: 30, borderRadius: 22, background: "var(--white)", height: "100%",
+            <div 
+              className="glass-card"
+              style={{
+              padding: 32, borderRadius: 24, height: "100%",
               display: "flex", flexDirection: "column",
-              border: "1px solid rgba(30,58,95,0.06)",
-              boxShadow: "0 4px 20px rgba(30,58,95,0.04)",
               transition: "all 0.3s ease",
             }}>
-              <div style={{ display: "flex", gap: 2, marginBottom: 16 }}>
-                {[...Array(5)].map((_, j) => <span key={j} style={{ color: "var(--yellow)", fontSize: 17 }}>★</span>)}
-              </div>
-              <p style={{ color: "var(--gray)", fontSize: 14, lineHeight: 1.75, margin: "0 0 24px", flex: 1, fontStyle: "italic" }}>"{t.texto}"</p>
-              <div style={{
-                borderTop: `1px solid var(--gray-border)`, paddingTop: 18,
-                display: "flex", justifyContent: "space-between", alignItems: "flex-end",
-              }}>
-                <div>
-                  <p style={{ color: "var(--blue)", fontWeight: 700, fontSize: 14, margin: "0 0 3px" }}>{t.nombre}</p>
-                  <p style={{ color: "var(--gray-light)", fontSize: 12, margin: 0 }}>{t.ciudad}</p>
+              {/* Review Header */}
+              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: "50%",
+                  background: `hsl(${200 + i * 40}, 60%, 45%)`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "white", fontSize: 18, fontWeight: 700
+                }}>
+                  {t.nombre.charAt(0)}
                 </div>
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <p style={{ color: "var(--blue)", fontWeight: 800, fontSize: 15, margin: 0 }}>{t.nombre}</p>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#25D366"/>
+                    </svg>
+                  </div>
+                  <p style={{ color: "var(--gray-light)", fontSize: 12, margin: "2px 0 0" }}>{t.ciudad} • Cliente Verificado</p>
+                </div>
+              </div>
+
+              {/* Stars */}
+              <div style={{ display: "flex", gap: 2, marginBottom: 16 }}>
+                {[...Array(5)].map((_, j) => (
+                  <svg key={j} width="16" height="16" viewBox="0 0 24 24" fill="#F2B705" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                ))}
+              </div>
+
+              {/* Text */}
+              <p style={{ color: "var(--gray)", fontSize: 14, lineHeight: 1.7, margin: "0 0 24px", flex: 1 }}>{t.texto}</p>
+
+              {/* Results Tag */}
+              <div style={{
+                background: "var(--cream)", padding: "12px 16px", borderRadius: 12,
+                border: "1px solid var(--yellow-soft)",
+                display: "flex", justifyContent: "space-between", alignItems: "center"
+              }}>
+                <span style={{ color: "var(--blue-mid)", fontSize: 12, fontWeight: 700 }}>Ahorro logrado:</span>
                 <div style={{ textAlign: "right" }}>
-                  <p style={{ color: "var(--green)", fontWeight: 900, fontSize: 20, margin: "0 0 2px", fontFamily: "var(--font-merriweather)" }}>{t.ahorro}</p>
-                  <p style={{ color: "var(--gray-light)", fontSize: 11, margin: 0 }}>{t.plazo}</p>
+                  <span style={{ color: "var(--green)", fontWeight: 900, fontSize: 16, display: "block" }}>{t.ahorro}</span>
+                  <span style={{ color: "var(--gray-light)", fontSize: 11 }}>({t.plazo})</span>
                 </div>
               </div>
             </div>

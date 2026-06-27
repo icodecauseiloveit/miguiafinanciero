@@ -6,7 +6,7 @@ import { CTAButton } from "../ui/CTAButton";
 export function SolucionSection({ id }: { id?: string }) {
   const steps = [
     { s: "1", t: "Análisis gratis", d: "Estudiamos tu crédito y calculamos cuánto puedes ahorrarte. Sin costo." },
-    { s: "2", t: "Plan de acción", d: "Diseñamos tres propuestas de ahorro y tu elijes la que más se adapta a tu realidad financiera." },
+    { s: "2", t: "Plan de acción", d: "Diseñamos tres propuestas de ahorro y tú eliges la que más se adapta a ti." },
     { s: "3", t: "Gestión con el banco", d: "Nos encargamos del trámite. Hablamos el idioma técnico por ti." },
     { s: "4", t: "Resultados reales", d: "Ves cada mes en tu extracto cómo baja el saldo y se acorta el plazo." },
   ];
@@ -25,23 +25,26 @@ export function SolucionSection({ id }: { id?: string }) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
         {steps.map((item, i) => (
           <FadeIn key={i} delay={i * 0.08}>
-            <div style={{
-              textAlign: "center", padding: "28px 20px",
-              background: "rgba(255,255,255,0.7)", borderRadius: 20,
-              backdropFilter: "blur(8px)",
-              border: "1px solid rgba(255,255,255,0.8)",
-              transition: "all 0.3s ease",
-            }}>
+            <div 
+              className="glass-card"
+              style={{
+                textAlign: "center", padding: "32px 20px",
+                borderRadius: 24, cursor: "default",
+                transition: "all 0.4s cubic-bezier(.22,1,.36,1)",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 15px 35px rgba(37, 211, 102, 0.1)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(30, 58, 95, 0.05)"; }}
+            >
               <div style={{
-                width: 54, height: 54, borderRadius: 16, margin: "0 auto 16px",
-                background: `linear-gradient(135deg, var(--blue), var(--blue-mid))`,
+                width: 60, height: 60, borderRadius: 20, margin: "0 auto 20px",
+                background: `linear-gradient(135deg, var(--green-dark), var(--green))`,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 20, fontWeight: 900, color: "var(--yellow)",
+                fontSize: 22, fontWeight: 900, color: "var(--white)",
                 fontFamily: "var(--font-merriweather)",
-                boxShadow: "0 4px 16px rgba(30,58,95,0.2)",
+                boxShadow: "0 6px 20px rgba(37, 211, 102, 0.3)",
               }}>{item.s}</div>
-              <h4 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8, color: "var(--blue)" }}>{item.t}</h4>
-              <p style={{ color: "var(--gray)", fontSize: 13, lineHeight: 1.65, margin: 0 }}>{item.d}</p>
+              <h4 style={{ fontSize: 17, fontWeight: 800, marginBottom: 10, color: "var(--blue)" }}>{item.t}</h4>
+              <p style={{ color: "var(--gray)", fontSize: 14, lineHeight: 1.6, margin: 0 }}>{item.d}</p>
             </div>
           </FadeIn>
         ))}

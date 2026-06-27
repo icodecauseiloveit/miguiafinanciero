@@ -64,3 +64,34 @@ body {
   background: var(--white);
   color: var(--blue);
 }
+
+.mesh-bg {
+  background-color: var(--cream);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(212, 51%, 24%, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(45, 96%, 48%, 0.06) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(212, 51%, 24%, 0.04) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(45, 96%, 48%, 0.04) 0px, transparent 50%);
+  background-size: 150% 150%;
+  animation: mesh-movement 15s ease infinite alternate;
+}
+
+@keyframes mesh-movement {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px rgba(30, 58, 95, 0.05);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, var(--blue), var(--blue-mid), var(--yellow-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

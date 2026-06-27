@@ -7,11 +7,12 @@ interface SectionProps {
   id?: string;
   padY?: string;
   innerRef?: React.RefObject<HTMLElement | null>;
+  className?: string;
 }
 
-export function Section({ children, bg, id, padY = "110px", innerRef }: SectionProps) {
+export function Section({ children, bg, id, padY = "110px", innerRef, className = "" }: SectionProps) {
   return (
-    <section ref={innerRef} id={id} style={{ padding: `${padY} 28px`, background: bg || "var(--white)", position: "relative" }}>
+    <section ref={innerRef} id={id} className={className} style={{ padding: `${padY} 28px`, background: bg || "var(--white)", position: "relative" }}>
       <div style={{ maxWidth: 960, margin: "0 auto", position: "relative", zIndex: 1 }}>
         {children}
       </div>

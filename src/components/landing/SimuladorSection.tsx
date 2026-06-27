@@ -268,13 +268,13 @@ function Simulador() {
               </div>
 
               {/* Caja de ahorro */}
-              <div className="rounded-3xl bg-gradient-to-br from-[var(--cream)] to-[var(--cream-deep)] border-2 border-[#e4ae00] shadow-lg text-center transform transition-transform hover:scale-[1.02]" style={{ padding: "clamp(12px, 2vw, 20px)" }}>
+              <div className="rounded-3xl bg-gradient-to-br from-[var(--cream)] to-[var(--cream-deep)] border-2 border-[#e4ae00] text-center transform transition-all hover:scale-[1.02]" style={{ padding: "clamp(12px, 2vw, 20px)", boxShadow: "0 10px 40px rgba(37, 211, 102, 0.2), 0 0 0 1px rgba(242, 183, 5, 0.3)" }}>
                 <p className="text-blue-900 text-xs sm:text-sm font-bold uppercase tracking-widest mb-2">Tu ahorro proyectado sería de</p>
                 <motion.p 
                   initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", delay: 0.4 }}
-                  className="text-4xl sm:text-5xl lg:text-6xl text-blue-900 font-black mb-2 leading-none" style={{ fontFamily: "var(--font-merriweather)" }}
+                  className="text-4xl sm:text-5xl lg:text-6xl text-blue-900 font-black mb-2 leading-none" style={{ fontFamily: "var(--font-merriweather)", textShadow: "0 2px 10px rgba(37,211,102,0.3)" }}
                 >
-                  {fmt(ahorro)}
+                  <span className="text-gradient">{fmt(ahorro)}</span>
                 </motion.p>
                 <p className="text-blue-800 text-base sm:text-xl font-medium mt-4">
                   Terminarías de pagar <strong className="font-black text-yellow-700 bg-yellow-100 px-3 py-1 rounded-md">{aniosSaved} años antes</strong>.
