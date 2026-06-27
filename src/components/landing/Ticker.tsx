@@ -2,12 +2,12 @@
 
 export function Ticker() {
   const messages = [
-    "\"Pago y pago, pero cada vez debo más\"",
-    "\"La cuota se triplicó en pocos años\"",
-    "\"No sabía que la ley me daba esos derechos\"",
-    "\"El banco me dijo que no se podía\"",
-    "\"Mi papá perdió su casa con el UPAC\"",
-    "\"Mucho esfuerzo, cero avance\"",
+    "\"Logré reducir el plazo de mi crédito varios años\"",
+    "\"Ahora pago más a capital y menos a intereses\"",
+    "\"No sabía que la Ley 546 me daba estos derechos\"",
+    "\"Mantengo mis beneficios y optimizo mi futuro financiero\"",
+    "\"Pude optimizar mi crédito sin cambiar de banco\"",
+    "\"Una decisión inteligente respaldada por la ley\"",
   ];
 
   return (

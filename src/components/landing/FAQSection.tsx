@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
+import { CTAButton } from "../ui/CTAButton";
 
 export function FAQSection({ id }: { id?: string }) {
   const faqs = [
@@ -9,9 +10,9 @@ export function FAQSection({ id }: { id?: string }) {
     { q: "¿Esto es legal? ¿El banco puede negarse?", a: "Es 100% legal. La Ley 546 de 1999 (Artículo 17, numeral 8) establece que todo crédito de vivienda permite prepago total o parcial sin penalidad alguna, y el deudor elige si reduce cuota o plazo. El Artículo 20 da derecho a reestructuración. El banco está obligado por ley." },
     { q: "¿Cuánto me puedo ahorrar realmente?", a: "Depende del monto, la tasa y el plazo de tu crédito. En promedio, nuestros clientes logran ahorros entre el 40% y 60% del total de intereses, y reduccin el plazo entre 10 y 18 años. Usa nuestro simulador para una estimación, o solicita tu análisis personalizado gratuito." },
     { q: "¿Funciona para créditos en UVR y en pesos?", a: "Sí. La Ley 546 aplica para todos los créditos de vivienda en Colombia, tanto en UVR como en tasa fija en pesos. Los créditos en UVR suelen tener un potencial de ahorro mayor." },
-    { q: "¿Cuánto cobran por el servicio?", a: "Primero hacemos un análisis gratuito donde ves exactamente cuánto puedes ahorrarte. Solo si decides avanzar, cobramos un porcentaje del ahorro logrado. Pero lo más importante: no pagas nada hasta que recibas la confirmación oficial de tu banco de que el beneficio ha sido efectivamente aplicado a tu crédito. Si el banco no lo aplica, no nos debes un solo peso. Cero riesgo para ti." },
-    { q: "¿Y si el banco no aplica el beneficio?", a: "Si por cualquier razón el banco no aplica la reestructuración, no nos pagas absolutamente nada. Nuestros honorarios están 100% condicionados a que tú recibas la confirmación escrita de tu entidad financiera de que el beneficio fue aplicado exitosamente. No hay letra pequeña, no hay cobros ocultos, no hay anticipos. Asumimos todo el riesgo nosotros." },
-    { q: "¿Yo no puedo hacer esto solo?", a: "Puedes, igual que puedes hacer tu propia declaración de renta. La diferencia está en la experticia. Un abono a capital mal estructurado puede ahorrarte $5 millones. Uno optimizado según la Ley 546, $50 millones o más. Además, con nosotros no arriesgas nada: solo pagas cuando el resultado está confirmado por tu banco." },
+    { q: "¿Cuánto cobran por el servicio?", a: "Primero hacemos un análisis donde ves cuánto puedes ahorrarte. Solo si decides avanzar y el banco confirma el beneficio, cobramos un porcentaje del ahorro logrado. Nuestros honorarios se facturan únicamente tras la confirmación oficial de tu entidad." },
+    { q: "¿Y si el banco no aplica el beneficio?", a: "Si por cualquier razón técnica la entidad no aplica la reestructuración, el análisis inicial no genera costo. Nuestros honorarios están 100% condicionados a que tú recibas la confirmación escrita de tu entidad financiera de que el beneficio fue aplicado exitosamente. No hay cobros ocultos ni anticipos." },
+    { q: "¿Yo no puedo hacer esto solo?", a: "Puedes, igual que puedes hacer tu propia declaración de renta. La diferencia está en la experticia. Un abono a capital mal estructurado puede ahorrarte $5 millones. Uno optimizado según la Ley 546, mucho más. Además, nuestros honorarios solo se generan cuando el resultado está confirmado por tu banco." },
   ];
 
   return (
@@ -26,6 +27,7 @@ export function FAQSection({ id }: { id?: string }) {
           <FAQList faqs={faqs} />
         </div>
       </FadeIn>
+      <CTAButton />
     </Section>
   );
 }

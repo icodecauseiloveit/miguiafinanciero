@@ -1,6 +1,7 @@
 "use client";
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
+import { CTAButton } from "../ui/CTAButton";
 
 export function ProblemSection({ id }: { id?: string }) {
   const problems = [
@@ -39,6 +40,7 @@ export function ProblemSection({ id }: { id?: string }) {
           </FadeIn>
         ))}
       </div>
+      <CTAButton />
     </Section>
   );
 }

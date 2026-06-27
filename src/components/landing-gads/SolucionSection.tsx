@@ -1,6 +1,7 @@
 "use client";
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel, Highlight } from "../ui/Section";
+import { CTAButton } from "../ui/CTAButton";
 
 export function SolucionSection({ id }: { id?: string }) {
   const steps = [
@@ -45,6 +46,7 @@ export function SolucionSection({ id }: { id?: string }) {
           </FadeIn>
         ))}
       </div>
+      <CTAButton />
     </Section>
   );
 }

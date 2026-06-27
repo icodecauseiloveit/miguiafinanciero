@@ -1,12 +1,13 @@
 "use client";
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel, Highlight } from "../ui/Section";
+import { CTAButton } from "../ui/CTAButton";
 
 export function GuaranteeSection({ id }: { id?: string }) {
   const guaranteeItems = [
     { icon: "✅", title: "Sin anticipos", desc: "Cero pesos hasta ver resultados." },
     { icon: "📄", title: "Confirmación del banco", desc: "Solo cobramos con documento escrito." },
-    { icon: "🤝", title: "Cero riesgo para ti", desc: "Si no se aplica, no debes nada." },
+    { icon: "🤝", title: "Honorarios por éxito", desc: "Solo facturamos si hay beneficio real." },
   ];
 
   return (
@@ -64,6 +65,7 @@ export function GuaranteeSection({ id }: { id?: string }) {
           </p>
         </div>
       </FadeIn>
+      <CTAButton />
     </Section>
   );
 }

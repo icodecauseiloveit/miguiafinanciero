@@ -31,21 +31,31 @@ export function ContactSection({ innerRef, id }: { innerRef?: React.RefObject<HT
               SOLICITAR ANÁLISIS GRATUITO →
             </Link>
             <p style={{
-              color: "#D64045", fontSize: 13, fontWeight: 800, letterSpacing: "0.5px", margin: 0,
+              color: "var(--blue)", fontSize: 13, fontWeight: 800, letterSpacing: "0.5px", margin: 0,
               textTransform: "uppercase", opacity: 0.9
             }}>
-              CADA DIA QUE POSTERGAS ESTA DECISION PIERDES MILLONES
+              DA EL PRIMER PASO PARA OPTIMIZAR TU CRÉDITO HOY
             </p>
           </div>
         </div>
       </FadeIn>
 
-      <footer style={{ marginTop: 120, paddingTop: 40, borderTop: `1px solid var(--gray-border)`, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
-        <p style={{ color: "var(--gray-light)", fontSize: 13 }}>2026 Miguíafinanciero. Todos los derechos reservados.</p>
-        <div style={{ display: "flex", gap: 24 }}>
-          <Link href="/privacidad" style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>Política de Privacidad</Link>
-          <Link href="/ley546" style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>Ley 546</Link>
+      <footer style={{ marginTop: 120, paddingTop: 40, borderTop: `1px solid var(--gray-border)`, display: "flex", flexDirection: "column", gap: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
+          <div>
+            <p style={{ color: "var(--blue)", fontSize: 14, fontWeight: 700, margin: "0 0 8px" }}>Miguíafinanciero</p>
+            <p style={{ color: "var(--gray)", fontSize: 13, margin: "0 0 4px" }}>Dg 38 # 82-70, Cartagena, Colombia</p>
+            <p style={{ color: "var(--gray)", fontSize: 13, margin: 0 }}>
+              Email: <a href="mailto:gary@miguiafinanciero.com" style={{ color: "var(--blue-mid)", textDecoration: "none" }}>gary@miguiafinanciero.com</a>
+            </p>
+          </div>
+          <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+            <Link href="/privacidad" style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>Política de Privacidad</Link>
+            <Link href="/terminos" style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>Términos y Condiciones</Link>
+            <Link href="/ley546" style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>Ley 546</Link>
+          </div>
         </div>
+        <p style={{ color: "var(--gray-light)", fontSize: 12, marginTop: 10 }}>2026 Miguíafinanciero. Todos los derechos reservados.</p>
       </footer>
     </Section>
   );

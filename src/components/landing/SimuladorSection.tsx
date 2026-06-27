@@ -4,6 +4,7 @@ import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 import { FadeIn } from "../ui/FadeIn";
 import { Slider, Button, Label } from "@heroui/react";
 import { motion } from "framer-motion";
+import { CTAButton } from "../ui/CTAButton";
 
 export function SimuladorSection({ innerRef, id }: { innerRef?: React.RefObject<HTMLElement | null>, id?: string }) {
   return (
@@ -147,143 +148,147 @@ function Simulador() {
   const pctNew = Math.max(10, (totalNew / maxTotal) * 100);
 
   return (
-    <div 
-      className="p-5 md:p-10 w-full"
-      style={{
-        background: "var(--white)", borderRadius: 28,
-        border: `1px solid var(--gray-border)`, maxWidth: 700, margin: "0 auto",
-        boxShadow: `0 24px 50px rgba(30,58,95,0.06)`,
-      }}
-    >
-      <div className="flex flex-col sm:flex-row gap-2.5 mb-8">
-        {([
-          { key: "UVR" as const, label: "Crédito en UVR", icon: "📈", desc: "Cuota variable con inflación" },
-          { key: "PESOS" as const, label: "Crédito en Pesos", icon: "💵", desc: "Cuota fija, tasa fija" },
-        ]).map(opt => (
-          <button key={opt.key} onClick={() => { setModo(opt.key); setMostrar(false); }} style={{
-            flex: 1, padding: "16px 14px", borderRadius: 18, cursor: "pointer",
-            border: `2px solid ${modo === opt.key ? "var(--blue)" : "transparent"}`,
-            background: modo === opt.key ? "var(--blue-light)" : "var(--off-white)",
-            transition: "all 0.2s ease", textAlign: "center",
-          }}>
-            <span style={{ fontSize: 24, display: "block", marginBottom: 6 }}>{opt.icon}</span>
-            <span style={{ display: "block", color: "var(--blue)", fontSize: 15, fontWeight: 700 }}>{opt.label}</span>
-            <span style={{ display: "block", color: "var(--gray-light)", fontSize: 12, marginTop: 4 }}>{opt.desc}</span>
-          </button>
-        ))}
-      </div>
-
-      <CustomSlider label="Monto total del crédito" value={monto} set={setMonto} min={50} max={600} format={(v) => `$${v} millones`} />
-      
-      {modo === "UVR" ? (
-        <CustomSlider label="Spread UVR (tasa del banco)" value={spreadUVR} set={setSpreadUVR} min={3} max={14} step={0.1} format={(v) => `${v}%`} />
-      ) : (
-        <CustomSlider label="Tasa fija en pesos" value={tasaPesos} set={setTasaPesos} min={9} max={22} step={0.1} format={(v) => `${v}% EA`} />
-      )}
-
-      <CustomSlider label="Plazo del crédito" value={plazo} set={setPlazo} min={5} max={30} format={(v) => `${v} años`} />
-
-      <div style={{
-        padding: "14px 18px", borderRadius: 14, marginBottom: 28,
-        background: modo === "UVR" ? "var(--red-soft)" : "var(--blue-light)",
-        border: `1px solid ${modo === "UVR" ? "rgba(214,64,69,0.15)" : "rgba(30,58,95,0.08)"}`,
-      }}>
-        <p style={{ color: modo === "UVR" ? "var(--red)" : "var(--blue-mid)", fontSize: 13, margin: 0, fontWeight: 600 }}>
-          {alertaIcon} {tasaLabel}
-        </p>
-        <p style={{ color: "var(--gray)", fontSize: 12, margin: "6px 0 0", lineHeight: 1.5 }}>
-          {alerta}
-        </p>
-      </div>
-
-      <Button 
-        onPress={() => setMostrar(true)}
-        className="w-full h-16 text-lg font-black tracking-wider bg-[#1E3A5F] text-white rounded-2xl transition-all hover:bg-[#112166] active:scale-95 shadow-xl"
+    <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+      <div 
+        className="w-full"
+        style={{
+          padding: "clamp(12px, 2.5vw, 24px)",
+          background: "var(--white)", borderRadius: 32,
+          border: `1px solid var(--gray-border)`, maxWidth: 740,
+          boxShadow: `0 24px 50px rgba(30,58,95,0.06)`,
+        }}
       >
-        VER PROYECCIÓN DE AHORRO
-      </Button>
-
-      {/* RESULTADOS */}
-      {mostrar && (
-        <div ref={containerRef} style={{ marginTop: 40, animation: "fadeUp 0.6s ease" }}>
-          <h3 style={{ fontSize: 22, color: "var(--blue)", fontWeight: 900, marginBottom: 24, textAlign: "center", fontFamily: "var(--font-merriweather)" }}>
-            Comparativa de tu crédito
-          </h3>
-
-          <div className="flex flex-col md:flex-row gap-6 mb-8">
-            {/* Gráfica */}
-            <div className="flex-1 flex items-end justify-around p-6 bg-gray-50 rounded-2xl border border-gray-100 h-64 overflow-hidden relative">
-              {/* Barra Base */}
-              <div className="flex flex-col items-center justify-end h-full w-full max-w-[100px] z-10">
-                <span className="text-[10px] sm:text-xs text-gray-500 font-bold mb-2 text-center leading-tight">Sin<br/>Abonos</span>
-                <motion.div 
-                  initial={{ height: 0 }} animate={{ height: `${pctBase}%` }} transition={{ duration: 1, ease: "easeOut" }}
-                  className="w-full bg-red-400 rounded-t-xl relative flex flex-col justify-end pb-3"
-                  style={{ minHeight: '20%' }}
-                >
-                  <span className="text-white text-xs sm:text-sm font-black text-center absolute -top-6 w-full text-red-500">{fmt(totalBase)}</span>
-                </motion.div>
-                <span className="text-xs text-red-500 font-bold mt-3">{plazo} años</span>
-              </div>
-              
-              {/* Barra Optimizada */}
-              <div className="flex flex-col items-center justify-end h-full w-full max-w-[100px] z-10">
-                <span className="text-[10px] sm:text-xs text-gray-500 font-bold mb-2 text-center leading-tight">Con<br/>Optimización</span>
-                <motion.div 
-                  initial={{ height: 0 }} animate={{ height: `${pctNew}%` }} transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-                  className="w-full bg-green-500 rounded-t-xl relative flex flex-col justify-end pb-3 shadow-[0_0_15px_rgba(37,211,102,0.4)]"
-                  style={{ minHeight: '10%' }}
-                >
-                  <span className="text-white text-xs sm:text-sm font-black text-center absolute -top-6 w-full text-green-600">{fmt(totalNew)}</span>
-                </motion.div>
-                <span className="text-xs text-green-600 font-bold mt-3">~{plazoNew} años</span>
-              </div>
-              
-              {/* Grid lines background */}
-              <div className="absolute inset-0 flex flex-col justify-between p-6 pb-12 opacity-10 pointer-events-none">
-                <div className="w-full border-t border-gray-500"></div>
-                <div className="w-full border-t border-gray-500"></div>
-                <div className="w-full border-t border-gray-500"></div>
-                <div className="w-full border-t border-gray-500"></div>
-              </div>
-            </div>
-
-            {/* Datos numéricos */}
-            <div className="flex-1 flex flex-col gap-4 justify-center">
-              <div className="p-4 rounded-xl bg-red-50 border border-red-100">
-                <p className="text-xs text-red-600 font-bold uppercase tracking-wider mb-1">Total a pagar al banco</p>
-                <p className="text-2xl text-red-500 font-black mb-1">{fmt(totalBase)}</p>
-                <p className="text-xs text-gray-600">Cuota actual est: <strong className="text-gray-800">{fmtCuota(cuotaBase)}</strong></p>
-              </div>
-              <div className="p-4 rounded-xl bg-green-50 border border-green-200 shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 right-0 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">¡ÓPTIMO!</div>
-                <p className="text-xs text-green-700 font-bold uppercase tracking-wider mb-1">Nuevo total a pagar</p>
-                <p className="text-2xl text-green-600 font-black mb-1">{fmt(totalNew)}</p>
-                <p className="text-xs text-gray-600">Nueva cuota est: <strong className="text-gray-800">{fmtCuota(cuotaNew)}</strong></p>
-              </div>
-            </div>
+          <div className="flex flex-col sm:flex-row gap-2.5 mb-8">
+            {([
+              { key: "UVR" as const, label: "Crédito en UVR", icon: "📈", desc: "Cuota variable con inflación" },
+              { key: "PESOS" as const, label: "Crédito en Pesos", icon: "💵", desc: "Cuota fija, tasa fija" },
+            ]).map(opt => (
+              <button key={opt.key} onClick={() => { setModo(opt.key); setMostrar(false); }} style={{
+                flex: 1, padding: "16px 14px", borderRadius: 18, cursor: "pointer",
+                border: `2px solid ${modo === opt.key ? "var(--blue)" : "transparent"}`,
+                background: modo === opt.key ? "var(--blue-light)" : "var(--off-white)",
+                transition: "all 0.2s ease", textAlign: "center",
+              }}>
+                <span style={{ fontSize: 24, display: "block", marginBottom: 6 }}>{opt.icon}</span>
+                <span style={{ display: "block", color: "var(--blue)", fontSize: 15, fontWeight: 700 }}>{opt.label}</span>
+                <span style={{ display: "block", color: "var(--gray-light)", fontSize: 12, marginTop: 4 }}>{opt.desc}</span>
+              </button>
+            ))}
           </div>
 
-          {/* Caja de ahorro */}
-          <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-[var(--cream)] to-[var(--cream-deep)] border-2 border-[#e4ae00] shadow-lg text-center transform transition-transform hover:scale-[1.02]">
-            <p className="text-blue-900 text-xs sm:text-sm font-bold uppercase tracking-widest mb-2">Tu ahorro proyectado sería de</p>
-            <motion.p 
-              initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", delay: 0.4 }}
-              className="text-4xl sm:text-5xl lg:text-6xl text-blue-900 font-black mb-2 leading-none" style={{ fontFamily: "var(--font-merriweather)" }}
-            >
-              {fmt(ahorro)}
-            </motion.p>
-            <p className="text-blue-800 text-base sm:text-xl font-medium mt-4">
-              Terminarías de pagar <strong className="font-black text-yellow-700 bg-yellow-100 px-3 py-1 rounded-md">{aniosSaved} años antes</strong>.
+          <CustomSlider label="Monto total del crédito" value={monto} set={setMonto} min={50} max={600} format={(v) => `$${v} millones`} />
+          
+          {modo === "UVR" ? (
+            <CustomSlider label="Spread UVR (tasa del banco)" value={spreadUVR} set={setSpreadUVR} min={3} max={14} step={0.1} format={(v) => `${v}%`} />
+          ) : (
+            <CustomSlider label="Tasa fija en pesos" value={tasaPesos} set={setTasaPesos} min={9} max={22} step={0.1} format={(v) => `${v}% EA`} />
+          )}
+
+          <CustomSlider label="Plazo del crédito" value={plazo} set={setPlazo} min={5} max={30} format={(v) => `${v} años`} />
+
+          <div style={{
+            padding: "14px 18px", borderRadius: 14, marginBottom: 28,
+            background: modo === "UVR" ? "var(--red-soft)" : "var(--blue-light)",
+            border: `1px solid ${modo === "UVR" ? "rgba(214,64,69,0.15)" : "rgba(30,58,95,0.08)"}`,
+          }}>
+            <p style={{ color: modo === "UVR" ? "var(--red)" : "var(--blue-mid)", fontSize: 13, margin: 0, fontWeight: 600 }}>
+              {alertaIcon} {tasaLabel}
+            </p>
+            <p style={{ color: "var(--gray)", fontSize: 12, margin: "6px 0 0", lineHeight: 1.5 }}>
+              {alerta}
             </p>
           </div>
 
-          {/* Disclaimer */}
-          <p style={{ color: "var(--gray)", fontSize: 11, textAlign: "justify", marginTop: 24, lineHeight: 1.6, padding: "0 10px" }}>
-            * <strong>Disclaimer legal:</strong> Esta es una simulación proyectada únicamente para darte una idea aproximada del ahorro potencial. Los cálculos asumen un incremento de tu cuota mensual en un <strong>35%</strong>, destinado 100% a capital de forma recurrente. Los valores finales pueden y van a variar dependiendo de la fecha de desembolso, liquidación exacta de tu entidad financiera, cobro de seguros obligatorios, y el comportamiento real y futuro de la inflación (para créditos en UVR). Para un cálculo exacto, solicita un análisis profesional basado en tus extractos bancarios recientes.
-          </p>
+          <Button 
+            onPress={() => setMostrar(true)}
+            className="w-full h-16 text-lg font-black tracking-wider bg-[#1E3A5F] text-white rounded-2xl transition-all hover:bg-[#112166] active:scale-95 shadow-xl"
+          >
+            VER PROYECCIÓN DE AHORRO
+          </Button>
+
+          {/* RESULTADOS */}
+          {mostrar && (
+            <div ref={containerRef} style={{ marginTop: 40, animation: "fadeUp 0.6s ease" }}>
+              <h3 style={{ fontSize: 22, color: "var(--blue)", fontWeight: 900, marginBottom: 24, textAlign: "center", fontFamily: "var(--font-merriweather)" }}>
+                Comparativa de tu crédito
+              </h3>
+
+              <div className="flex flex-col md:flex-row gap-6 mb-8">
+                {/* Gráfica */}
+                <div className="flex-1 flex items-end justify-around bg-gray-50 rounded-2xl border border-gray-100 h-64 overflow-hidden relative" style={{ padding: 12 }}>
+                  {/* Barra Base */}
+                  <div className="flex flex-col items-center justify-end h-full w-full max-w-[100px] z-10">
+                    <span className="text-[10px] sm:text-xs text-gray-500 font-bold mb-2 text-center leading-tight">Sin<br/>Abonos</span>
+                    <motion.div 
+                      initial={{ height: 0 }} animate={{ height: `${pctBase}%` }} transition={{ duration: 1, ease: "easeOut" }}
+                      className="w-full bg-red-400 rounded-t-xl relative flex flex-col justify-end pb-3"
+                      style={{ minHeight: '20%' }}
+                    >
+                      <span className="text-white text-xs sm:text-sm font-black text-center absolute -top-6 w-full text-red-500">{fmt(totalBase)}</span>
+                    </motion.div>
+                    <span className="text-xs text-red-500 font-bold mt-3">{plazo} años</span>
+                  </div>
+                  
+                  {/* Barra Optimizada */}
+                  <div className="flex flex-col items-center justify-end h-full w-full max-w-[100px] z-10">
+                    <span className="text-[10px] sm:text-xs text-gray-500 font-bold mb-2 text-center leading-tight">Con<br/>Optimización</span>
+                    <motion.div 
+                      initial={{ height: 0 }} animate={{ height: `${pctNew}%` }} transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                      className="w-full bg-green-500 rounded-t-xl relative flex flex-col justify-end pb-3 shadow-[0_0_15px_rgba(37,211,102,0.4)]"
+                      style={{ minHeight: '10%' }}
+                    >
+                      <span className="text-white text-xs sm:text-sm font-black text-center absolute -top-6 w-full text-green-600">{fmt(totalNew)}</span>
+                    </motion.div>
+                    <span className="text-xs text-green-600 font-bold mt-3">~{plazoNew} años</span>
+                  </div>
+                  
+                  {/* Grid lines background */}
+                  <div className="absolute inset-0 flex flex-col justify-between opacity-10 pointer-events-none" style={{ padding: "12px 12px 24px" }}>
+                    <div className="w-full border-t border-gray-500"></div>
+                    <div className="w-full border-t border-gray-500"></div>
+                    <div className="w-full border-t border-gray-500"></div>
+                    <div className="w-full border-t border-gray-500"></div>
+                  </div>
+                </div>
+
+                {/* Datos numéricos */}
+                <div className="flex-1 flex flex-col gap-4 justify-center">
+                  <div className="rounded-xl bg-red-50 border border-red-100" style={{ padding: "10px 12px" }}>
+                    <p className="text-xs text-red-600 font-bold uppercase tracking-wider mb-1">Total a pagar al banco</p>
+                    <p className="text-2xl text-red-500 font-black mb-1">{fmt(totalBase)}</p>
+                    <p className="text-xs text-gray-600">Cuota actual est: <strong className="text-gray-800">{fmtCuota(cuotaBase)}</strong></p>
+                  </div>
+                  <div className="rounded-xl bg-green-50 border border-green-200 shadow-sm relative overflow-hidden" style={{ padding: "10px 12px" }}>
+                    <div className="absolute top-0 right-0 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">¡ÓPTIMO!</div>
+                    <p className="text-xs text-green-700 font-bold uppercase tracking-wider mb-1">Nuevo total a pagar</p>
+                    <p className="text-2xl text-green-600 font-black mb-1">{fmt(totalNew)}</p>
+                    <p className="text-xs text-gray-600">Nueva cuota est: <strong className="text-gray-800">{fmtCuota(cuotaNew)}</strong></p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Caja de ahorro */}
+              <div className="rounded-3xl bg-gradient-to-br from-[var(--cream)] to-[var(--cream-deep)] border-2 border-[#e4ae00] shadow-lg text-center transform transition-transform hover:scale-[1.02]" style={{ padding: "clamp(12px, 2vw, 20px)" }}>
+                <p className="text-blue-900 text-xs sm:text-sm font-bold uppercase tracking-widest mb-2">Tu ahorro proyectado sería de</p>
+                <motion.p 
+                  initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", delay: 0.4 }}
+                  className="text-4xl sm:text-5xl lg:text-6xl text-blue-900 font-black mb-2 leading-none" style={{ fontFamily: "var(--font-merriweather)" }}
+                >
+                  {fmt(ahorro)}
+                </motion.p>
+                <p className="text-blue-800 text-base sm:text-xl font-medium mt-4">
+                  Terminarías de pagar <strong className="font-black text-yellow-700 bg-yellow-100 px-3 py-1 rounded-md">{aniosSaved} años antes</strong>.
+                </p>
+              </div>
+
+              {/* Disclaimer */}
+              <p style={{ color: "var(--gray)", fontSize: 11, textAlign: "justify", marginTop: 24, lineHeight: 1.6, padding: "0 10px" }}>
+                * <strong>Disclaimer legal:</strong> Esta es una simulación proyectada únicamente para darte una idea aproximada del ahorro potencial. Los cálculos asumen un incremento de tu cuota mensual en un <strong>35%</strong>, destinado 100% a capital de forma recurrente. Los valores finales pueden y van a variar dependiendo de la fecha de desembolso, liquidación exacta de tu entidad financiera, cobro de seguros obligatorios, y el comportamiento real y futuro de la inflación (para créditos en UVR). Para un cálculo exacto, solicita un análisis profesional basado en tus extractos bancarios recientes.
+              </p>
+              <CTAButton style={{ marginTop: 32 }} />
+            </div>
+          )}
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
 }

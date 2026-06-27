@@ -1,5 +1,6 @@
 "use client";
 import { FadeIn } from "../ui/FadeIn";
+import { CTAButton } from "../ui/CTAButton";
 import { AnimatedNumber } from "../ui/AnimatedNumber";
 
 export function StatsSection({ id }: { id?: string }) {
@@ -37,6 +38,7 @@ export function StatsSection({ id }: { id?: string }) {
           </FadeIn>
         ))}
       </div>
+      <CTAButton style={{ marginTop: 64 }} />
     </section>
   );
 }

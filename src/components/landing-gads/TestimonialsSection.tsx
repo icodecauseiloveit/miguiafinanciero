@@ -1,6 +1,7 @@
 "use client";
 import { FadeIn } from "../ui/FadeIn";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
+import { CTAButton } from "../ui/CTAButton";
 
 export function TestimonialsSection({ id }: { id?: string }) {
   const testimonios = [
@@ -52,6 +53,7 @@ export function TestimonialsSection({ id }: { id?: string }) {
           * Nota legal: Los ejemplos de ahorro y reducción de plazo presentados corresponden a casos reales de clientes. Sin embargo, los resultados individuales pueden variar dependiendo de factores como el saldo de la deuda, la tasa de interés actual, el plazo remanente y las políticas específicas de la entidad financiera.
         </p>
       </div>
+      <CTAButton />
     </Section>
   );
 }
