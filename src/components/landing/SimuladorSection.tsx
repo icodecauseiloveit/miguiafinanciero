@@ -23,6 +23,7 @@ function Simulador() {
   const [modo, setModo] = useState<"UVR" | "PESOS">("UVR");
   const [monto, setMonto] = useState(150);
   const [plazo, setPlazo] = useState(20);
+  const [cuotasPagadas, setCuotasPagadas] = useState(0);
   const [mostrar, setMostrar] = useState(false);
 
   // UVR params
@@ -43,27 +44,42 @@ function Simulador() {
     }
   }, [mostrar]);
 
+  // Asegurar que cuotasPagadas no exceda el plazo
+  useEffect(() => {
+    if (cuotasPagadas > plazo * 12) {
+      setCuotasPagadas(plazo * 12);
+    }
+  }, [plazo, cuotasPagadas]);
+
   // ── Cálculos ──
   const montoP = monto * 1e6;
   let cuotaBase = 0, totalBase = 0, interesesBase = 0;
   let cuotaNew = 0, totalNew = 0, ahorro = 0, plazoNew = 0, aniosSaved = 0;
   let tasaLabel = "", alerta = "", alertaIcon = "";
+  const k = cuotasPagadas;
 
   if (modo === "UVR") {
     const tasaEfectivaUVR = (spreadUVR + inflacionAnual) / 100;
     const tmUVR = tasaEfectivaUVR / 12;
     const nUVR = plazo * 12;
+    const n_remUVR = Math.max(1, nUVR - k); // cuotas restantes
 
     cuotaBase = montoP * (tmUVR * Math.pow(1 + tmUVR, nUVR)) / (Math.pow(1 + tmUVR, nUVR) - 1);
-    totalBase = cuotaBase * nUVR;
-    interesesBase = totalBase - montoP;
+    
+    // Saldo actual proyectado (simplificado sumando inflación a la tasa)
+    const saldoActual = cuotaBase * ((1 - Math.pow(1 + tmUVR, -n_remUVR)) / tmUVR);
+    
+    totalBase = cuotaBase * n_remUVR;
+    interesesBase = totalBase - saldoActual;
 
     cuotaNew = cuotaBase * 1.35; // Incremento del 35%
-    const nNewUVR = Math.log(cuotaNew / (cuotaNew - tmUVR * montoP)) / Math.log(1 + tmUVR);
+    let nNewUVR = Math.log(cuotaNew / (cuotaNew - tmUVR * saldoActual)) / Math.log(1 + tmUVR);
+    if (isNaN(nNewUVR) || nNewUVR < 0) nNewUVR = 1;
+    
     plazoNew = Math.ceil(nNewUVR / 12);
     totalNew = cuotaNew * nNewUVR;
     ahorro = totalBase - totalNew;
-    aniosSaved = plazo - plazoNew;
+    aniosSaved = (n_remUVR / 12) - (nNewUVR / 12);
     
     tasaLabel = `${spreadUVR}% spread + ${inflacionAnual}% inflación proj. = ${(spreadUVR + inflacionAnual).toFixed(1)}% EA`;
     alertaIcon = "📈";
@@ -72,17 +88,24 @@ function Simulador() {
     const tasaEfectivaPesos = tasaPesos / 100;
     const tmPesos = tasaEfectivaPesos / 12;
     const nPesos = plazo * 12;
+    const n_remPesos = Math.max(1, nPesos - k); // cuotas restantes
 
     cuotaBase = montoP * (tmPesos * Math.pow(1 + tmPesos, nPesos)) / (Math.pow(1 + tmPesos, nPesos) - 1);
-    totalBase = cuotaBase * nPesos;
-    interesesBase = totalBase - montoP;
+    
+    // Saldo actual real
+    const saldoActual = cuotaBase * ((1 - Math.pow(1 + tmPesos, -n_remPesos)) / tmPesos);
+    
+    totalBase = cuotaBase * n_remPesos;
+    interesesBase = totalBase - saldoActual;
 
     cuotaNew = cuotaBase * 1.35; // Incremento del 35%
-    const nNewPesos = Math.log(cuotaNew / (cuotaNew - tmPesos * montoP)) / Math.log(1 + tmPesos);
+    let nNewPesos = Math.log(cuotaNew / (cuotaNew - tmPesos * saldoActual)) / Math.log(1 + tmPesos);
+    if (isNaN(nNewPesos) || nNewPesos < 0) nNewPesos = 1;
+
     plazoNew = Math.ceil(nNewPesos / 12);
     totalNew = cuotaNew * nNewPesos;
     ahorro = totalBase - totalNew;
-    aniosSaved = plazo - plazoNew;
+    aniosSaved = (n_remPesos / 12) - (nNewPesos / 12);
 
     tasaLabel = `${tasaPesos}% Efectiva Anual Fija`;
     alertaIcon = "⏳";
@@ -176,7 +199,7 @@ function Simulador() {
             ))}
           </div>
 
-          <CustomSlider label="Monto total del crédito" value={monto} set={setMonto} min={50} max={600} format={(v) => `$${v} millones`} />
+          <CustomSlider label="Monto inicial del crédito" value={monto} set={setMonto} min={50} max={600} format={(v) => `$${v} millones`} />
           
           {modo === "UVR" ? (
             <CustomSlider label="Spread UVR (tasa del banco)" value={spreadUVR} set={setSpreadUVR} min={3} max={14} step={0.1} format={(v) => `${v}%`} />
@@ -184,7 +207,8 @@ function Simulador() {
             <CustomSlider label="Tasa fija en pesos" value={tasaPesos} set={setTasaPesos} min={9} max={22} step={0.1} format={(v) => `${v}% EA`} />
           )}
 
-          <CustomSlider label="Plazo del crédito" value={plazo} set={setPlazo} min={5} max={30} format={(v) => `${v} años`} />
+          <CustomSlider label="Plazo original del crédito" value={plazo} set={setPlazo} min={5} max={30} format={(v) => `${v} años`} />
+          <CustomSlider label="Cuotas que ya has pagado" value={cuotasPagadas} set={setCuotasPagadas} min={0} max={plazo * 12} format={(v) => `${v} meses`} />
 
           <div style={{
             padding: "14px 18px", borderRadius: 14, marginBottom: 28,
@@ -277,7 +301,7 @@ function Simulador() {
                   <span className="text-gradient">{fmt(ahorro)}</span>
                 </motion.p>
                 <p className="text-blue-800 text-base sm:text-xl font-medium mt-4">
-                  Terminarías de pagar <strong className="font-black text-yellow-700 bg-yellow-100 px-3 py-1 rounded-md">{aniosSaved} años antes</strong>.
+                  Terminarías de pagar <strong className="font-black text-yellow-700 bg-yellow-100 px-3 py-1 rounded-md">{aniosSaved.toFixed(1)} años antes</strong>.
                 </p>
               </div>
 
