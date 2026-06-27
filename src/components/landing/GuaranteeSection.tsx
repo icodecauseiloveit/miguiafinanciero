@@ -30,7 +30,7 @@ export function GuaranteeSection({ id }: { id?: string }) {
             fontSize: 36, boxShadow: `0 6px 20px var(--yellow-soft)`,
           }}>🛡️</div>
 
-          <SectionLabel text="Nuestra garantía" />
+          <SectionLabel text="Nuestro sello de confianza" />
           <h2 style={{
             fontFamily: "var(--font-merriweather)", fontSize: "clamp(22px, 3.5vw, 34px)",
             fontWeight: 900, lineHeight: 1.25, marginBottom: 22, color: "var(--blue)",

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Section, SectionHeading, SectionLabel } from "../ui/Section";
 import { FadeIn } from "../ui/FadeIn";
 import { Slider, Button, Label } from "@heroui/react";
@@ -20,86 +20,77 @@ export function SimuladorSection({ innerRef, id }: { innerRef?: React.RefObject<
 
 function Simulador() {
   const [modo, setModo] = useState<"UVR" | "PESOS">("UVR");
-  const [monto, setMonto] = useState(170);
-  const [plazo, setPlazo] = useState(30);
+  const [monto, setMonto] = useState(150);
+  const [plazo, setPlazo] = useState(20);
   const [mostrar, setMostrar] = useState(false);
 
   // UVR params
-  const [spreadUVR, setSpreadUVR] = useState(5.52);
-  const inflacionAnual = 5.1;
+  const [spreadUVR, setSpreadUVR] = useState(6.5);
+  const inflacionAnual = 5.1; // Fija para proyección
 
   // PESOS params
-  const [tasaPesos, setTasaPesos] = useState(12.5);
+  const [tasaPesos, setTasaPesos] = useState(13.5);
 
-  // ── Cálculos UVR ──
-  const tasaEfectivaUVR = (spreadUVR + inflacionAnual) / 100;
-  const tmUVR = tasaEfectivaUVR / 12;
-  const nUVR = plazo * 12;
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll when results are shown
+  useEffect(() => {
+    if (mostrar && containerRef.current) {
+      setTimeout(() => {
+        containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+  }, [mostrar]);
+
+  // ── Cálculos ──
   const montoP = monto * 1e6;
+  let cuotaBase = 0, totalBase = 0, interesesBase = 0;
+  let cuotaNew = 0, totalNew = 0, ahorro = 0, plazoNew = 0, aniosSaved = 0;
+  let tasaLabel = "", alerta = "", alertaIcon = "";
 
-  const cuotaUVR = montoP * (tmUVR * Math.pow(1 + tmUVR, nUVR)) / (Math.pow(1 + tmUVR, nUVR) - 1);
-  const totalUVR = cuotaUVR * nUVR;
-  const interesesUVR = totalUVR - montoP;
+  if (modo === "UVR") {
+    const tasaEfectivaUVR = (spreadUVR + inflacionAnual) / 100;
+    const tmUVR = tasaEfectivaUVR / 12;
+    const nUVR = plazo * 12;
 
-  const cuota150UVR = cuotaUVR * 1.5;
-  const nNewUVR = Math.log(cuota150UVR / (cuota150UVR - tmUVR * montoP)) / Math.log(1 + tmUVR);
-  const plazoNewUVR = Math.ceil(nNewUVR / 12);
-  const totalNewUVR = cuota150UVR * nNewUVR;
-  const ahorroUVR = totalUVR - totalNewUVR;
-  const aniosSavedUVR = plazo - plazoNewUVR;
+    cuotaBase = montoP * (tmUVR * Math.pow(1 + tmUVR, nUVR)) / (Math.pow(1 + tmUVR, nUVR) - 1);
+    totalBase = cuotaBase * nUVR;
+    interesesBase = totalBase - montoP;
 
-  const saldoAño1SinAbono = montoP * (1 + inflacionAnual / 100);
-  let capitalPagadoAño1UVR = 0;
-  let saldoTemp = montoP;
-  for (let i = 0; i < 12; i++) {
-    const intMes = saldoTemp * tmUVR;
-    const capMes = cuotaUVR - intMes;
-    capitalPagadoAño1UVR += capMes;
-    saldoTemp -= capMes;
+    cuotaNew = cuotaBase * 1.35; // Incremento del 35%
+    const nNewUVR = Math.log(cuotaNew / (cuotaNew - tmUVR * montoP)) / Math.log(1 + tmUVR);
+    plazoNew = Math.ceil(nNewUVR / 12);
+    totalNew = cuotaNew * nNewUVR;
+    ahorro = totalBase - totalNew;
+    aniosSaved = plazo - plazoNew;
+    
+    tasaLabel = `${spreadUVR}% spread + ${inflacionAnual}% inflación proj. = ${(spreadUVR + inflacionAnual).toFixed(1)}% EA`;
+    alertaIcon = "📈";
+    alerta = "En UVR, tu deuda está atada a la inflación, lo que hace que tu cuota y el saldo aumenten con el tiempo.";
+  } else {
+    const tasaEfectivaPesos = tasaPesos / 100;
+    const tmPesos = tasaEfectivaPesos / 12;
+    const nPesos = plazo * 12;
+
+    cuotaBase = montoP * (tmPesos * Math.pow(1 + tmPesos, nPesos)) / (Math.pow(1 + tmPesos, nPesos) - 1);
+    totalBase = cuotaBase * nPesos;
+    interesesBase = totalBase - montoP;
+
+    cuotaNew = cuotaBase * 1.35; // Incremento del 35%
+    const nNewPesos = Math.log(cuotaNew / (cuotaNew - tmPesos * montoP)) / Math.log(1 + tmPesos);
+    plazoNew = Math.ceil(nNewPesos / 12);
+    totalNew = cuotaNew * nNewPesos;
+    ahorro = totalBase - totalNew;
+    aniosSaved = plazo - plazoNew;
+
+    tasaLabel = `${tasaPesos}% Efectiva Anual Fija`;
+    alertaIcon = "⏳";
+    alerta = "En pesos, pagas casi puros intereses los primeros años. Solo una pequeña fracción de tu cuota baja la deuda real.";
   }
 
-  // ── Cálculos PESOS ──
-  const tasaEfectivaPesos = tasaPesos / 100;
-  const tmPesos = tasaEfectivaPesos / 12;
-  const nPesos = plazo * 12;
-
-  const cuotaPesos = montoP * (tmPesos * Math.pow(1 + tmPesos, nPesos)) / (Math.pow(1 + tmPesos, nPesos) - 1);
-  const totalPesos = cuotaPesos * nPesos;
-  const interesesPesos = totalPesos - montoP;
-
-  let capitalPagadoAño1Pesos = 0;
-  let saldoTempP = montoP;
-  for (let i = 0; i < 12; i++) {
-    const intMes = saldoTempP * tmPesos;
-    const capMes = cuotaPesos - intMes;
-    capitalPagadoAño1Pesos += capMes;
-    saldoTempP -= capMes;
-  }
-  const pctInteresesAño1 = ((cuotaPesos * 12 - capitalPagadoAño1Pesos) / (cuotaPesos * 12)) * 100;
-
-  const cuota150Pesos = cuotaPesos * 1.5;
-  const nNewPesos = Math.log(cuota150Pesos / (cuota150Pesos - tmPesos * montoP)) / Math.log(1 + tmPesos);
-  const plazoNewPesos = Math.ceil(nNewPesos / 12);
-  const totalNewPesos = cuota150Pesos * nNewPesos;
-  const ahorroPesos = totalPesos - totalNewPesos;
-  const aniosSavedPesos = plazo - plazoNewPesos;
-
-  // ── Seleccionar resultados según modo ──
-  const R = modo === "UVR" ? {
-    cuota: cuotaUVR, total: totalUVR, intereses: interesesUVR,
-    cuotaNew: cuota150UVR, totalNew: totalNewUVR, ahorro: ahorroUVR,
-    plazoNew: plazoNewUVR, aniosSaved: aniosSavedUVR,
-    tasaLabel: `${spreadUVR}% spread + ${inflacionAnual}% inflación = ${(spreadUVR + inflacionAnual).toFixed(1)}% efectiva`,
-    alerta: `En tu primer año, tu saldo en pesos pasaría de $${monto}M a ~$${(saldoAño1SinAbono / 1e6).toFixed(0)}M por la inflación, aunque hayas pagado ${(capitalPagadoAño1UVR / 1e6).toFixed(1)}M a capital.`,
-    alertaIcon: "📈",
-  } : {
-    cuota: cuotaPesos, total: totalPesos, intereses: interesesPesos,
-    cuotaNew: cuota150Pesos, totalNew: totalNewPesos, ahorro: ahorroPesos,
-    plazoNew: plazoNewPesos, aniosSaved: aniosSavedPesos,
-    tasaLabel: `${tasaPesos}% EA fija`,
-    alerta: `En tu primer año, el ${pctInteresesAño1.toFixed(0)}% de lo que pagas va a intereses. Solo $${(capitalPagadoAño1Pesos / 1e6).toFixed(1)}M de tus $${(cuotaPesos * 12 / 1e6).toFixed(1)}M en cuotas reducen tu deuda.`,
-    alertaIcon: "⏳",
-  };
+  // Prevención de errores si ahorro es negativo o infinito
+  if (ahorro < 0 || !isFinite(ahorro)) ahorro = 0;
+  if (aniosSaved < 0 || !isFinite(aniosSaved)) aniosSaved = 0;
 
   const fmt = (x: number) => `$${(x / 1e6).toFixed(1)}M`;
   const fmtCuota = (x: number) => `$${(x / 1e6).toFixed(2)}M`;
@@ -107,173 +98,189 @@ function Simulador() {
   const CustomSlider = ({ label, value, set, min, max, step, format }: {
     label: string, value: number, set: (v: number) => void, min: number, max: number, step?: number, format: (v: number) => string
   }) => {
+    const percentage = ((value - min) / (max - min)) * 100;
+
     return (
-      <div style={{ marginBottom: 30 }}>
-        <Slider
-          minValue={min}
-          maxValue={max}
-          step={step || 1}
-          value={value}
-          onChange={(v: number | number[]) => { 
-            const val = Array.isArray(v) ? v[0] : v;
-            set(val); 
-            setMostrar(false); 
-          }}
-          className="max-w-full"
-        >
-          <div className="flex justify-between items-center w-full mb-2">
-            <Label style={{ color: "var(--blue)", fontSize: 15, fontWeight: 500 }}>
-              {label}
-            </Label>
-            <Slider.Output style={{ color: "var(--blue)", fontSize: 15, fontWeight: 500 }}>
-               {format(value)}
-            </Slider.Output>
-          </div>
-          <Slider.Track className="relative h-6 w-full rounded-full bg-gray-200 cursor-pointer">
-            <Slider.Fill className="absolute h-full rounded-full bg-[#1E3A5F]" />
-            <Slider.Thumb className="w-6 h-4 top-1/2 -translate-y-1/2 rounded-full bg-white shadow-md cursor-grab active:cursor-grabbing border-none" />
-          </Slider.Track>
-        </Slider>
+      <div style={{ marginBottom: 28, padding: "0 14px" }}>
+        <div className="flex justify-between items-center w-full mb-3">
+          <label className="text-[var(--blue)] text-[15px] font-semibold">{label}</label>
+          <span className="text-[var(--blue)] text-[16px] font-bold">
+             {format(value)}
+          </span>
+        </div>
+        
+        <div className="relative w-full h-8 flex items-center">
+          {/* Track background */}
+          <div className="absolute w-full h-[6px] bg-gray-200 rounded-full"></div>
+          
+          {/* Track fill */}
+          <div 
+            className="absolute h-[6px] bg-[#1E3A5F] rounded-full pointer-events-none transition-all duration-75" 
+            style={{ width: `${percentage}%` }}
+          ></div>
+          
+          {/* Custom Thumb */}
+          <div 
+            className="absolute w-6 h-6 bg-[#e4ae00] rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.15)] pointer-events-none transform -translate-x-1/2 transition-all duration-75 border-2 border-white"
+            style={{ left: `${percentage}%` }}
+          ></div>
+
+          {/* Invisible Native Range Input for interactions */}
+          <input 
+            type="range" 
+            min={min} max={max} step={step || 1} 
+            value={value}
+            onChange={(e) => {
+               set(Number(e.target.value));
+               setMostrar(false);
+            }}
+            className="absolute w-full h-full opacity-0 cursor-pointer z-10"
+          />
+        </div>
       </div>
     );
   };
 
+  // Lógica para la gráfica de barras
+  const maxTotal = totalBase;
+  const pctBase = 100;
+  const pctNew = Math.max(10, (totalNew / maxTotal) * 100);
+
   return (
     <div 
-      className="p-6 md:p-11"
+      className="p-5 md:p-10 w-full"
       style={{
         background: "var(--white)", borderRadius: 28,
-        border: `1px solid var(--gray-border)`, maxWidth: 640, margin: "0 auto",
-        boxShadow: `0 20px 60px rgba(30,58,95,0.07), 0 1px 3px rgba(30,58,95,0.04)`,
+        border: `1px solid var(--gray-border)`, maxWidth: 700, margin: "0 auto",
+        boxShadow: `0 24px 50px rgba(30,58,95,0.06)`,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
-        <div style={{
-          width: 48, height: 48, borderRadius: 14, background: `linear-gradient(135deg, var(--yellow), var(--yellow-muted))`,
-          display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22,
-          boxShadow: `0 4px 12px var(--yellow-soft)`,
-        }}>📊</div>
-        <div>
-          <h3 style={{ color: "var(--blue)", fontSize: 19, margin: 0, fontFamily: "var(--font-merriweather)", fontWeight: 800 }}>Simulador de Ahorro</h3>
-          <p style={{ color: "var(--gray-light)", fontSize: 12, margin: 0, letterSpacing: 0.3 }}>Selecciona tu tipo de crédito</p>
-        </div>
-      </div>
-
-      {/* ── Selector UVR / PESOS ── */}
-      <div className="flex flex-col sm:flex-row gap-2.5 mb-7">
+      <div className="flex flex-col sm:flex-row gap-2.5 mb-8">
         {([
           { key: "UVR" as const, label: "Crédito en UVR", icon: "📈", desc: "Cuota variable con inflación" },
           { key: "PESOS" as const, label: "Crédito en Pesos", icon: "💵", desc: "Cuota fija, tasa fija" },
         ]).map(opt => (
           <button key={opt.key} onClick={() => { setModo(opt.key); setMostrar(false); }} style={{
-            flex: 1, padding: "16px 14px", borderRadius: 16, cursor: "pointer",
-            border: `2px solid ${modo === opt.key ? "var(--blue)" : "var(--gray-border)"}`,
-            background: modo === opt.key ? "var(--blue-light)" : "var(--white)",
-            transition: "all 0.25s ease", textAlign: "center",
+            flex: 1, padding: "16px 14px", borderRadius: 18, cursor: "pointer",
+            border: `2px solid ${modo === opt.key ? "var(--blue)" : "transparent"}`,
+            background: modo === opt.key ? "var(--blue-light)" : "var(--off-white)",
+            transition: "all 0.2s ease", textAlign: "center",
           }}>
             <span style={{ fontSize: 24, display: "block", marginBottom: 6 }}>{opt.icon}</span>
-            <span style={{ display: "block", color: "var(--blue)", fontSize: 14, fontWeight: 700 }}>{opt.label}</span>
-            <span style={{ display: "block", color: "var(--gray-light)", fontSize: 11, marginTop: 2 }}>{opt.desc}</span>
+            <span style={{ display: "block", color: "var(--blue)", fontSize: 15, fontWeight: 700 }}>{opt.label}</span>
+            <span style={{ display: "block", color: "var(--gray-light)", fontSize: 12, marginTop: 4 }}>{opt.desc}</span>
           </button>
         ))}
       </div>
 
-      {/* ── Sliders ── */}
-      <CustomSlider label="Monto del crédito" value={monto} set={setMonto} min={50} max={500} format={(v: number) => `$${v} millones`} />
-
+      <CustomSlider label="Monto total del crédito" value={monto} set={setMonto} min={50} max={600} format={(v) => `$${v} millones`} />
+      
       {modo === "UVR" ? (
-        <CustomSlider label="Spread UVR (tasa del banco)" value={spreadUVR} set={setSpreadUVR} min={3} max={12} step={0.1} format={(v: number) => `${v}% EA`} />
+        <CustomSlider label="Spread UVR (tasa del banco)" value={spreadUVR} set={setSpreadUVR} min={3} max={14} step={0.1} format={(v) => `${v}%`} />
       ) : (
-        <CustomSlider label="Tasa fija en pesos" value={tasaPesos} set={setTasaPesos} min={8} max={20} step={0.1} format={(v: number) => `${v}% EA`} />
+        <CustomSlider label="Tasa fija en pesos" value={tasaPesos} set={setTasaPesos} min={9} max={22} step={0.1} format={(v) => `${v}% EA`} />
       )}
 
-      <CustomSlider label="Plazo del crédito" value={plazo} set={setPlazo} min={5} max={30} format={(v: number) => `${v} años`} />
+      <CustomSlider label="Plazo del crédito" value={plazo} set={setPlazo} min={5} max={30} format={(v) => `${v} años`} />
 
-      {/* ── Info tasa efectiva ── */}
       <div style={{
-        padding: "12px 16px", borderRadius: 12, marginBottom: 20,
-        background: modo === "UVR" ? "rgba(214,64,69,0.04)" : "var(--blue-light)",
-        border: `1px solid ${modo === "UVR" ? "rgba(214,64,69,0.1)" : "rgba(30,58,95,0.08)"}`,
+        padding: "14px 18px", borderRadius: 14, marginBottom: 28,
+        background: modo === "UVR" ? "var(--red-soft)" : "var(--blue-light)",
+        border: `1px solid ${modo === "UVR" ? "rgba(214,64,69,0.15)" : "rgba(30,58,95,0.08)"}`,
       }}>
-        <p style={{ color: modo === "UVR" ? "var(--red)" : "var(--blue-mid)", fontSize: 12, margin: 0, fontWeight: 600 }}>
-          {modo === "UVR" ? "⚠️" : "ℹ️"} {R.tasaLabel}
+        <p style={{ color: modo === "UVR" ? "var(--red)" : "var(--blue-mid)", fontSize: 13, margin: 0, fontWeight: 600 }}>
+          {alertaIcon} {tasaLabel}
         </p>
-        {modo === "UVR" && (
-          <p style={{ color: "var(--gray)", fontSize: 11, margin: "4px 0 0", lineHeight: 1.5 }}>
-            En UVR, tu deuda se indexa a la inflación. La cuota en pesos sube cada año.
-          </p>
-        )}
+        <p style={{ color: "var(--gray)", fontSize: 12, margin: "6px 0 0", lineHeight: 1.5 }}>
+          {alerta}
+        </p>
       </div>
 
       <Button 
         onPress={() => setMostrar(true)}
-        className="w-full h-16 text-lg font-black tracking-widest bg-gradient-to-r from-[var(--green)] to-[var(--green-dark)] shadow-xl text-white rounded-2xl transition-all hover:scale-[1.02] active:scale-95"
+        className="w-full h-16 text-lg font-black tracking-wider bg-[#1E3A5F] text-white rounded-2xl transition-all hover:bg-[#112166] active:scale-95 shadow-xl"
       >
-        CALCULAR MI AHORRO EN PESOS →
+        VER PROYECCIÓN DE AHORRO
       </Button>
 
+      {/* RESULTADOS */}
       {mostrar && (
-        <div style={{ marginTop: 32, animation: "fadeUp 0.5s ease" }}>
+        <div ref={containerRef} style={{ marginTop: 40, animation: "fadeUp 0.6s ease" }}>
+          <h3 style={{ fontSize: 22, color: "var(--blue)", fontWeight: 900, marginBottom: 24, textAlign: "center", fontFamily: "var(--font-merriweather)" }}>
+            Comparativa de tu crédito
+          </h3>
 
-          {/* Alerta específica del tipo de crédito */}
-          <div style={{
-            padding: "14px 18px", borderRadius: 14, marginBottom: 20,
-            background: modo === "UVR" ? "var(--red-soft)" : "var(--yellow-soft)",
-            border: `1px solid ${modo === "UVR" ? "rgba(214,64,69,0.12)" : "rgba(242,183,5,0.2)"}`,
-          }}>
-            <p style={{ color: modo === "UVR" ? "var(--red)" : "var(--blue-mid)", fontSize: 12, margin: 0, lineHeight: 1.6, fontWeight: 500 }}>
-              {R.alertaIcon} {R.alerta}
-            </p>
-          </div>
-
-          {/* Cuota actual */}
-          <div style={{
-            padding: "14px 18px", borderRadius: 14, marginBottom: 20,
-            background: "var(--blue-light)", border: `1px solid rgba(30,58,95,0.06)`,
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-          }}>
-            <span style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600 }}>Cuota mensual estimada</span>
-            <span style={{ color: "var(--blue)", fontSize: 18, fontWeight: 900, fontFamily: "var(--font-merriweather)" }}>{fmtCuota(R.cuota)}</span>
-          </div>
-
-          {/* Comparativa */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              { label: "Sin reestructurar", val: fmt(R.total), sub: `en ${plazo} años`, sub2: `Intereses: ${fmt(R.intereses)}`, color: "var(--red)", bg: "var(--red-soft)", border: "rgba(214,64,69,0.12)" },
-              { label: "Con reestructuración", val: fmt(R.totalNew), sub: `en ~${R.plazoNew} años`, sub2: `Cuota nueva: ${fmtCuota(R.cuotaNew)}/mes`, color: "var(--green-dark)", bg: "var(--green-soft)", border: "rgba(37,211,102,0.15)" },
-            ].map((c, i) => (
-              <div key={i} style={{
-                background: c.bg, borderRadius: 18, padding: 22, textAlign: "center",
-                border: `1.5px solid ${c.border}`,
-              }}>
-                <p style={{ color: c.color, fontSize: 10, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 2.5, fontWeight: 800 }}>{c.label}</p>
-                <p style={{ color: c.color, fontSize: "clamp(24px, 4vw, 30px)", fontWeight: 900, margin: "0 0 4px", fontFamily: "var(--font-merriweather)" }}>{c.val}</p>
-                <p style={{ color: "var(--gray)", fontSize: 12, margin: "0 0 4px" }}>{c.sub}</p>
-                <p style={{ color: "var(--gray-light)", fontSize: 11, margin: 0 }}>{c.sub2}</p>
+          <div className="flex flex-col md:flex-row gap-6 mb-8">
+            {/* Gráfica */}
+            <div className="flex-1 flex items-end justify-around p-6 bg-gray-50 rounded-2xl border border-gray-100 h-64 overflow-hidden relative">
+              {/* Barra Base */}
+              <div className="flex flex-col items-center justify-end h-full w-full max-w-[100px] z-10">
+                <span className="text-[10px] sm:text-xs text-gray-500 font-bold mb-2 text-center leading-tight">Sin<br/>Abonos</span>
+                <motion.div 
+                  initial={{ height: 0 }} animate={{ height: `${pctBase}%` }} transition={{ duration: 1, ease: "easeOut" }}
+                  className="w-full bg-red-400 rounded-t-xl relative flex flex-col justify-end pb-3"
+                  style={{ minHeight: '20%' }}
+                >
+                  <span className="text-white text-xs sm:text-sm font-black text-center absolute -top-6 w-full text-red-500">{fmt(totalBase)}</span>
+                </motion.div>
+                <span className="text-xs text-red-500 font-bold mt-3">{plazo} años</span>
               </div>
-            ))}
+              
+              {/* Barra Optimizada */}
+              <div className="flex flex-col items-center justify-end h-full w-full max-w-[100px] z-10">
+                <span className="text-[10px] sm:text-xs text-gray-500 font-bold mb-2 text-center leading-tight">Con<br/>Optimización</span>
+                <motion.div 
+                  initial={{ height: 0 }} animate={{ height: `${pctNew}%` }} transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                  className="w-full bg-green-500 rounded-t-xl relative flex flex-col justify-end pb-3 shadow-[0_0_15px_rgba(37,211,102,0.4)]"
+                  style={{ minHeight: '10%' }}
+                >
+                  <span className="text-white text-xs sm:text-sm font-black text-center absolute -top-6 w-full text-green-600">{fmt(totalNew)}</span>
+                </motion.div>
+                <span className="text-xs text-green-600 font-bold mt-3">~{plazoNew} años</span>
+              </div>
+              
+              {/* Grid lines background */}
+              <div className="absolute inset-0 flex flex-col justify-between p-6 pb-12 opacity-10 pointer-events-none">
+                <div className="w-full border-t border-gray-500"></div>
+                <div className="w-full border-t border-gray-500"></div>
+                <div className="w-full border-t border-gray-500"></div>
+                <div className="w-full border-t border-gray-500"></div>
+              </div>
+            </div>
+
+            {/* Datos numéricos */}
+            <div className="flex-1 flex flex-col gap-4 justify-center">
+              <div className="p-4 rounded-xl bg-red-50 border border-red-100">
+                <p className="text-xs text-red-600 font-bold uppercase tracking-wider mb-1">Total a pagar al banco</p>
+                <p className="text-2xl text-red-500 font-black mb-1">{fmt(totalBase)}</p>
+                <p className="text-xs text-gray-600">Cuota actual est: <strong className="text-gray-800">{fmtCuota(cuotaBase)}</strong></p>
+              </div>
+              <div className="p-4 rounded-xl bg-green-50 border border-green-200 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">¡ÓPTIMO!</div>
+                <p className="text-xs text-green-700 font-bold uppercase tracking-wider mb-1">Nuevo total a pagar</p>
+                <p className="text-2xl text-green-600 font-black mb-1">{fmt(totalNew)}</p>
+                <p className="text-xs text-gray-600">Nueva cuota est: <strong className="text-gray-800">{fmtCuota(cuotaNew)}</strong></p>
+              </div>
+            </div>
           </div>
 
-          {/* Ahorro total */}
-          <div style={{
-            marginTop: 20, borderRadius: 20, padding: 28, textAlign: "center",
-            background: `linear-gradient(135deg, var(--cream), var(--cream-deep))`,
-            border: `2px solid var(--yellow)`,
-            boxShadow: `inset 0 1px 0 rgba(255,255,255,0.6)`,
-          }}>
-            <p style={{ color: "var(--blue-mid)", fontSize: 10, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 3, fontWeight: 800 }}>Tu ahorro estimado</p>
-            <p style={{ color: "var(--blue)", fontSize: 48, fontWeight: 900, margin: "0 0 8px", fontFamily: "var(--font-merriweather)", lineHeight: 1 }}>{fmt(Math.max(R.ahorro, 0))}</p>
-            <p style={{ color: "var(--blue-mid)", fontSize: 16, margin: 0, fontWeight: 500 }}>
-              y <strong style={{ color: "var(--yellow-muted)", fontWeight: 900 }}>{Math.max(R.aniosSaved, 0)} años menos</strong> pagándole al banco
+          {/* Caja de ahorro */}
+          <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-[var(--cream)] to-[var(--cream-deep)] border-2 border-[#e4ae00] shadow-lg text-center transform transition-transform hover:scale-[1.02]">
+            <p className="text-blue-900 text-xs sm:text-sm font-bold uppercase tracking-widest mb-2">Tu ahorro proyectado sería de</p>
+            <motion.p 
+              initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", delay: 0.4 }}
+              className="text-4xl sm:text-5xl lg:text-6xl text-blue-900 font-black mb-2 leading-none" style={{ fontFamily: "var(--font-merriweather)" }}
+            >
+              {fmt(ahorro)}
+            </motion.p>
+            <p className="text-blue-800 text-base sm:text-xl font-medium mt-4">
+              Terminarías de pagar <strong className="font-black text-yellow-700 bg-yellow-100 px-3 py-1 rounded-md">{aniosSaved} años antes</strong>.
             </p>
           </div>
 
           {/* Disclaimer */}
-          <p style={{ color: "var(--gray-light)", fontSize: 10, textAlign: "center", marginTop: 16, lineHeight: 1.6 }}>
-            {modo === "UVR"
-              ? `*Estimación con aumento del 50% de cuota destinado a capital. Tasa efectiva: ${spreadUVR}% spread + ${inflacionAnual}% inflación proyectada. En UVR la cuota y el saldo varían con la inflación real. Análisis personalizado gratuito para tu caso específico.`
-              : `*Estimación con aumento del 50% de cuota destinado a capital. Tasa fija: ${tasaPesos}% EA. En pesos la cuota es fija pero los intereses representan la mayor parte del pago en los primeros años. Análisis personalizado gratuito para tu caso.`
-            }
+          <p style={{ color: "var(--gray)", fontSize: 11, textAlign: "justify", marginTop: 24, lineHeight: 1.6, padding: "0 10px" }}>
+            * <strong>Disclaimer legal:</strong> Esta es una simulación proyectada únicamente para darte una idea aproximada del ahorro potencial. Los cálculos asumen un incremento de tu cuota mensual en un <strong>35%</strong>, destinado 100% a capital de forma recurrente. Los valores finales pueden y van a variar dependiendo de la fecha de desembolso, liquidación exacta de tu entidad financiera, cobro de seguros obligatorios, y el comportamiento real y futuro de la inflación (para créditos en UVR). Para un cálculo exacto, solicita un análisis profesional basado en tus extractos bancarios recientes.
           </p>
         </div>
       )}

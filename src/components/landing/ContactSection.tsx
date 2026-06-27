@@ -41,7 +41,7 @@ export function ContactSection({ innerRef, id }: { innerRef?: React.RefObject<HT
       </FadeIn>
 
       <footer style={{ marginTop: 120, paddingTop: 40, borderTop: `1px solid var(--gray-border)`, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
-        <p style={{ color: "var(--gray-light)", fontSize: 13 }}>© 2026 Mi Guía Financiero. Todos los derechos reservados.</p>
+        <p style={{ color: "var(--gray-light)", fontSize: 13 }}>2026 Miguíafinanciero. Todos los derechos reservados.</p>
         <div style={{ display: "flex", gap: 24 }}>
           <Link href="/privacidad" style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>Política de Privacidad</Link>
           <Link href="/ley546" style={{ color: "var(--blue-mid)", fontSize: 13, fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>Ley 546</Link>
