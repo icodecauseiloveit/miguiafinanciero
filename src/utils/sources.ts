@@ -13,6 +13,9 @@ export const LEAD_SOURCES: Record<string, string> = {
   "fb_ads": "Anuncio de Facebook Ads",
   "tiktok_video": "Video Viral en TikTok",
   
+  // Motores de búsqueda / Publicidad
+  "google_ads": "Anuncio de Google Ads",
+  
   // Tráfico por defecto
   "direct": "Tráfico Directo / Orgánico"
 };
