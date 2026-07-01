@@ -576,7 +576,7 @@ export default function Formulario() {
                       transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: 10,
                     }}
                   >
-                    Siguiente paso <Send size={18} />
+                    {step.key === "contacto_financiero" ? "Siguiente paso" : "Siguiente"} <Send size={18} />
                   </button>
                 </div>
               )}
