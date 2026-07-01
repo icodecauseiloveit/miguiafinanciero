@@ -66,6 +66,8 @@ description: "Te acompañamos en el análisis y gestión de tu crédito hipoteca
 
 import { Providers } from "./providers";
 import Script from "next/script";
+import { Suspense } from "react";
+import SourceTracker from "@/components/SourceTracker";
 
 export default function RootLayout({
   children,
@@ -96,6 +98,9 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+        <Suspense fallback={null}>
+          <SourceTracker />
+        </Suspense>
         <Providers>
           {children}
         </Providers>

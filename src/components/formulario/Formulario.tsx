@@ -129,7 +129,15 @@ export default function Formulario() {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const ref = params.get("ref") || params.get("source");
-      if (ref) setSourceCode(ref);
+      if (ref) {
+        setSourceCode(ref);
+        localStorage.setItem("mgf_source", ref);
+      } else {
+        const storedRef = localStorage.getItem("mgf_source");
+        if (storedRef) {
+          setSourceCode(storedRef);
+        }
+      }
     }
   }, []);
 
@@ -192,7 +200,7 @@ export default function Formulario() {
               boxShadow: "0 8px 24px rgba(242,183,5,0.25)",
             }}
           >
-            <Send size={20} /> Continuar en WhatsApp
+            <Send size={20} /> Consultar compra de cartera
           </a>
         </>
       );
@@ -225,7 +233,7 @@ export default function Formulario() {
               boxShadow: "0 8px 24px rgba(242,183,5,0.25)",
             }}
           >
-            <Send size={20} /> Más información
+            <Send size={20} /> Recibir asesoría
           </a>
         </>
       );
