@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     "saldar mi hipoteca antes de tiempo"
   ],
   openGraph: {
-    title: "Mi Guía Financiero | Paga tu casa en años, no en décadas",
-    description: "Te representamos ante tu entidad financiera para hacer valer la Ley 546 de 1999 y reestructurar tu crédito hipotecario.",
+    title: "Miguíafinanciero | Reduce el tiempo de tu crédito hipotecario",
+description: "Te acompañamos en el análisis y gestión de tu crédito hipotecario para identificar oportunidades de ahorro y optimización bajo la Ley 546 de 1999.",
     url: "https://miguiafinanciero.com",
     siteName: "Mi Guía Financiero",
     locale: "es_CO",
