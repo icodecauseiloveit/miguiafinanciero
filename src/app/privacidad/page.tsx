@@ -1,4 +1,10 @@
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Política de Privacidad - Mi Guía Financiero",
+  description: "Políticas de privacidad y tratamiento de datos personales de Mi Guía Financiero.",
+};
 
 export default function PrivacyPolicy() {
   return (

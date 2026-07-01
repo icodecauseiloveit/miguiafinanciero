@@ -1,4 +1,10 @@
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ley 546 de 1999 - Mi Guía Financiero",
+  description: "Conoce el marco legal que protege tus derechos como deudor hipotecario y te permite hacer abonos inteligentes a capital.",
+};
 
 export default function Ley546Page() {
   return (

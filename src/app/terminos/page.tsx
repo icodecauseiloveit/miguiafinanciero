@@ -1,4 +1,10 @@
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Términos y Condiciones - Mi Guía Financiero",
+  description: "Términos y condiciones de los servicios de asesoría de Mi Guía Financiero.",
+};
 
 export default function TerminosPage() {
   return (

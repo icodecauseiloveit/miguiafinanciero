@@ -17,6 +17,23 @@ export function FAQSection({ id }: { id?: string }) {
 
   return (
     <Section id={id} bg="var(--off-white)">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map(f => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: f.a
+              }
+            }))
+          })
+        }}
+      />
       <FadeIn>
         <SectionLabel text="Preguntas frecuentes" color="var(--gray)" />
         <SectionHeading>Todo lo que necesitas saber</SectionHeading>

@@ -23,6 +23,24 @@ export default function Home() {
 
   return (
     <main style={{ fontFamily: "var(--font-dm-sans)", minHeight: "100vh", overflowX: "hidden" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FinancialService",
+            name: "Mi Guía Financiero",
+            url: "https://miguiafinanciero.com",
+            logo: "https://miguiafinanciero.com/logo-mgf.png",
+            description: "Asesoría y acompañamiento para la reestructuración y optimización de créditos hipotecarios bajo la Ley 546 de 1999.",
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Cartagena",
+              addressCountry: "CO"
+            }
+          })
+        }}
+      />
       <Navbar onContactClick={() => scrollTo(contactRef)} />
       
       <Hero 

@@ -14,8 +14,49 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://miguiafinanciero.com"),
   title: "Mi Guía Financiero | Paga tu casa en años, no en décadas",
   description: "Te representamos ante tu entidad financiera para hacer valer la Ley 546 de 1999 y reestructurar tu crédito hipotecario.",
+  keywords: [
+    "abono inteligente a capital",
+    "optimización de crédito hipotecario",
+    "Cómo pagar menos intereses en un crédito hipotecario",
+    "reducir el plazo en mi crédito hipotecario",
+    "Modificación en la aplicación de pagos",
+    "Cómo disminuir el tiempo de un crédito hipotecario",
+    "Ley de vivienda",
+    "Ley 546 de 1999",
+    "estrategias para pagar menos intereses en mi crédito de vivienda",
+    "saldar mi hipoteca antes de tiempo"
+  ],
+  openGraph: {
+    title: "Mi Guía Financiero | Paga tu casa en años, no en décadas",
+    description: "Te representamos ante tu entidad financiera para hacer valer la Ley 546 de 1999 y reestructurar tu crédito hipotecario.",
+    url: "https://miguiafinanciero.com",
+    siteName: "Mi Guía Financiero",
+    locale: "es_CO",
+    type: "website",
+    images: [
+      {
+        url: "/og_image_191.png",
+        width: 1200,
+        height: 630,
+        alt: "Mi Guía Financiero - Logo Rectangular",
+      },
+      {
+        url: "/og_image_11.png",
+        width: 1200,
+        height: 1200,
+        alt: "Mi Guía Financiero - Logo Cuadrado",
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mi Guía Financiero | Paga tu casa en años, no en décadas",
+    description: "Te representamos ante tu entidad financiera para hacer valer la Ley 546 de 1999 y reestructurar tu crédito hipotecario.",
+    images: ["/logo-mgf.png"],
+  },
   verification: {
     other: {
       "facebook-domain-verification": ["oaxfamhe1k4kci3donh4smxief0u5b"],
