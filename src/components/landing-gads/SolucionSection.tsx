@@ -5,7 +5,7 @@ import { CTAButton } from "../ui/CTAButton";
 
 export function SolucionSection({ id }: { id?: string }) {
   const steps = [
-    { s: "1", t: "Análisis gratis", d: "Estudiamos tu crédito y calculamos cuánto puedes ahorrarte. Sin costo." },
+    { s: "1", t: "Análisis gratis", d: "Estudiamos tu extracto y calculamos cuánto puedes ahorrarte. Sin costo." },
     { s: "2", t: "Plan de acción", d: "Diseñamos tres propuestas de ahorro y tú eliges la que más se adapta a ti." },
     { s: "3", t: "Gestión con el banco", d: "Nos encargamos del trámite. Hablamos el idioma técnico por ti." },
     { s: "4", t: "Resultados reales", d: "Ves cada mes en tu extracto cómo baja el saldo y se acorta el plazo." },

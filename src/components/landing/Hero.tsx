@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 interface HeroProps {
   onContactClick: () => void;
@@ -16,16 +17,29 @@ export function Hero({ onContactClick, onSimClick }: HeroProps) {
       <div style={{ position: "absolute", inset: 0, opacity: 0.05, backgroundImage: `linear-gradient(var(--white) 1px, transparent 1px), linear-gradient(90deg, var(--white) 1px, transparent 1px)`, backgroundSize: "60px 60px", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 820, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        {/* Alert */}
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 8,
-          padding: "9px 22px", borderRadius: 40,
-          background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
-          marginBottom: 36, animation: "fadeUp 0.4s ease",
-          backdropFilter: "blur(4px)",
-        }}>
-          <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF4D4D", animation: "pulse 2s infinite" }} />
-          <span style={{ color: "var(--white)", fontSize: 12.5, fontWeight: 600, letterSpacing: 0.2 }}>Cada día que no tomas acción en tu crédito pierdes dinero.</span>
+        {/* Alerts Container */}
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 36, flexWrap: "wrap", animation: "fadeUp 0.4s ease" }}>
+          {/* Alert */}
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            padding: "9px 22px", borderRadius: 40,
+            background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
+            backdropFilter: "blur(4px)",
+          }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF4D4D", animation: "pulse 2s infinite" }} />
+            <span style={{ color: "var(--white)", fontSize: 12.5, fontWeight: 600, letterSpacing: 0.2 }}>Cada día que no tomas acción en tu crédito pierdes dinero.</span>
+          </div>
+
+          {/* Colombia Badge */}
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            padding: "9px 22px", borderRadius: 40,
+            background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
+            backdropFilter: "blur(4px)",
+          }}>
+            <Image src="/co_flag.png" alt="Bandera Colombia" width={20} height={14} style={{ borderRadius: 2 }} />
+            <span style={{ color: "var(--white)", fontSize: 12.5, fontWeight: 600, letterSpacing: 0.2 }}>Operamos en todo Colombia</span>
+          </div>
         </div>
 
         <h1 style={{

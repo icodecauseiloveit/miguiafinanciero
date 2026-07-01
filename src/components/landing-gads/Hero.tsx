@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 interface HeroProps {
   onContactClick: () => void;
@@ -15,16 +16,18 @@ export function Hero({ onContactClick, onSimClick }: HeroProps) {
       {/* Background decoration removed per user request */}
 
       <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        {/* Alert Pill */}
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 10,
-          padding: "10px 24px", borderRadius: 40,
-          background: "rgba(255, 255, 255, 0.1)", border: "1px solid rgba(255, 255, 255, 0.2)",
-          marginBottom: 36, animation: "fadeUp 0.4s ease",
-          backdropFilter: "blur(8px)",
-        }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--green)", animation: "pulse 2s infinite", boxShadow: "0 0 10px var(--green)" }} />
-          <span style={{ color: "var(--white)", fontSize: 13, fontWeight: 700, letterSpacing: 0.5, textTransform: "uppercase" }}>Evaluación Inicial 100% Gratuita</span>
+        {/* Alerts Container */}
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 36, flexWrap: "wrap", animation: "fadeUp 0.4s ease" }}>
+          {/* Colombia Badge */}
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 10,
+            padding: "10px 24px", borderRadius: 40,
+            background: "rgba(255, 255, 255, 0.1)", border: "1px solid rgba(255, 255, 255, 0.2)",
+            backdropFilter: "blur(8px)",
+          }}>
+            <Image src="/co_flag.png" alt="Bandera Colombia" width={22} height={16} style={{ borderRadius: 2 }} />
+            <span style={{ color: "var(--white)", fontSize: 13, fontWeight: 700, letterSpacing: 0.5, textTransform: "uppercase" }}>Operamos en todo Colombia</span>
+          </div>
         </div>
 
         <h1 style={{
@@ -92,12 +95,12 @@ export function Hero({ onContactClick, onSimClick }: HeroProps) {
           </div>
           <div style={{ width: 1, height: 30, background: "rgba(255,255,255,0.2)" }} />
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontSize: 24 }}>🛡️</span>
-            <span style={{ color: "var(--white)", fontSize: 13, fontWeight: 700, textAlign: "left", lineHeight: 1.2 }}>Cifrado SSL<br/>256-bit Seguro</span>
+            <span style={{ fontSize: 24 }}>✅</span>
+            <span style={{ color: "var(--white)", fontSize: 13, fontWeight: 700, textAlign: "left", lineHeight: 1.2 }}>Evaluación Inicial<br/>100% Gratuita</span>
           </div>
           <div style={{ width: 1, height: 30, background: "rgba(255,255,255,0.2)" }} />
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontSize: 24 }}>⭐</span>
+            <span style={{ fontSize: 24 }}>👪</span>
             <span style={{ color: "var(--white)", fontSize: 13, fontWeight: 700, textAlign: "left", lineHeight: 1.2 }}>+320 Familias<br/>Beneficiadas</span>
           </div>
         </div>
